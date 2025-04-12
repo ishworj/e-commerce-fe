@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import { Form, Card } from "react-bootstrap";
+import CustomInputForm from "../../components/forms/customInputForm";
 
 const Login = () => {
   return (
@@ -10,7 +11,7 @@ const Login = () => {
           <Card.Title>Welcome back to chunab</Card.Title>
           <hr />
           <Form>
-            <CustomFormInput
+            <CustomInputForm
               label="Email"
               name="email"
               type="email"
@@ -19,7 +20,7 @@ const Login = () => {
               //   onChange={handleOnChange}
             />
 
-            <CustomFormInput
+            <CustomInputForm
               label="Password"
               name="password"
               type="password"
