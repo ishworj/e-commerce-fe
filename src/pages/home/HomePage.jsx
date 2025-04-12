@@ -3,6 +3,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import CategoryList from "../../components/layouts/CategoryList";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/cards/ProductCard";
+import CarouselHomePage from "../../components/carousel/CarouselHomePage";
 
 const HomePage = () => {
   const sampleProduct = {
@@ -14,7 +15,9 @@ const HomePage = () => {
   };
   return (
     <Container>
-      <div style={{height:"30vh" , background:"grey"}}></div>
+      <div style={{ height: "30vh", background: "white" }}>
+        <CarouselHomePage />
+      </div>
       <h3>Categories</h3>
       <CategoryList />
       <Row className="py-5">
