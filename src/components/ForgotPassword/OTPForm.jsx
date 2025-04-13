@@ -3,20 +3,19 @@ import { Button } from "react-bootstrap";
 import OTPInput from "react-otp-input";
 import { Link } from "react-router-dom";
 
-const OTPForm = () => {
-  const [otp, setOtp] = useState("");
-
+const OTPForm = ({ handleOnChange, form }) => {
   const [isOTP, setIsOTP] = useState(false);
   const handleOnOTPSubmit = (e) => {
-    e.preventDefault;
+    e.preventDefault();
     setIsOTP(true);
   };
   return (
     <div className="d-flex flex-column">
       <div className="d-flex  gap-3 mb-2">
         <OTPInput
-          value={otp}
-          onChange={setOtp}
+          value={form.otp}
+          name="otp"
+          onChange={handleOnChange}
           numInputs={6}
           renderSeparator={<span></span>}
           renderInput={(props) => (

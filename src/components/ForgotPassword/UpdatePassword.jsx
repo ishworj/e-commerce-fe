@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 
-const UpdatePassword = () => {
+const UpdatePassword = ({ handleOnChange, form }) => {
   const handleOnUpdatePw = (e) => {
-    e.preventDefault;
+    e.preventDefault();
     setIsEmail(true);
   };
   return (
@@ -11,16 +11,20 @@ const UpdatePassword = () => {
       <div className="d-flex gap-1">
         <Form.Control
           required
+          value={form.password}
           name="password"
           type="password"
           placeholder="Password"
+          onChange={handleOnChange}
           style={{ height: "2.5rem" }}
         />
         <Form.Control
           required
+          value={form.confirmPassword}
           name="confirmPassword"
           type="password"
           placeholder="Confirm Password"
+          onChange={handleOnChange}
           style={{ height: "2.5rem" }}
         />
       </div>
