@@ -3,8 +3,8 @@ import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../../features/category/categorySlice";
 import { Link } from "react-router-dom";
-import CategoryLanding from "../../pages/CategoryLanding";
 const shopCategories = [
+  "All",
   "Clothing",
   "Electronics",
   "Footwear",
@@ -25,11 +25,10 @@ const CategoryList = () => {
   return (
     <Row className="d-flex justify-content-center bg-light  ">
       <Col
-        className="d-flex gap-3 fw-bold justify-content-sm-start justify-content-md-center"
+        className="d-flex gap-3 fw-bold justify-content-sm-start justify-content-md-center "
         style={{
           whiteSpace: "nowrap",
           overflowX: "auto",
-          scrollbarWidth: "none",
         }}
       >
         {shopCategories.map((category) => {
