@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 const CustomInputForm = ({ ...item }) => {
   const { label, type, placeholder, required, name } = item;
   return (
-    <Form.Group md="4">
+    <div>
       <Form.Label>{label}</Form.Label>
       <Form.Control
         required={required}
@@ -12,7 +12,7 @@ const CustomInputForm = ({ ...item }) => {
         type={type}
         placeholder={placeholder}
       />
-    </Form.Group>
+    </div>
   );
 };
 

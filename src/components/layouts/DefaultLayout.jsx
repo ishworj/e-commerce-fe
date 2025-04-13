@@ -10,7 +10,7 @@ const DefaultLayout = () => {
 
       <Header />
 
-      <main className="main">
+      <main className="vh-100">
         <Outlet />
       </main>
 

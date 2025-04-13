@@ -8,6 +8,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import { Route, Routes } from "react-router-dom";
 import CategoryLanding from "../pages/CategoryLanding";
 import Profile from "../pages/account/Profile";
+import OTPForm from "../components/ForgotPassword/OTPForm";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
+        <Route path="/verify-otp" element={<OTPForm />} />
         <Route path="/categorylanding" element={<CategoryLanding />} />
         <Route path="/account" element={<Profile />} />
       </Route>

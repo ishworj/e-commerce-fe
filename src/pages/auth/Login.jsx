@@ -36,9 +36,8 @@ const Login = () => {
             </div>
 
             <div className="text-end my-3">
-              {" "}
               Forget Password?
-              <a href="/forgetPassword">Reset now?</a>
+              <a href="/forgetpassword">Reset now?</a>
             </div>
           </Form>
         </Card.Body>
