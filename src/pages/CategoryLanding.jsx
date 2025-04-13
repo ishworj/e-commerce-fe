@@ -4,6 +4,9 @@ import ProductCard from "../components/cards/ProductCard";
 import CategoryBar from "../components/layouts/CategoryBar";
 import CategoryList from "../components/layouts/CategoryList";
 import { Link } from "react-router-dom";
+import { CiFilter } from "react-icons/ci";
+import { RxReset } from "react-icons/rx";
+
 
 const CategoryLanding = () => {
   const sampleProduct = {
@@ -16,6 +19,7 @@ const CategoryLanding = () => {
   return (
     <Container>
       <CategoryBar />
+      <CategoryList />
       <h1 className="">Electronics</h1>
       <p>Discover our wide ranfe of Electroic equipments store balala</p>
       <Row className="pt-3 bg-light">
@@ -40,15 +44,30 @@ const CategoryLanding = () => {
         </Col>
       </Row>
 
-      <Row className="py-5">
+      <Row className="mt-4 mt-sm-5">
+        <Col>
+          <h5>20 results found</h5>
+        </Col>
+        <Col className="d-flex justify-content-end" >
+          <div className="d-flex flex-column ">
+            <Button variant="none">
+              <CiFilter /> Filter
+            </Button>
+            <Button variant="none" className="border border-danger p-1" style={{fontSize:"10px"}}>
+              <RxReset /> Reset Filter
+            </Button>
+          </div>
+        </Col>
+      </Row>
+
+      <Row className="py-3 py-sm-5">
         <Col className="d-flex flex-wrap flex-row justify-content-around gap-md-4">
           {new Array(20).fill(sampleProduct).map((item) => {
             return (
-              <Link  className ="text-decoration-none" to={"/phone/"}>
+              <Link className="text-decoration-none" to={"/phone/"}>
                 <ProductCard item={item} />
               </Link>
             );
-            
           })}
         </Col>
       </Row>
