@@ -10,7 +10,7 @@ const getAccessJWT = () => {
 const getRefreshJWT = () => {
     return localStorage.getItem("refreshJWT")
 }
-
+// api processor
 export const apiProcessor = async ({ method, url, isPrivate, isRefreshToken, data, contentType = "application/json" }) => {
     // setting the headers
     const headers = {
@@ -34,7 +34,7 @@ export const apiProcessor = async ({ method, url, isPrivate, isRefreshToken, dat
     } catch (error) {
         // if the accessToken is expired
         if (error?.response?.data?.message == "jwt expired") {
-            const refreshData = apiProcessor({
+            const refreshData = await apiProcessor({
                 method: "get",
                 url: authEp + "/renew-jwt",
                 isPrivate: false,
@@ -42,7 +42,7 @@ export const apiProcessor = async ({ method, url, isPrivate, isRefreshToken, dat
             })
             if (refreshData && refreshData?.status == "success") {
                 // here the accesstoken is again set in the sessionStorage
-                sessionStorage.setItem("accessToken", refreshData.token)
+                sessionStorage.setItem("accessToken", refreshData.accessToken)
                 // returning the actual original api processor
                 return apiProcessor({
                     method,
@@ -65,4 +65,16 @@ export const apiProcessor = async ({ method, url, isPrivate, isRefreshToken, dat
     }
 }
 
+// renewing the accessJwt token
 
+export const renewAccessJWT = async () => {
+    const { accessToken } = await apiProcessor({
+        method: "get",
+        url: authEp + "/renew-jwt",
+        isPrivate: true,
+        isRefreshToken: true
+    })
+
+    sessionStorage.setItem("accessJWT", accessToken)
+    return accessToken
+}
