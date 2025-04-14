@@ -1,10 +1,27 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
+import { updatePwAction } from "../../features/user/userAction";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const UpdatePassword = ({ handleOnChange, form, isPassword }) => {
-  const handleOnUpdatePw = (e) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleOnUpdatePw = async (e) => {
     e.preventDefault();
-    setIsEmail(true);
+    console.log("clicked");
+    const response = await dispatch(
+      updatePwAction({
+        email: form.email,
+        Otp: form.Otp,
+        password: form.password,
+        confirmPassword: form.confirmPassword,
+      })
+    );
+    console.log(response, 156);
+    if (response === true) {
+      navigate("/login");
+    }
   };
   return (
     isPassword && (

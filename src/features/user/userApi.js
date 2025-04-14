@@ -46,11 +46,16 @@ export const verifyOTPApi = ({ Otp, email }) => {
     })
 }
 // Update Password api
-export const updatePwApi = () => {
+export const updatePwApi = ({ email, Otp, password, confirmPassword }) => {
     return apiProcessor({
-        // method:,
-        // url: ,
-        // isPrivate
+        method: "post",
+        url: rootUrl + "/verify-user",
+        data: {
+            email: email,
+            Otp: Otp,
+            password: password,
+            confirmPassword: confirmPassword
+        }
     })
 
 }

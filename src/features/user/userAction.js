@@ -1,4 +1,4 @@
-import { verifyEmailAndSendOTPApi, verifyOTPApi, verifyUserApi } from "./userApi"
+import { updatePwApi, verifyEmailAndSendOTPApi, verifyOTPApi, verifyUserApi } from "./userApi"
 import { toast } from "react-toastify"
 
 // login action
@@ -32,15 +32,32 @@ export const verifyEmailAndSendOTPAction = (email) => async (dispatch) => {
     })
     const { status, message } = await pending;
     toast[status](message);
+    if (status === "success") {
+        return true;
+    }
 }
 
-export const verifyOTP = (obj) => async (dispatch) => {
-    const pending = verifyOTPApi(obj);
+export const verifyOTP = ({ email, Otp }) => async (dispatch) => {
+    const pending = verifyOTPApi({ email, Otp });
     toast.promise(pending, { pending: "Verifying OTP..." })
     const { message, status } = await pending;
     toast[status](message);
+
+    if (status === "success") {
+        return true;
+    }
 }
 // Update Password action
-export const updatePwAction = () => async (dispatch) => {
+export const updatePwAction = ({ email, Otp, password, confirmPassword }) => async (dispatch) => {
+    const pending = updatePwApi({ email, Otp, password, confirmPassword });
+    toast.promise(pending, {
+        pending: "Updating Password!"
+    })
 
+    const { status, message } = await pending;
+    toast[status](message);
+    console.log(status, "status")
+    if (status === "success") {
+        return true;
+    }
 }

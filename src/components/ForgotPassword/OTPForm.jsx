@@ -16,12 +16,16 @@ const OTPForm = ({
 }) => {
   const dispatch = useDispatch();
   const [isOTP, setIsOTP] = useState(false);
-  const handleOnOTPSubmit = (e) => {
+  const handleOnOTPSubmit = async (e) => {
     e.preventDefault();
-    dispatch(verifyOTP({ Otp: form.Otp, email: form.email }));
-    setIsOTP(true);
-    setIsPassword(true);
-    setHeading("Enter your password...");
+    const response = await dispatch(
+      verifyOTP({ Otp: form.Otp, email: form.email })
+    );
+    if (response === true) {
+      setIsOTP(true);
+      setIsPassword(true);
+      setHeading("Enter your password...");
+    }
   };
   const handleOnChange = (otpValue) => {
     setForm((prev) => ({

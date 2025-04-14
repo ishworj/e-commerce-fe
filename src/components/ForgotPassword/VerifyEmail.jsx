@@ -15,10 +15,14 @@ const VerifyEmail = ({
 
   const handleOnEmailSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(verifyEmailAndSendOTPAction({ email: form.email }));
-    setIsEmail(true);
-    setIsVerifyOtpUI(true);
-    setHeading("Enter your OTP...");
+    const response = await dispatch(
+      verifyEmailAndSendOTPAction({ email: form.email })
+    );
+    if (response === true) {
+      setIsVerifyOtpUI(true);
+      setHeading("Enter your OTP...");
+      setIsEmail(true);
+    }
   };
   return (
     <div className="d-flex gap-3 mb-2">
