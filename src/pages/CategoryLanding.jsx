@@ -6,6 +6,7 @@ import CategoryList from "../components/layouts/CategoryList";
 import { Link } from "react-router-dom";
 import { CiFilter } from "react-icons/ci";
 import { RxReset } from "react-icons/rx";
+import BottomNavBar from "../components/layouts/BottomNavBar";
 
 
 const CategoryLanding = () => {
@@ -74,6 +75,7 @@ const CategoryLanding = () => {
       <div className="bg-light text-center p-1">
         <p>See all results </p>
       </div>
+      <BottomNavBar />
     </Container>
   );
 };

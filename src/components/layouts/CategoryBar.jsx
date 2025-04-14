@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../../features/category/categorySlice.js";
 import { RxHamburgerMenu } from "react-icons/rx";
+import AllCategoriesModal from "./AllCategoriesModal.jsx";
 
 const shopCategories = [
   "All",
@@ -18,13 +19,14 @@ const shopCategories = [
   "sdfg",
 ];
 
+const showCategories = () => {
+  alert("hello");
+};
+
 const CategoryBar = () => {
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.categoryInfo);
-
-  const handleCategoryClick = (category) => {
-    dispatch(setSelectedCategory(category));
-  };
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
 
   return (
     <Row className="d-flex justify-content-center  align-items-top  bg-light py-2  d-md-none ">
@@ -35,10 +37,11 @@ const CategoryBar = () => {
         style={{
           fontSize: "1.5rem",
           cursor: "pointer",
-          position: "sticky", // Stick the hamburger
+          position: "sticky", 
           left: 0,
           zIndex: 2,
         }}
+        onClick={() => setShowCategoriesModal(true)}
       >
         <RxHamburgerMenu />
       </Col>
@@ -70,6 +73,11 @@ const CategoryBar = () => {
           </div>
         ))}
       </Col>
+
+      <AllCategoriesModal
+        show={showCategoriesModal}
+        onHide={() => setShowCategoriesModal(false)}
+      />
     </Row>
   );
 };
