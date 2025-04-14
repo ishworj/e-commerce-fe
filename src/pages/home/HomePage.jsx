@@ -15,7 +15,7 @@ const HomePage = () => {
   };
   return (
     <Container>
-      <div style={{ height: "30vh", background: "white" }}>
+      <div style={{ height: "40vh", background: "white" }}>
         <CarouselHomePage />
       </div>
       <h3>Categories</h3>

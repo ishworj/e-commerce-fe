@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import OTPForm from "../../components/ForgotPassword/OTPForm";
 import VerifyEmail from "../../components/ForgotPassword/VerifyEmail";
 import UpdatePassword from "../../components/ForgotPassword/UpdatePassword";
