@@ -34,9 +34,9 @@ const CategoryList = ({ isModalView = false }) => {
       >
         {Categories.map((category, index) => (
           <Link
-            to={`/categorylanding/${category.categoryName}`}
+            to={`/category/${category.categoryName}`}
             key={index}
-            onClick={() => handleCategoryClick(category.categoryName)}
+            onClick={() => handleCategoryClick(category)}
           >
             <div className="text-center category-item pt-3">
               <img

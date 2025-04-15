@@ -12,8 +12,8 @@ const CategoryBar = () => {
   const { selectedCategory , Categories } = useSelector((state) => state.categoryInfo);
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
 
-   const handleCategoryClick = (categoryName) => {
-      dispatch(setSelectedCategory(categoryName));
+   const handleCategoryClick = (category) => {
+      dispatch(setSelectedCategory(category));
     };
 
   return (
@@ -44,19 +44,19 @@ const CategoryBar = () => {
       >
         {Categories.map((category, index) => (
           <Link
-            to={`/categorylanding/${category.categoryName}`}
+            to={`/category/${category.categoryName}`}
             key={index}
             className={
-              category.categoryName === selectedCategory
+              category.categoryName === selectedCategory.categoryName
                 ? "fw-bolder category-item text-decoration-none text-dark"
                 : "category-item text-decoration-none text-dark"
             }
             style={
-              category.categoryName === selectedCategory
+              category.categoryName === selectedCategory.categoryName
                 ? { borderBottom: "3px solid black" }
                 : {}
             }
-            onClick={() => handleCategoryClick(category.categoryName)}
+            onClick={() => handleCategoryClick(category)}
           >
             {category.categoryName}
           </Link>
