@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect }, { useEffect } from "react";
 import AppRoutes from "./routes/AppRoutes";
 import { useDispatch } from "react-redux";
 import { getAllCategoriesAction } from "./features/category/CategoryActions.js";
 import { Bounce, ToastContainer } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { getPublicProductAction } from "./features/products/productActions";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(getPublicProductAction());
     dispatch(getAllCategoriesAction());
-  }, []);
+  });
+ 
   return (
     <div>
       <AppRoutes />
