@@ -4,29 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../../features/category/categorySlice.js";
 import { RxHamburgerMenu } from "react-icons/rx";
 import AllCategoriesModal from "./AllCategoriesModal.jsx";
+import { Link } from "react-router-dom";
 
-const shopCategories = [
-  "All",
-  "Clothing",
-  "Electronics",
-  "Footwear",
-  "Jewelry",
-  "Health",
-  "Office",
-  "Automotive",
-  "Pet",
-  "Furniture",
-  "sdfg",
-];
-
-const showCategories = () => {
-  alert("hello");
-};
 
 const CategoryBar = () => {
   const dispatch = useDispatch();
-  const { selectedCategory } = useSelector((state) => state.categoryInfo);
+  const { selectedCategory , Categories } = useSelector((state) => state.categoryInfo);
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
+
+   const handleCategoryClick = (categoryName) => {
+      dispatch(setSelectedCategory(categoryName));
+    };
 
   return (
     <Row className="d-flex justify-content-center  align-items-top  bg-light py-2  d-md-none ">
@@ -37,7 +25,7 @@ const CategoryBar = () => {
         style={{
           fontSize: "1.5rem",
           cursor: "pointer",
-          position: "sticky", 
+          position: "sticky",
           left: 0,
           zIndex: 2,
         }}
@@ -54,23 +42,24 @@ const CategoryBar = () => {
           overflowX: "auto",
         }}
       >
-        {shopCategories.map((category) => (
-          <div
-            key={category}
+        {Categories.map((category, index) => (
+          <Link
+            to={`/categorylanding/${category.categoryName}`}
+            key={index}
             className={
-              category === selectedCategory
-                ? "fw-bolder category-item"
-                : "category-item"
+              category.categoryName === selectedCategory
+                ? "fw-bolder category-item text-decoration-none text-dark"
+                : "category-item text-decoration-none text-dark"
             }
             style={
-              category === selectedCategory
+              category.categoryName === selectedCategory
                 ? { borderBottom: "3px solid black" }
                 : {}
             }
-            onClick={() => handleCategoryClick(category)}
+            onClick={() => handleCategoryClick(category.categoryName)}
           >
-            {category}
-          </div>
+            {category.categoryName}
+          </Link>
         ))}
       </Col>
 

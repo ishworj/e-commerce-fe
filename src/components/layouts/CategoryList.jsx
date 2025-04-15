@@ -4,22 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../../features/category/categorySlice";
 import { Link } from "react-router-dom";
 
-const shopCategories = [
-  "All",
-  "Clothing",
-  "Electronics",
-  "Footwear",
-  "Jewelry",
-  "Health",
-  "Office",
-  "Automotive",
-  "Pet",
-  "Furniture",
-];
-
 const CategoryList = ({ isModalView = false }) => {
   const dispatch = useDispatch();
-  const { selectedCategory } = useSelector((state) => state.categoryInfo);
+  const { Categories, selectedCategory } = useSelector(
+    (state) => state.categoryInfo
+  );
   const handleCategoryClick = (category) => {
     dispatch(setSelectedCategory(category));
   };
@@ -43,16 +32,16 @@ const CategoryList = ({ isModalView = false }) => {
               }
         }
       >
-        {shopCategories.map((category) => (
+        {Categories.map((category, index) => (
           <Link
-            to="categorylanding"
-            key={category}
-            onClick={() => handleCategoryClick(category)}
+            to={`/categorylanding/${category.categoryName}`}
+            key={index}
+            onClick={() => handleCategoryClick(category.categoryName)}
           >
             <div className="text-center category-item pt-3">
               <img
                 src="https://www.suzuki.com.au/wp-content/uploads/2023/07/Frame-7-808x455.webp"
-                alt={category}
+                alt={category.categoryName}
                 style={{
                   width: "60px",
                   height: "60px",
@@ -60,7 +49,7 @@ const CategoryList = ({ isModalView = false }) => {
                   borderRadius: "50%",
                 }}
               />
-              <p className="mt-1">{category}</p>
+              <p className="mt-1">{category.categoryName}</p>
             </div>
           </Link>
         ))}

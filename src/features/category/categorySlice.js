@@ -12,7 +12,7 @@ const categorySlice = createSlice({
       state.selectedCategory = payload || "";
     },
     setCategories: (state, { payload }) => {
-      state.Categories = payload || "";
+      state.Categories = payload || [];
     },
   },
 });

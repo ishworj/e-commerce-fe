@@ -3,7 +3,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import ProductCard from "../components/cards/ProductCard";
 import CategoryBar from "../components/layouts/CategoryBar";
 import CategoryList from "../components/layouts/CategoryList";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { CiFilter } from "react-icons/ci";
 import { RxReset } from "react-icons/rx";
 import BottomNavBar from "../components/layouts/BottomNavBar";
@@ -17,11 +17,12 @@ const CategoryLanding = () => {
     price: 19.99,
     images: ["https://m.media-amazon.com/images/I/61gDg-vFhzL._AC_SL1000_.jpg"],
   };
+  
   return (
     <Container>
       <CategoryBar />
       <CategoryList />
-      <h1 className="">Electronics</h1>
+      <h1 className="">Electrinucs</h1>
       <p>Discover our wide ranfe of Electroic equipments store balala</p>
       <Row className="pt-3 bg-light">
         <Col md={4}>
