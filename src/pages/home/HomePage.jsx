@@ -7,16 +7,7 @@ import CarouselHomePage from "../../components/carousel/CarouselHomePage";
 import { useSelector } from "react-redux";
 
 const HomePage = () => {
-  const sampleProduct = {
-    name: "Classic White T-Shirt",
-    description:
-      "A comfortable and stylish classic white t-shirt made from organic cotton.",
-    price: 19.99,
-    images: ["https://m.media-amazon.com/images/I/61gDg-vFhzL._AC_SL1000_.jpg"],
-  };
-
   const { publicProducts } = useSelector((state) => state.productInfo);
-  console.log(publicProducts, 232);
   return (
     <Container>
       <div style={{ height: "40vh", background: "white" }}>

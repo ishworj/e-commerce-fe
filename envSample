@@ -1,1 +1,2 @@
-BACKEND_BASE_URL =
+VITE_BACKEND_BASE_URL = http://localhost:9002/api/v1
+VITE_BACKEND_ROOT_URL = http://localhost:9002
