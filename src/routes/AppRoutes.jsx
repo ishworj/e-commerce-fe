@@ -9,6 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import CategoryLanding from "../pages/CategoryLanding";
 import Profile from "../pages/account/Profile";
 import VerifyUser from "../pages/auth/VerifyUser";
+import ProductLandingPage from "../components/landingPage/ProductLandingPage";
 
 const AppRoutes = () => {
   return (
@@ -22,6 +23,7 @@ const AppRoutes = () => {
         <Route path="/categorylanding" element={<CategoryLanding />} />
         <Route path="/account" element={<Profile />} />
         <Route path="/verify-user" element={<VerifyUser />} />
+        <Route path="/product/:id" element={<ProductLandingPage />} />
       </Route>
       {/* private routes */}
       <Route path="user" element={<DefaultLayout />}>

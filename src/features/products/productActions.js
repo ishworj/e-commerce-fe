@@ -6,7 +6,6 @@ export const getAdminProductAction = () => async (dispatch) => {
     const pending = getAdminProductApi()
     const { status, message, products } = await pending;
     dispatch(setProducts(products))
-    toast[status](message)
 }
 export const createProductAction = (productObj) => async (dispatch) => {
     const pending = createProductApi(productObj)
@@ -22,7 +21,6 @@ export const getPublicProductAction = () => async (dispatch) => {
     if (status === "success") {
         dispatch(setPublicProducts(products))
     }
-    toast[status](message)
 }
 export const deleteProductAction = () => async (dispatch) => {
     const pending = deleteProductApi();
