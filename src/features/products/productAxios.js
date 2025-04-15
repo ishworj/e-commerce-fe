@@ -22,6 +22,12 @@ export const getPublicProductApi = () => {
         url: productEp + '/active'
     })
 }
+export const getSingleProductApi = (id) => {
+    return apiProcessor({
+        method: "get",
+        url: productEp + `/product/${id}`
+    })
+}
 export const deleteProductApi = () => {
     return apiProcessor({
         method: "delete",

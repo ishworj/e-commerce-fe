@@ -1,31 +1,46 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { FiShare2 } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
+import { getSingleProductAction } from "../../features/products/productActions";
 const ProductLandingPage = () => {
-  const { publicProducts } = useSelector((state) => state.productInfo);
-  console.log(publicProducts);
-  const { id } = useParams();
-  const selectedProduct = publicProducts.find((item) => id == item._id);
+  const dispatch = useDispatch();
+  const { selectedProduct } = useSelector((state) => state.productInfo);
   console.log(selectedProduct);
+  const { id } = useParams();
+  useEffect(() => {
+    if (!selectedProduct._id) {
+      dispatch(getSingleProductAction(id));
+    }
+  }, [id, dispatch, selectedProduct]);
   return (
-    <div>
+    <div className="w-100 d-flex justify-content-center my-5">
       {/* mainpage */}
-      <div>
+      <div className="position-relative d-flex justify-content-center w-75">
         {/* image and product details */}
-        <div className="d-flex">
+        <div className="d-flex justify-content-center gap-2 w-100">
           {/* image */}
-          <div>
-            <img src={selectedProduct.images[0]} alt={selectedProduct.name} />
-          </div>
+          <img
+            src={selectedProduct.images[0]}
+            alt={selectedProduct.name}
+            className="w-50 h-75 rounded"
+          />
           {/* product detail */}
-          <div></div>
+          <div className="w-50 h-75 rounded">
+            <h2>{selectedProduct.name}</h2>
+            <strong className="position-relative fs-1">
+              <strong className="position-absolute">$</strong>
+              {selectedProduct.price}
+            </strong>
+          </div>
         </div>
         {/* latest reviews */}
         <div></div>
       </div>
       {/* absolute share button */}
-      <div></div>
+      <div className="position-absolute" style={{ top: "15vh", right: "40px" }}>
+        <FiShare2 />
+      </div>
     </div>
   );
 };
