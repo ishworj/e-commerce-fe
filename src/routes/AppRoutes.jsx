@@ -26,7 +26,7 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
-        <Route path="/categorylanding" element={<CategoryLanding />} />
+        <Route path="/category/:categoryName" element={<CategoryLanding />} />
         <Route path="/account" element={<Profile />} />
         <Route path="/verify-user" element={<VerifyUser />} />
         <Route path="/product/:id" element={<ProductLandingPage />} />
