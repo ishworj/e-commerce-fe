@@ -6,6 +6,10 @@ import ForgetPassword from "../pages/auth/ForgetPassword";
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import { Route, Routes } from "react-router-dom";
+import CategoryLanding from "../pages/CategoryLanding";
+import Profile from "../pages/account/Profile";
+import VerifyUser from "../pages/auth/VerifyUser";
+import ProductLandingPage from "../components/landingPage/ProductLandingPage";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +20,10 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
+        <Route path="/category/:categoryName" element={<CategoryLanding />} />
+        <Route path="/account" element={<Profile />} />
+        <Route path="/verify-user" element={<VerifyUser />} />
+        <Route path="/product/:id" element={<ProductLandingPage />} />
       </Route>
       {/* private routes */}
       <Route path="user" element={<DefaultLayout />}>
