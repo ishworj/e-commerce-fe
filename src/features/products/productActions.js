@@ -1,6 +1,6 @@
 import { toast } from "react-toastify"
-import { createProductApi, deleteProductApi, getAdminProductApi, getPublicProductApi, updateProductApi } from "./productAxios"
-import { setProducts, setPublicProducts } from "./productSlice";
+import { createProductApi, deleteProductApi, getAdminProductApi, getPublicProductApi, getSingleProductApi, updateProductApi } from "./productAxios"
+import { setProducts, setPublicProducts, setSelectedProduct } from "./productSlice";
 
 export const getAdminProductAction = () => async (dispatch) => {
     const pending = getAdminProductApi()
@@ -21,6 +21,10 @@ export const getPublicProductAction = () => async (dispatch) => {
     if (status === "success") {
         dispatch(setPublicProducts(products))
     }
+}
+export const getSingleProductAction = (id) => async (dispatch) => {
+    const { product } = await getSingleProductApi(id)
+    dispatch(setSelectedProduct(product))
 }
 export const deleteProductAction = () => async (dispatch) => {
     const pending = deleteProductApi();

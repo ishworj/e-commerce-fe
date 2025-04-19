@@ -1,4 +1,4 @@
-import React,  { useEffect } from "react";
+import React, { useEffect } from "react";
 import AppRoutes from "./routes/AppRoutes";
 import { getAllCategoriesAction } from "./features/category/CategoryActions.js";
 import { Bounce, ToastContainer } from "react-toastify";
@@ -11,7 +11,7 @@ const App = () => {
     dispatch(getPublicProductAction());
     dispatch(getAllCategoriesAction());
   });
- 
+
   return (
     <div>
       <AppRoutes />

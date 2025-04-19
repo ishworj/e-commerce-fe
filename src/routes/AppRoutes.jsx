@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import HomePage from "../pages/home/HomePage";
 import Register from "../pages/auth/Register";
@@ -10,8 +10,14 @@ import CategoryLanding from "../pages/CategoryLanding";
 import Profile from "../pages/account/Profile";
 import VerifyUser from "../pages/auth/VerifyUser";
 import ProductLandingPage from "../components/landingPage/ProductLandingPage";
+import { getPublicProductAction } from "../features/products/productActions";
+import { useDispatch } from "react-redux";
 
 const AppRoutes = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPublicProductAction());
+  }, []);
   return (
     <Routes>
       {/* public routes */}
@@ -23,7 +29,7 @@ const AppRoutes = () => {
         <Route path="/category/:categoryName" element={<CategoryLanding />} />
         <Route path="/account" element={<Profile />} />
         <Route path="/verify-user" element={<VerifyUser />} />
-        <Route path="/product/:id" element={<ProductLandingPage />} />
+        <Route path="/:id" element={<ProductLandingPage />} />
       </Route>
       {/* private routes */}
       <Route path="user" element={<DefaultLayout />}>

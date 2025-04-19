@@ -21,7 +21,7 @@ const HomePage = () => {
             return (
               <Link
                 className="text-decoration-none"
-                to={`/product/${item._id}`}
+                to={`/${item._id}`}
                 key={index}
               >
                 <ProductCard item={item} />
