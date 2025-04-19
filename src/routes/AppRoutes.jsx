@@ -29,7 +29,7 @@ const AppRoutes = () => {
         <Route path="/category/:categoryName" element={<CategoryLanding />} />
         <Route path="/account" element={<Profile />} />
         <Route path="/verify-user" element={<VerifyUser />} />
-        <Route path="/product/:id" element={<ProductLandingPage />} />
+        <Route path="/:id" element={<ProductLandingPage />} />
       </Route>
       {/* private routes */}
       <Route path="user" element={<DefaultLayout />}>

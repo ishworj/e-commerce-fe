@@ -25,7 +25,7 @@ export const getPublicProductApi = () => {
 export const getSingleProductApi = (id) => {
     return apiProcessor({
         method: "get",
-        url: productEp + `/product/${id}`
+        url: productEp + `/${id}`
     })
 }
 export const deleteProductApi = () => {
