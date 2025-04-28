@@ -9,9 +9,9 @@ import { Route, Routes } from "react-router-dom";
 import CategoryLanding from "../pages/CategoryLanding";
 import Profile from "../pages/account/Profile";
 import VerifyUser from "../pages/auth/VerifyUser";
-import ProductLandingPage from "../components/landingPage/ProductLandingPage";
 import { getPublicProductAction } from "../features/products/productActions";
 import { useDispatch } from "react-redux";
+import ProductLandingPage from "../components/products/ProductLandingPage";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
