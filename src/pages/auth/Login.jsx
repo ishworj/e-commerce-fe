@@ -1,48 +1,23 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
-import { Form, Card } from "react-bootstrap";
-import CustomInputForm from "../../components/forms/customInputForm";
+import { Card, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import LoginForm from "../../components/forms/LoginForm";
+
 
 const Login = () => {
   return (
-    <div className="login-page d-flex justify-content-center align-items-center">
-      <Card style={{ width: "18rem" }}>
-        <Card.Body>
-          <Card.Title>Welcome back to chunab</Card.Title>
-          <hr />
-          <Form>
-            <CustomInputForm
-              label="Email"
-              name="email"
-              type="email"
-              required
-              placeholder="name@email.com"
-              //   onChange={handleOnChange}
-            />
-
-            <CustomInputForm
-              label="Password"
-              name="password"
-              type="password"
-              required
-              placeholder="********"
-              //   onChange={handleOnChange}
-            />
-            <div className="d-grid">
-              <Button type="submit" variant="primary">
-                {" "}
-                Log In
-              </Button>
-            </div>
-
-            <div className="text-end my-3">
-              Forget Password?
-              <a href="/forgetpassword">Reset now?</a>
-            </div>
-          </Form>
-        </Card.Body>
+    <Container className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+      <Card
+        className="shadow rounded p-4 text-center"
+        style={{ width: "100%", maxWidth: "400px" }}
+      >
+        <Card.Title className="mb-3">Log in</Card.Title>
+        <LoginForm />
+        <div className="text-end my-3">
+          Forget Password? <Link to="/forgetpassword">Reset Now</Link>
+        </div>
       </Card>
-    </div>
+    </Container>
   );
 };
 
