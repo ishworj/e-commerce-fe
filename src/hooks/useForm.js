@@ -14,7 +14,6 @@ const useForm = (initialState) => {
   const [passwordErrors, setPasswordErrors] = useState([]);
 
   //only when password and confirm password changes.
-
   useEffect(() => {
     const errorArg = validator(form.password, form.confirmPassword);
     setPasswordErrors(errorArg);
