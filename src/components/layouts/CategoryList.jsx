@@ -14,7 +14,7 @@ const CategoryList = ({ isModalView = false }) => {
   };
 
   return (
-    <Row
+    <div
       className={`justify-content-center bg-light ${isModalView ? "p-3" : ""}`}
     >
       <Col
@@ -54,7 +54,7 @@ const CategoryList = ({ isModalView = false }) => {
           </Link>
         ))}
       </Col>
-    </Row>
+    </div>
   );
 };
 
