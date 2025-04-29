@@ -24,7 +24,7 @@ export const apiProcessor = async ({
     Authorization: isPrivate
       ? getAccessJWT()
       : isRefreshToken
-      ? getRefreshJWT() = false
+      ? getRefreshJWT() === false
       : null,
     "Content-type": contentType,
   };

@@ -7,6 +7,7 @@ import {
   verifyUserApi,
 } from "./userApi";
 import { toast } from "react-toastify";
+import { setUser } from "./userSlice";
 
 // login action
 export const loginAction = (form, navigate) => async (dispatch) => {
@@ -17,7 +18,7 @@ export const loginAction = (form, navigate) => async (dispatch) => {
     dispatch(setUser(data.user));
 
     //upddate storage session for access token
-    sessionStorage.setitem("accessJWT", data.accessToken);
+    sessionStorage.setItem("accessJWT", data.accessToken);
 
     // update local storage for refresh token
     localStorage.setItem("refreshJWT", data.refreshToken);
