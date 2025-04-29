@@ -23,13 +23,13 @@ const ProductLandingPage = () => {
 
   console.log(selectedProduct, 2222);
   return (
-    <div className="w-100 d-flex justify-content-center my-5">
+    <div className="w-100 d-flex justify-content-center my-5 position-relative">
       {/* mainpage */}
       <div className="d-flex justify-content-center w-100">
         {/* image and product details */}
         <div
-          className="d-flex flex-column flex-md-row justify-content-center gap-2 col-11 col-lg-8 col-md-10 position-relative "
-          style={{ maxHeight: "" }}
+          className="d-flex flex-column flex-md-row justify-content-around col-11 col-lg-8 col-md-12"
+          style={{ background: "#eee" }}
         >
           {/* image */}
           <ProductsImages selectedProduct={selectedProduct} />
@@ -42,7 +42,10 @@ const ProductLandingPage = () => {
         </div>
       </div>
       {/* absolute share button */}
-      <div className="position-absolute" style={{ top: "15vh", right: "40px" }}>
+      <div
+        className="position-absolute fs-3"
+        style={{ top: "2%", right: "5%" }}
+      >
         <FiShare2 />
       </div>
     </div>
