@@ -11,7 +11,7 @@ const ProductLandingPage = () => {
   const { selectedProduct } = useSelector((state) => state.productInfo);
 
   const { id } = useParams();
-  console.log(id);
+  console.log(id, "id in Product landing page");
   const handleFavourite = () => {
     setFavourite(!favourite);
   };
@@ -29,7 +29,7 @@ const ProductLandingPage = () => {
         {/* image and product details */}
         <div
           className="d-flex flex-column flex-md-row justify-content-center gap-2 col-11 col-lg-8 col-md-10 position-relative "
-          style={{ minHeight: "100vh" }}
+          style={{ maxHeight: "" }}
         >
           {/* image */}
           <ProductsImages selectedProduct={selectedProduct} />

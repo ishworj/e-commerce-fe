@@ -11,10 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../features/category/categorySlice";
 
 const CategoryLanding = () => {
-  const dispatch = useDispatch()
-    const { categoryName } = useParams();
+  const dispatch = useDispatch();
+  const { categoryName } = useParams();
   const { publicProducts } = useSelector((state) => state.productInfo);
-  const { selectedCategory,Categories } = useSelector(
+  const { selectedCategory, Categories } = useSelector(
     (state) => state.categoryInfo
   );
 
@@ -24,13 +24,13 @@ const CategoryLanding = () => {
     );
   };
 
-if(!selectedCategory.categoryName){
-   dispatch(setSelectedCategory(getCategoryByName()));
-
-  
+  if (!selectedCategory.categoryName) {
+    dispatch(setSelectedCategory(getCategoryByName()));
   }
 
-  const productsByCategory = publicProducts.filter((product) => product.category == selectedCategory._id);
+  const productsByCategory = publicProducts.filter(
+    (product) => product.category == selectedCategory._id
+  );
   return (
     <Container>
       <CategoryBar />
@@ -81,13 +81,13 @@ if(!selectedCategory.categoryName){
         <Col className="d-flex flex-wrap flex-row justify-content-start gap-md-4">
           {productsByCategory.map((item, index) => {
             return (
-              <Link
+              <a
                 className="text-decoration-none"
-                to={`/product/${item._id}`}
+                href={`/${item._id}`}
                 key={index}
               >
                 <ProductCard item={item} />
-              </Link>
+              </a>
             );
           })}
         </Col>
