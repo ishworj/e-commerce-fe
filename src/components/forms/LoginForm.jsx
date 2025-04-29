@@ -5,11 +5,12 @@ import CustomInput from "../custom inputs/CustomInput";
 import { Button, Form } from "react-bootstrap";
 
 const LoginForm = () => {
-  const { form, handleOnChange } = useForm();
+  const { form, handleOnChange } = useForm({ email: "", password: "" });
 
   const handleOnSubmit = async (e) => {
     //prevent default
     e.preventDefault();
+    console.log(form);
   };
   return (
     <div>

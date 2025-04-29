@@ -10,7 +10,7 @@ const Login = () => {
         className="shadow rounded p-4 text-center"
         style={{ width: "100%", maxWidth: "400px" }}
       >
-        <Card.Title className="mb-3">Log in</Card.Title>
+        <Card.Title className="mb-3">Welcome Back!</Card.Title>
         <LoginForm />
         <div className="text-center my-3">
           Forget Password? <Link to="/forgetpassword">Reset Now</Link>
