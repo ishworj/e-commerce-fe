@@ -5,12 +5,15 @@ import { signUpInputes } from "../../assets/form-data/UserSignUpInputes";
 import useForm from "../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import { registerUserAction } from "../../features/user/userAction";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {};
 const RegisterForm = () => {
   const { form, setForm, handleOnChange, passwordErrors } =
     useForm(initialState);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   console.log(form.confirmPassword);
   const handleOnSubmit = (e) => {
@@ -20,10 +23,25 @@ const RegisterForm = () => {
     console.log(confirmPassword);
 
     if (confirmPassword !== password) return alert("Password do not match");
+    try {
+      //SignUp api call
+      dispatch(registerUserAction(form));
 
-    //SignUp api call
-    dispatch(registerUserAction(form));
+      //show aucess toast once signUp is complete
+      toast.success("Sign Up successful");
+
+      // redirect to loginpage with 2s delay so that user can see the toast
+      setTimeout(() => navigate("/login"));
+      return { status: "success", message: "Sign Up sucessful" };
+    } catch (error) {
+      console.log(error);
+
+      //show error toast if somethins goes wrong
+      toast.error(error.messgae || "SignUp failed. Please try again!");
+      return { status: "error", message: "signUp failed" };
+    }
   };
+
   return (
     <Form onSubmit={handleOnSubmit}>
       {signUpInputes.map((input) => (
