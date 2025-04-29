@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -9,9 +9,27 @@ const Profile = () => {
     <div></div>
   ) : (
     <div>
-      <Button variant="primary" onClick={() => navigate("/login")}>
-        Sign in
-      </Button>
+      <Container className="d-flex flex-column justify-content-center align-items-center min-vh-100">
+        <h2 className="mb-4"> Welcome to Brand! </h2>
+        <p className="mb-4 text-muted">Please login or register to continue.</p>
+
+        <div className="d-flex gap-3">
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate("/login")}
+          >
+            Log In
+          </Button>
+          <Button
+            variant="outline-primary"
+            size="lg"
+            onClick={() => navigate("/register")}
+          >
+            Sign Up
+          </Button>
+        </div>
+      </Container>
     </div>
   );
 };
