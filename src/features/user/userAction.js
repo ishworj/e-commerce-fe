@@ -33,6 +33,8 @@ export const registerUserAction = (registerObj) => async (dispatch) => {
     pending: "Registering ... ",
   });
 
+  // const data = await pending
+  // console.log(data, "data")
   const { status, message, user } = await pending;
   toast[status](message);
 };
@@ -40,15 +42,15 @@ export const registerUserAction = (registerObj) => async (dispatch) => {
 //verify user Action
 export const verifyUserAction =
   ({ sessionId, token }) =>
-  async (dispatch) => {
-    const pending = verifyUserApi({ sessionId, token });
-    toast.promise(pending, {
-      pending: "Verifying...",
-    });
-    const { status, message } = await pending;
-    toast[status](message);
-    console.log(message);
-  };
+    async (dispatch, navigate) => {
+      const pending = verifyUserApi({ sessionId, token });
+      toast.promise(pending, {
+        pending: "Verifying...",
+      });
+      const { status, message } = await pending;
+      toast[status](message);
+      console.log(message);
+    };
 
 // verify email action
 export const verifyEmailAndSendOTPAction = (email) => async (dispatch) => {
@@ -66,29 +68,29 @@ export const verifyEmailAndSendOTPAction = (email) => async (dispatch) => {
 
 export const verifyOTP =
   ({ email, Otp }) =>
-  async (dispatch) => {
-    const pending = verifyOTPApi({ email, Otp });
-    toast.promise(pending, { pending: "Verifying OTP..." });
-    const { message, status } = await pending;
-    toast[status](message);
+    async (dispatch) => {
+      const pending = verifyOTPApi({ email, Otp });
+      toast.promise(pending, { pending: "Verifying OTP..." });
+      const { message, status } = await pending;
+      toast[status](message);
 
-    if (status === "success") {
-      return true;
-    }
-  };
+      if (status === "success") {
+        return true;
+      }
+    };
 // Update Password action
 export const updatePwAction =
   ({ email, Otp, password, confirmPassword }) =>
-  async (dispatch) => {
-    const pending = updatePwApi({ email, Otp, password, confirmPassword });
-    toast.promise(pending, {
-      pending: "Updating Password!",
-    });
+    async (dispatch) => {
+      const pending = updatePwApi({ email, Otp, password, confirmPassword });
+      toast.promise(pending, {
+        pending: "Updating Password!",
+      });
 
-    const { status, message } = await pending;
-    toast[status](message);
-    console.log(status, "status");
-    if (status === "success") {
-      return true;
-    }
-  };
+      const { status, message } = await pending;
+      toast[status](message);
+      console.log(status, "status");
+      if (status === "success") {
+        return true;
+      }
+    };

@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { verifyUserAction } from "../../features/user/userAction";
 import { useDispatch } from "react-redux";
 
 const VerifyUser = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isVerified, setIsVerified] = useState(null);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -18,6 +19,7 @@ const VerifyUser = () => {
     const response = await dispatch(verifyUserAction({ sessionId, token }));
     if (response?.payload?.status === "success") {
       setIsVerified(true);
+      navigate("/login");
     }
   };
 

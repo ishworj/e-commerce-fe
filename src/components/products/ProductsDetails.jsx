@@ -3,17 +3,28 @@ import { FaRegHeart } from "react-icons/fa";
 import { GoHeartFill } from "react-icons/go";
 import Stars from "../rating/Stars";
 import { Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { createCartAction } from "../../features/cart/cartAction";
 
 const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
   const avgRating = 3.5;
   const ttlRatings = 10;
 
-  const [quantity, setQuantity] = useState(0);
+  const dispatch = useDispatch();
+
+  const [quantity, setQuantity] = useState(1);
   const handleOnAdd = () => {
     setQuantity((prev) => (prev += 1));
   };
   const handleOnSubtract = () => {
-    prev <= 0 ? 0 : setQuantity((prev) => (prev -= 1));
+    if (quantity <= 1) {
+      setQuantity(1);
+    } else {
+      setQuantity((prev) => (prev -= 1));
+    }
+  };
+  const handleOnAddCart = (_id, quantity) => {
+    dispatch(createCartAction(_id, quantity));
   };
 
   return (
@@ -72,7 +83,12 @@ const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
         </button>
       </div>
       {/* add cart button */}
-      <Button className="bg-black w-100 rounded my-3 py-2">Add to cart</Button>
+      <Button
+        className="bg-black w-100 rounded my-3 py-2"
+        onClick={() => handleOnAddCart(selectedProduct._id, quantity)}
+      >
+        Add to cart
+      </Button>
     </div>
   );
 };
