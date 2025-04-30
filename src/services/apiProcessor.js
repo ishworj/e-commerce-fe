@@ -1,10 +1,10 @@
-  import axios from "axios";
+import axios from "axios";
 
 const authEp = import.meta.env.BACKEND_BASE_URL + "/auth";
 
 const getAccessJWT = () => {
   // note: I am just using this name from my side if you agree, then use the same name for Access Token
-  return sessionStorage.getItem("accessToken");
+  return sessionStorage.getItem("accessJWT");
 };
 
 const getRefreshJWT = () => {
@@ -24,8 +24,8 @@ export const apiProcessor = async ({
     Authorization: isPrivate
       ? getAccessJWT()
       : isRefreshToken
-      ? getRefreshJWT() === false
-      : null,
+        ? getRefreshJWT() === false
+        : null,
     "Content-type": contentType,
   };
 
