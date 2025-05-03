@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { getSingleProductAction } from "../../features/products/productActions";
 import ProductsImages from "./ProductsImages";
 import ProductsDetails from "./ProductsDetails";
+import ProductReviews from "./ProductReviews";
 const ProductLandingPage = () => {
   const [favourite, setFavourite] = useState(false);
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const ProductLandingPage = () => {
   return (
     <div className="w-100 d-flex justify-content-center my-5 position-relative">
       {/* mainpage */}
-      <div className="d-flex justify-content-center w-100">
+      <div className="d-flex align-items-center w-100 flex-column">
         {/* image and product details */}
         <div
           className="d-flex flex-column flex-md-row justify-content-around col-11 col-lg-8 col-md-12"
@@ -40,7 +41,12 @@ const ProductLandingPage = () => {
             selectedProduct={selectedProduct}
           />
         </div>
+        {/* latest reviews  */}
+        <div className="d-flex align-items-center w-100 flex-column">
+          <ProductReviews selectedProduct={selectedProduct} />
+        </div>
       </div>
+
       {/* absolute share button */}
       <div
         className="position-absolute fs-3"

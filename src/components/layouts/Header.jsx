@@ -39,10 +39,10 @@ const Header = () => {
               SEARCH
             </Link>
 
-            <Link to="/account" className="px-3 nav-link">
+            <Link to="/user/account" className="px-3 nav-link">
               ACCOUNT
             </Link>
-            <Link to="/cart" className="px-3 nav-link">
+            <Link to="/user/cart" className="px-3 nav-link">
               CART
             </Link>
           </Nav>
