@@ -24,7 +24,7 @@ const ProductLandingPage = () => {
 
   console.log(selectedProduct, 2222);
   return (
-    <div className="w-100 d-flex justify-content-center my-5 position-relative">
+    <div className="w-100 d-flex justify-content-center py-5 position-relative">
       {/* mainpage */}
       <div className="d-flex align-items-center w-100 flex-column">
         {/* image and product details */}

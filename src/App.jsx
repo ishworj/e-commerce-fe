@@ -4,12 +4,14 @@ import { getAllCategoriesAction } from "./features/category/CategoryActions.js";
 import { Bounce, ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { getPublicProductAction } from "./features/products/productActions";
+import { fetchCartAction } from "./features/cart/cartAction.js";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPublicProductAction());
     dispatch(getAllCategoriesAction());
+    dispatch(fetchCartAction());
   });
 
   return (

@@ -7,7 +7,6 @@ import Stars from "../rating/Stars";
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
   const { name, description, price, images, _id } = item;
-  console.log(item, "Selected Item");
 
   const handleOnProductClick = (_id) => {
     dispatch(getSingleProductAction(_id));

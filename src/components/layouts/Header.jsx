@@ -1,10 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Navbar, Container, Nav, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ handleCart, setNavHeight }) => {
+  const navRef = useRef(0);
+  useEffect(() => {
+    const updateHeight = () => {
+      setNavHeight(navRef.current.offsetHeight);
+    };
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
   return (
-    <Navbar expand="lg" className="bg-body-tertiary w-100">
+    <Navbar
+      expand="lg"
+      className="bg-body-tertiary w-100 sticky-top"
+      ref={navRef}
+    >
       <Container>
         {/* Left-aligned links (Shop, About) - Hidden on mobile */}
         <Navbar.Collapse id="navbar-left" className="order-1 order-lg-0">
@@ -42,9 +55,10 @@ const Header = () => {
             <Link to="/user/account" className="px-3 nav-link">
               ACCOUNT
             </Link>
-            <Link to="/user/cart" className="px-3 nav-link">
+            {/*  changed to button as we are expecting the div for cart to be rendered above the current page, as we are not navigating to another separate page acc to the figma design */}
+            <button className="px-3 text-start nav-link" onClick={handleCart}>
               CART
-            </Link>
+            </button>
           </Nav>
         </Navbar.Collapse>
       </Container>

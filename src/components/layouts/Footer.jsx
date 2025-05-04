@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa6";
 
