@@ -2,10 +2,11 @@ import { apiProcessor } from "../../services/apiProcessor"
 
 const cartUrl = import.meta.env.VITE_BACKEND_BASE_URL + "/cart"
 export const createCartApi = (_id, quantity) => {
+    console.log("axios")
     return apiProcessor({
         method: "post",
         url: cartUrl + "/add-to-cart",
-        data: { _id, quantity },
+        data: { _id: _id, quantity: quantity },
         isPrivate: true
     })
 }

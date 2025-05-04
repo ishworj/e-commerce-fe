@@ -5,6 +5,7 @@ import Stars from "../rating/Stars";
 import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { createCartAction } from "../../features/cart/cartAction";
+import Description from "./Description";
 
 const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
   const avgRating = 3.5;
@@ -24,6 +25,7 @@ const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
     }
   };
   const handleOnAddCart = (_id, quantity) => {
+    console.log("Clicked");
     dispatch(createCartAction(_id, quantity));
   };
 
@@ -89,6 +91,7 @@ const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
       >
         Add to cart
       </Button>
+      <Description />
     </div>
   );
 };

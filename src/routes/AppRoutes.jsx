@@ -12,6 +12,7 @@ import VerifyUser from "../pages/auth/VerifyUser";
 import { getPublicProductAction } from "../features/products/productActions";
 import { useDispatch } from "react-redux";
 import ProductLandingPage from "../components/products/ProductLandingPage";
+import Cart from "../pages/Cart";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -27,13 +28,14 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/category/:categoryName" element={<CategoryLanding />} />
-        <Route path="/account" element={<Profile />} />
         <Route path="/verify-user" element={<VerifyUser />} />
         <Route path="/:id" element={<ProductLandingPage />} />
       </Route>
       {/* private routes */}
-      <Route path="user" element={<DefaultLayout />}>
+      <Route path="/user" element={<DefaultLayout />}>
         <Route index element={<Dashboard />} />
+        <Route path="account" element={<Profile />} />
+        <Route path="cart" element={<Cart />} />
       </Route>
     </Routes>
   );

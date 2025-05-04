@@ -7,7 +7,7 @@ const ProductsImages = ({ selectedProduct }) => {
   return (
     <div
       className="d-flex flex-column flex-md-row justify-content-center gap-2 col-12 col-md-4  sticky-element border"
-      style={{ maxHeight: "" }}
+      style={{ maxHeight: "100dvh" }}
     >
       {/* image */}
       <div className="col-12" style={{}}>
