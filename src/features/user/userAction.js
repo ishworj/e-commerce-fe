@@ -21,7 +21,7 @@ export const loginAction = (form, navigate) => async (dispatch) => {
     sessionStorage.setItem("accessJWT", data.accessToken);
 
     // update local storage for refresh token
-    localStorage.setItem("refreshJWT", data.refreshToken);
+    localStorage.setItemy("refreshJWT", data.refreshToken);
     navigate("/");
   }
 };
