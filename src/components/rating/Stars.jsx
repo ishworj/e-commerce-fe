@@ -4,7 +4,7 @@ import { IoStarHalfOutline } from "react-icons/io5";
 import { IoStar } from "react-icons/io5";
 
 const Stars = ({}) => {
-  const avgRating = 3.5; // to be provided via props
+  const avgRating = 4; // to be provided via props
   const ttlRatings = 19; // to be provided via props
   const MAXRATING = 5;
 

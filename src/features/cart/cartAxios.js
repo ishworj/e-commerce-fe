@@ -18,3 +18,12 @@ export const fetchCartApi = () => {
         isPrivate: true
     })
 }
+
+export const deleteCartItemAxios = (_id) => {
+    return apiProcessor({
+        method: "delete",
+        url: cartUrl + "/remove-item",
+        isPrivate: true,
+        data: { _id }
+    })
+}
