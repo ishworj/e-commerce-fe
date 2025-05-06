@@ -7,7 +7,7 @@ import {
   verifyUserApi,
 } from "./userApi";
 import { toast } from "react-toastify";
-import { setUser } from "./userSlice";
+import { setUser } from "./userSlice.js";
 
 // login action
 export const loginAction = (form, navigate) => async (dispatch) => {
