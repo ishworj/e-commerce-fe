@@ -13,6 +13,8 @@ import { getPublicProductAction } from "../features/products/productActions";
 import { useDispatch } from "react-redux";
 import ProductLandingPage from "../components/products/ProductLandingPage";
 import Cart from "../pages/Cart";
+import ProductList from "../pages/product/ProductList.jsx";
+import AddNewProduct from "../pages/product/AddNewProduct.jsx";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -36,7 +38,12 @@ const AppRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="account" element={<Profile />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="adminDashboard" element={<Dashboard />}/>
+        <Route path="adminDashboard" element={<Dashboard />} />
+      </Route>
+
+      <Route path="/admin" element={<DefaultLayout />}>
+        <Route path="products" element={<ProductList />} />
+        <Route path="products/new" element={<AddNewProduct />} />
       </Route>
     </Routes>
   );

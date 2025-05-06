@@ -50,14 +50,17 @@ const CategoryLanding = () => {
     publicProducts.length,
   ]);
 
-  const productsByCategory = selectedCategory._id
-    ? publicProducts.filter(
-        (product) => product.category === selectedCategory._id
-      )
-    : [];
 
-  //get count of filtered products
-  const productCount = productsByCategory.length;
+  const productsByCategory = publicProducts.filter((product) => {
+    console.log(
+      "product.category:",
+      product.category,
+      "| selectedCategory._id:",
+      selectedCategory._id
+    );
+    return product.category == selectedCategory._id;
+  });
+
   return (
     <Container>
       <CategoryBar />
@@ -86,7 +89,7 @@ const CategoryLanding = () => {
 
       <Row className="mt-4 mt-sm-5">
         <Col>
-          <h5>{productCount} results found</h5>
+          <h5>{productsByCategory.length} results found</h5>
         </Col>
         <Col className="d-flex justify-content-end">
           <div className="d-flex flex-column ">
