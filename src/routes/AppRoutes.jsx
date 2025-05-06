@@ -4,7 +4,7 @@ import HomePage from "../pages/home/HomePage";
 import Register from "../pages/auth/Register";
 import ForgetPassword from "../pages/auth/ForgetPassword";
 import Login from "../pages/auth/Login";
-import Dashboard from "../pages/dashboard/Dashboard";
+import Dashboard from "../pages/dashboard/Dashboard.jsx";
 import { Route, Routes } from "react-router-dom";
 import CategoryLanding from "../pages/CategoryLanding";
 import Profile from "../pages/account/Profile";
@@ -36,6 +36,7 @@ const AppRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="account" element={<Profile />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="adminDashboard" element={<Dashboard />}/>
       </Route>
     </Routes>
   );

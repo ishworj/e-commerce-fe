@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Navbar, Container, Nav, Form } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Header = ({ handleCart, setNavHeight }) => {
+    const { user } = useSelector((state) => state.userInfo);
   const navRef = useRef(0);
   useEffect(() => {
     const updateHeight = () => {
@@ -52,9 +54,16 @@ const Header = ({ handleCart, setNavHeight }) => {
               SEARCH
             </Link>
 
-            <Link to="/user/account" className="px-3 nav-link">
-              ACCOUNT
-            </Link>
+            {user && user.role === "admin" ? (
+              <Link to="/user/adminDashboard" className="px-3 nav-link">
+                DASHBOARD
+              </Link>
+            ) : (
+              <Link to="/user/account" className="px-3 nav-link">
+                ACCOUNT
+              </Link>
+            )}
+
             {/*  changed to button as we are expecting the div for cart to be rendered above the current page, as we are not navigating to another separate page acc to the figma design */}
             <button className="px-3 text-start nav-link" onClick={handleCart}>
               CART
