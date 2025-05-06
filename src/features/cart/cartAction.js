@@ -1,5 +1,5 @@
 import { toast } from "react-toastify"
-import { createCartApi, deleteCartItemAxios, fetchCartApi } from "./cartAxios"
+import { createCartApi, deleteCartItemAxios, fetchCartApi, updateCartItemAxios } from "./cartAxios"
 import { setCart } from "./cartSlice"
 
 export const createCartAction = (_id, quantity) => async (dispatch) => {
@@ -26,4 +26,8 @@ export const deleteCartItemAction = (_id) => async (dispatch) => {
     if (status === "success") {
         dispatch(fetchCartAction())
     }
+}
+export const updateCartItemAction = ({ quantity, _id, totalPrice }) => async (dispatch) => {
+    const { status, message, response } = await updateCartItemAxios({ quantity, _id, totalPrice });
+    // dispatch(fetchCartAction())
 }

@@ -1,23 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { deleteCartItemAction } from "../../features/cart/cartAction";
+import {
+  deleteCartItemAction,
+  updateCartItemAction,
+} from "../../features/cart/cartAction";
 
 const CartCard = ({ item }) => {
   const dispatch = useDispatch();
-  const { name, costPrice, quantity, images, _id } = item;
-  const [updateQuantity, setUpdateQuantity] = useState(quantity);
+  const { images, _id, name, quantity, costPrice, price } = item;
+
+  const [itemCartQuantiy, setItemCartQuantiy] = useState(quantity);
+  const [totalPrice, setTotalPrice] = useState(costPrice);
+
   const handleDeleteItemFromCart = (_id) => {
     dispatch(deleteCartItemAction(_id));
   };
-  const handleOnAdd = () => {
-    setUpdateQuantity((prev) => prev + 1);
+
+  const handleQuantityChange = (mode, _id) => {
+    let qty =
+      mode == "add"
+        ? itemCartQuantiy + 1
+        : itemCartQuantiy < 1
+        ? itemCartQuantiy
+        : itemCartQuantiy - 1;
+    setItemCartQuantiy(qty);
+    setTotalPrice(qty * price);
+    dispatch(
+      updateCartItemAction({
+        quantity: qty,
+        _id,
+        totalPrice: qty * price,
+      })
+    );
   };
-  const handleOnSubtract = () => {
-    if (updateQuantity > 1 && quantity > 1) {
-      setUpdateQuantity((prev) => prev - 1);
-    }
-  };
+
+  useEffect(() => {
+    setItemCartQuantiy(quantity);
+  }, [quantity]);
+  useEffect(() => {
+    setTotalPrice(costPrice);
+  }, [costPrice]);
   return (
     <div className="container-fluid px-3 bg-white">
       <div className="row align-items-start border rounded-3 shadow-sm py-3">
@@ -34,8 +57,8 @@ const CartCard = ({ item }) => {
         {/* Product Info */}
         <div className="col-6 col-sm-7 col-md-8">
           <p
-            className="mb-1 fw-semibold"
-            style={{ fontSize: "clamp(1.75rem, 1.8vw, 1.25rem)" }}
+            className="mb-1"
+            style={{ fontSize: "clamp(1.55rem, 1.8vw, 1.15rem)" }}
           >
             {name}
           </p>
@@ -54,7 +77,7 @@ const CartCard = ({ item }) => {
                 $
               </span>
               <span style={{ fontSize: "clamp(1.75rem, 1.5vw, 1.25rem)" }}>
-                {costPrice}
+                {totalPrice}
               </span>
             </div>
             <div
@@ -67,14 +90,14 @@ const CartCard = ({ item }) => {
               <div className="d-flex align-items-center">
                 <button
                   className="border-0 bg-transparent"
-                  onClick={handleOnSubtract}
+                  onClick={() => handleQuantityChange("subtract", _id)}
                 >
                   -
                 </button>
-                <span className="p-2">{updateQuantity}</span>
+                <span className="p-2">{itemCartQuantiy}</span>
                 <button
                   className="border-0 bg-transparent"
-                  onClick={handleOnAdd}
+                  onClick={() => handleQuantityChange("add", _id)}
                 >
                   +
                 </button>
