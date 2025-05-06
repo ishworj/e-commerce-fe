@@ -1,14 +1,17 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { UserLayout } from "../../components/layouts/UserLayout";
+import {setMenu} from "../../features/user/userSlice.js"
 
 const Dashboard = () => {
-   const { user } = useSelector((state) => state.userInfo);
-   console.log(user)
+  const dispatch = useDispatch();
+useEffect(() => {
+  dispatch(setMenu("Dashboard"), []);
+});
   return (
-    <div>
-      <h1>Welcome back {user.fName + " "+ user.lName} </h1>
-      <h1>Dashboard</h1>
-    </div>
+    <UserLayout pageTitle="your Dashboard">
+      <h1>DASHBOARD</h1>
+    </UserLayout>
   );
 };
 
