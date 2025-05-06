@@ -61,3 +61,33 @@ export const updatePwApi = ({ email, Otp, password, confirmPassword }) => {
     },
   });
 };
+
+// fetch user api
+export const fetchUserApi = () => {
+  try {
+    return apiProcessor({
+      method: "get",
+      url: `${rootUrl}/user`,
+      isPrivate: true,
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// refrsh token api
+export const refreshTokenApi = async () => {
+  try {
+    return apiProcessor({
+      method: "get",
+      url: rootUrl + "/renew-jwt",
+      isPrivate: true,
+      isRefresh: true,
+    });
+  } catch (error) {
+    sessionStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    throw error;
+  }
+};
