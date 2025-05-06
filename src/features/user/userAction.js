@@ -42,15 +42,15 @@ export const registerUserAction = (registerObj) => async (dispatch) => {
 //verify user Action
 export const verifyUserAction =
   ({ sessionId, token }) =>
-    async (dispatch, navigate) => {
-      const pending = verifyUserApi({ sessionId, token });
-      toast.promise(pending, {
-        pending: "Verifying...",
-      });
-      const { status, message } = await pending;
-      toast[status](message);
-      console.log(message);
-    };
+  async (dispatch, navigate) => {
+    const pending = verifyUserApi({ sessionId, token });
+    toast.promise(pending, {
+      pending: "Verifying...",
+    });
+    const { status, message } = await pending;
+    toast[status](message);
+    console.log(message);
+  };
 
 // verify email action
 export const verifyEmailAndSendOTPAction = (email) => async (dispatch) => {
@@ -68,29 +68,75 @@ export const verifyEmailAndSendOTPAction = (email) => async (dispatch) => {
 
 export const verifyOTP =
   ({ email, Otp }) =>
-    async (dispatch) => {
-      const pending = verifyOTPApi({ email, Otp });
-      toast.promise(pending, { pending: "Verifying OTP..." });
-      const { message, status } = await pending;
-      toast[status](message);
+  async (dispatch) => {
+    const pending = verifyOTPApi({ email, Otp });
+    toast.promise(pending, { pending: "Verifying OTP..." });
+    const { message, status } = await pending;
+    toast[status](message);
 
-      if (status === "success") {
-        return true;
-      }
-    };
+    if (status === "success") {
+      return true;
+    }
+  };
 // Update Password action
 export const updatePwAction =
   ({ email, Otp, password, confirmPassword }) =>
-    async (dispatch) => {
-      const pending = updatePwApi({ email, Otp, password, confirmPassword });
-      toast.promise(pending, {
-        pending: "Updating Password!",
-      });
+  async (dispatch) => {
+    const pending = updatePwApi({ email, Otp, password, confirmPassword });
+    toast.promise(pending, {
+      pending: "Updating Password!",
+    });
 
-      const { status, message } = await pending;
-      toast[status](message);
-      console.log(status, "status");
-      if (status === "success") {
-        return true;
+    const { status, message } = await pending;
+    toast[status](message);
+    console.log(status, "status");
+    if (status === "success") {
+      return true;
+    }
+  };
+
+//fetch user action
+export const fetchUserAction = () => async (dispatch) => {
+  try {
+    const { data } = fetchUserApi();
+
+    data && dispatch(setUser(data));
+  } catch (error) {
+    console.log(error);
+    if (error.messgae === "jwt expired") {
+      sessionStorage.removeItem("accessJWT");
+      localStorage.removeItem("refreshJWT");
+    }
+    toast.error("Session expired, please login again");
+  }
+};
+
+// auto login action
+const autoLogin = () => async (dispatch) => {
+  const accessToken = sessionStorage.getItem("acessJWT");
+  const refreshToken = localStorage.getItem("refreshJWT");
+
+  try {
+    // when access token available
+    if (accessToken) {
+      await dispatch(fetchUserAction());
+      return;
+    }
+
+    //when theres no accessToken but refresh token available
+    if (refreshToken) {
+      const { data } = await refreshTokenApi();
+
+      if (data?.accessToken) {
+        sessionStorage.setItem("accessJWT", data.accessToken);
+        await dispatch(fetchUserAction());
       }
-    };
+    }
+  } catch (error) {
+    console.error("AutoLogin failed", error.message);
+    //remove tokens in case if autologin fail
+    sessionStorage.removeItem("accessJWT");
+    localStorage.removeItem("refreshJWT");
+    toast.error("Session expired, please login again");
+  }
+};

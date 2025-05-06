@@ -15,11 +15,11 @@ const DefaultLayout = () => {
 
   const handleCart = () => {
     if (isCart) {
-      setIsClosing(true); // trigger close animation
+      setIsClosing(true);
       setTimeout(() => {
         setShowCart(false);
         setIsClosing(false);
-      }, 200); // match your CSS animation duration
+      }, 200);
     } else {
       setShowCart(true);
       dispatch(fetchCartAction());

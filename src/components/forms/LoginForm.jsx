@@ -22,8 +22,21 @@ const LoginForm = () => {
   const sendTo = location?.state?.from?.location?.pathname || "/";
 
   useEffect(() => {
-    //navigate to location ehrn the user travelled from
-    user?.id && navigate(sendTo);
+    //check if user is already logged in
+    const tryAutoLogin = async () => {
+      try {
+        await dispatch(autoLogin());
+      } catch (error) {
+        console.log("Error in auto login", error);
+      }
+    };
+
+    //navigate to location when the user travelled from
+    if (user?.id) {
+      navigate(sendTo);
+    } else {
+      tryAutoLogin();
+    }
   }, [user?.id, navigate, sendTo]);
 
   const handleOnSubmit = async (e) => {

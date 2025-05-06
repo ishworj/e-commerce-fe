@@ -14,6 +14,7 @@ export const createProductAction = (productObj) => async (dispatch) => {
         dispatch(getAdminProductAction())
     }
     toast[status](message)
+    return true
 }
 export const getPublicProductAction = () => async (dispatch) => {
     const pending = getPublicProductApi()

@@ -1,7 +1,14 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
+import { useSelector } from "react-redux";
 
 export const ProductTable = ({ products }) => {
+  const { Categories } = useSelector((state) => state.categoryInfo);
+
+  const getCategoryNameById = (categoryId) => {
+    const category = Categories.find((item) => item._id === categoryId);
+    return category?.categoryName;
+  };
   return (
     <Table striped bordered hover responsive>
       <thead>
@@ -22,7 +29,7 @@ export const ProductTable = ({ products }) => {
             <td>${product.price}</td>
             <td>{product.status}</td>
             <td>{product.stock}</td>
-            <td>{product.category?.name || "Uncategorized"}</td>
+            <td>{getCategoryNameById(product.category) || "Uncategorized"}</td>
           </tr>
         ))}
       </tbody>
