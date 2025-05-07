@@ -3,11 +3,12 @@ const productEp = import.meta.env.VITE_BACKEND_BASE_URL + "/products";
 
 export const createProductApi = (productObj) => {
     return apiProcessor({
-        method: "post",
-        url: productEp + "/",
-        isPrivate: true,
-        data: productObj
-    })
+      method: "post",
+      url: productEp + "/",
+      isPrivate: true,
+      data: productObj,
+      contentType: "multipart/form-data",
+    });
 }
 export const getAdminProductApi = () => {
     return apiProcessor({
