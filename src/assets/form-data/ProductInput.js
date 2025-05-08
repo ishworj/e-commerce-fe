@@ -1,3 +1,4 @@
+
 export const productInputs = [
   {
     label: "Product Name",
