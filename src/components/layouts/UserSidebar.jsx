@@ -52,7 +52,6 @@ const sidebarLinks = [
 
 export const UserSidebar = () => {
   const { user, menu } = useSelector((state) => state.userInfo);
-  console.log(111111111111,user)
 
   const visibleLinks =
     user?.role === "admin"

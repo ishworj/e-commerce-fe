@@ -14,7 +14,7 @@ import {
 import { MdDelete } from "react-icons/md";
 const initialState = {};
 
-const AddNewProduct = () => {
+const AddNewProduct = () => {  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { form, handleOnChange } = useForm(initialState);
