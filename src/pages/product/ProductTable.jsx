@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Dropdown,
+  DropdownButton,
+  Form,
+  Row,
+} from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { MdOutlineAddBox } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { filterFunction } from "../../utils/filterProducts.js";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { deleteProductAction } from "../../features/products/productActions.js";
 
 export const ProductTable = () => {
   const { products } = useSelector((state) => state.productInfo);
   const { Categories } = useSelector((state) => state.categoryInfo);
+  const dispatch = useDispatch();
   const { form, handleOnChange } = useForm({
     searchQuery: "",
     category: "all",
@@ -29,6 +40,11 @@ export const ProductTable = () => {
     return category?.categoryName;
   };
   // search Form handling
+  const handleOnDelete = (_id) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      dispatch(deleteProductAction(_id));
+    }
+  };
 
   return (
     <>
@@ -125,7 +141,16 @@ export const ProductTable = () => {
                   <div className="rounded bg-dark ">In Stock</div>
                 )}
               </td>
-              <td>edit Delete</td>
+              <td>
+                <DropdownButton variant="light" title="">
+                  <Dropdown.Item as={Link} to={`edit/${product._id}`}>
+                    <FaEdit /> Edit
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleOnDelete(product._id)}>
+                    <MdDelete /> Delete
+                  </Dropdown.Item>
+                </DropdownButton>
+              </td>
             </tr>
           ))}
         </tbody>
