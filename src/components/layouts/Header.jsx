@@ -55,7 +55,7 @@ const Header = ({ handleCart, setNavHeight }) => {
             </Link>
 
             {user && user.role === "admin" ? (
-              <Link to="/user/adminDashboard" className="px-3 nav-link">
+              <Link to="/admin/adminDashboard" className="px-3 nav-link">
                 DASHBOARD
               </Link>
             ) : (
