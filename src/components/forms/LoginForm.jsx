@@ -14,30 +14,14 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  //to handle return location
-
   const { user } = useSelector((state) => state.userInfo);
 
   // set sendTo location depending upon user url.
-  const sendTo = location?.state?.from?.location?.pathname || "/";
-
+  const sendTo = location?.state?.from?.location?.pathname || "/login";
   useEffect(() => {
-    //check if user is already logged in
-    const tryAutoLogin = async () => {
-      try {
-        await dispatch(autoLogin());
-      } catch (error) {
-        console.log("Error in auto login", error);
-      }
-    };
-
     //navigate to location when the user travelled from
-    if (user?.id) {
-      navigate(sendTo);
-    } else {
-      tryAutoLogin();
-    }
-  }, [user?.id, navigate, sendTo]);
+    user?._id && navigate(sendTo);
+  }, [user?._id, navigate, sendTo]);
 
   const handleOnSubmit = async (e) => {
     //prevent default

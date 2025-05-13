@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const authEp = import.meta.env.BACKEND_BASE_URL + "/auth";
+const authEp = import.meta.env.VITE_BACKEND_BASE_URL + "/auth";
 
 const getAccessJWT = () => {
   // note: I am just using this name from my side if you agree, then use the same name for Access Token
@@ -15,7 +15,7 @@ export const apiProcessor = async ({
   method,
   url,
   isPrivate,
-  isRefreshToken,
+  isRefreshToken = false,
   data,
   contentType = "application/json",
 }) => {
@@ -24,12 +24,13 @@ export const apiProcessor = async ({
     Authorization: isPrivate
       ? getAccessJWT()
       : isRefreshToken
-        ? getRefreshJWT() === false
+        ? getRefreshJWT()
         : null,
     "Content-type": contentType,
   };
 
   try {
+    console.log(headers, 979879809)
     const response = await axios({
       method,
       url,
@@ -40,15 +41,17 @@ export const apiProcessor = async ({
   } catch (error) {
     // if the accessToken is expired
     if (error?.response?.data?.message == "jwt expired") {
+
       const refreshData = await apiProcessor({
         method: "get",
         url: authEp + "/renew-jwt",
         isPrivate: false,
         isRefreshToken: true,
+
       });
       if (refreshData && refreshData?.status == "success") {
         // here the accesstoken is again set in the sessionStorage
-        sessionStorage.setItem("accessToken", refreshData.accessToken);
+        sessionStorage.setItem("accessJWT", refreshData.accessToken);
         // returning the actual original api processor
         return apiProcessor({
           method,
@@ -73,14 +76,14 @@ export const apiProcessor = async ({
 
 // renewing the accessJwt token
 
-export const renewAccessJWT = async () => {
-  const { accessToken } = await apiProcessor({
-    method: "get",
-    url: authEp + "/renew-jwt",
-    isPrivate: true,
-    isRefreshToken: true,
-  });
+// export const renewAccessJWT = async () => {
+//   const { accessToken } = await apiProcessor({
+//     method: "get",
+//     url: authEp + "/renew-jwt",
+//     isPrivate: true,
+//     isRefreshToken: true,
+//   });
 
-  sessionStorage.setItem("accessJWT", accessToken);
-  return accessToken;
-};
+//   sessionStorage.setItem("accessJWT", accessToken);
+//   return accessToken;
+// };

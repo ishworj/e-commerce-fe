@@ -50,7 +50,6 @@ const CategoryLanding = () => {
     publicProducts.length,
   ]);
 
-
   const productsByCategory = publicProducts.filter((product) => {
     console.log(
       "product.category:",
@@ -127,7 +126,6 @@ const CategoryLanding = () => {
       <div className="bg-light text-center p-1">
         <p>See all results </p>
       </div>
-      <BottomNavBar />
     </Container>
   );
 };

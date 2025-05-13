@@ -67,7 +67,7 @@ export const fetchUserApi = () => {
   try {
     return apiProcessor({
       method: "get",
-      url: `${rootUrl}/user`,
+      url: authUrl,
       isPrivate: true,
     });
   } catch (error) {
@@ -78,12 +78,13 @@ export const fetchUserApi = () => {
 
 // refrsh token api
 export const refreshTokenApi = async () => {
+  console.log("called")
   try {
     return apiProcessor({
       method: "get",
-      url: rootUrl + "/renew-jwt",
-      isPrivate: true,
-      isRefresh: true,
+      url: authUrl + "/renew-jwt",
+      isPrivate: false,
+      isRefreshToken: true,
     });
   } catch (error) {
     sessionStorage.removeItem("accessToken");

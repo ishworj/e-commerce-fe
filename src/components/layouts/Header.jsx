@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Navbar, Container, Nav, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import BottomNavBar from "./BottomNavBar";
 
 const Header = ({ handleCart, setNavHeight }) => {
-    const { user } = useSelector((state) => state.userInfo);
+  const { user } = useSelector((state) => state.userInfo);
   const navRef = useRef(0);
   useEffect(() => {
     const updateHeight = () => {
@@ -24,15 +25,15 @@ const Header = ({ handleCart, setNavHeight }) => {
         {/* Left-aligned links (Shop, About) - Hidden on mobile */}
         <Navbar.Collapse id="navbar-left" className="order-1 order-lg-0">
           <Nav>
-            <Link to="/shop" className="px-3 nav-link">
+            <a href="/" className="px-3 nav-link">
               SHOP
-            </Link>
-            <Link to="/about" className="px-3 nav-link">
+            </a>
+            <a href="/about" className="px-3 nav-link">
               ABOUT
-            </Link>
-            <Link to="/wishlist" className="px-3 nav-link">
+            </a>
+            <a href="/wishlist" className="px-3 nav-link">
               WISHLIST
-            </Link>
+            </a>
           </Nav>
         </Navbar.Collapse>
 
@@ -44,24 +45,24 @@ const Header = ({ handleCart, setNavHeight }) => {
         {/* Toggle button (for mobile) */}
         <Navbar.Toggle
           aria-controls="navbar-left navbar-right"
-          className="order-0 ms-auto"
+          className="order-0 ms-auto d-none d-md-block d-lg-none"
         />
 
         {/* Right-aligned links (Wishlist, Search, Cart) - Hidden on mobile */}
         <Navbar.Collapse id="navbar-right" className="order-3 order-lg-0">
           <Nav className="ms-auto">
-            <Link to="/search" className="px-3 nav-link">
+            <a href="/search" className="px-3 nav-link">
               SEARCH
-            </Link>
+            </a>
 
             {user && user.role === "admin" ? (
-              <Link to="/admin/adminDashboard" className="px-3 nav-link">
+              <a href="/admin/adminDashboard" className="px-3 nav-link">
                 DASHBOARD
-              </Link>
+              </a>
             ) : (
-              <Link to="/user/account" className="px-3 nav-link">
+              <a href="/user/account" className="px-3 nav-link">
                 ACCOUNT
-              </Link>
+              </a>
             )}
 
             {/*  changed to button as we are expecting the div for cart to be rendered above the current page, as we are not navigating to another separate page acc to the figma design */}
@@ -70,6 +71,7 @@ const Header = ({ handleCart, setNavHeight }) => {
             </button>
           </Nav>
         </Navbar.Collapse>
+        <BottomNavBar handleCart={handleCart} user={user} />
       </Container>
     </Navbar>
   );
