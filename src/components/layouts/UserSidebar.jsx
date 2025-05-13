@@ -14,6 +14,12 @@ import { Link } from "react-router-dom";
 const sidebarLinks = [
   {
     icon: <FaBoxOpen />,
+    title: "Dashboard",
+    to: "/admin/adminDashboard",
+    isAdminOnly: true,
+  },
+  {
+    icon: <FaBoxOpen />,
     title: "Products",
     to: "/admin/products",
     isAdminOnly: true,
