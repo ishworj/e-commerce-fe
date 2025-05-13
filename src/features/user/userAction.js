@@ -1,5 +1,7 @@
 import {
+  fetchUserApi,
   loginApi,
+  refreshTokenApi,
   registerApi,
   updatePwApi,
   verifyEmailAndSendOTPApi,
@@ -42,15 +44,15 @@ export const registerUserAction = (registerObj) => async (dispatch) => {
 //verify user Action
 export const verifyUserAction =
   ({ sessionId, token }) =>
-  async (dispatch, navigate) => {
-    const pending = verifyUserApi({ sessionId, token });
-    toast.promise(pending, {
-      pending: "Verifying...",
-    });
-    const { status, message } = await pending;
-    toast[status](message);
-    console.log(message);
-  };
+    async (dispatch, navigate) => {
+      const pending = verifyUserApi({ sessionId, token });
+      toast.promise(pending, {
+        pending: "Verifying...",
+      });
+      const { status, message } = await pending;
+      toast[status](message);
+      console.log(message);
+    };
 
 // verify email action
 export const verifyEmailAndSendOTPAction = (email) => async (dispatch) => {
@@ -68,39 +70,40 @@ export const verifyEmailAndSendOTPAction = (email) => async (dispatch) => {
 
 export const verifyOTP =
   ({ email, Otp }) =>
-  async (dispatch) => {
-    const pending = verifyOTPApi({ email, Otp });
-    toast.promise(pending, { pending: "Verifying OTP..." });
-    const { message, status } = await pending;
-    toast[status](message);
+    async (dispatch) => {
+      const pending = verifyOTPApi({ email, Otp });
+      toast.promise(pending, { pending: "Verifying OTP..." });
+      const { message, status } = await pending;
+      toast[status](message);
 
-    if (status === "success") {
-      return true;
-    }
-  };
+      if (status === "success") {
+        return true;
+      }
+    };
 // Update Password action
 export const updatePwAction =
   ({ email, Otp, password, confirmPassword }) =>
-  async (dispatch) => {
-    const pending = updatePwApi({ email, Otp, password, confirmPassword });
-    toast.promise(pending, {
-      pending: "Updating Password!",
-    });
+    async (dispatch) => {
+      const pending = updatePwApi({ email, Otp, password, confirmPassword });
+      toast.promise(pending, {
+        pending: "Updating Password!",
+      });
 
-    const { status, message } = await pending;
-    toast[status](message);
-    console.log(status, "status");
-    if (status === "success") {
-      return true;
-    }
-  };
+      const { status, message } = await pending;
+      toast[status](message);
+      console.log(status, "status");
+      if (status === "success") {
+        return true;
+      }
+    };
 
 //fetch user action
 export const fetchUserAction = () => async (dispatch) => {
   try {
-    const { data } = fetchUserApi();
+    const { foundUser } = await fetchUserApi();
+    // console.log(data, 666)
 
-    data && dispatch(setUser(data));
+    foundUser && dispatch(setUser(foundUser));
   } catch (error) {
     console.log(error);
     if (error.messgae === "jwt expired") {
@@ -112,8 +115,8 @@ export const fetchUserAction = () => async (dispatch) => {
 };
 
 // auto login action
-const autoLogin = () => async (dispatch) => {
-  const accessToken = sessionStorage.getItem("acessJWT");
+export const autoLogin = () => async (dispatch) => {
+  const accessToken = sessionStorage.getItem("accessJWT");
   const refreshToken = localStorage.getItem("refreshJWT");
 
   try {
@@ -125,7 +128,8 @@ const autoLogin = () => async (dispatch) => {
 
     //when theres no accessToken but refresh token available
     if (refreshToken) {
-      const { data } = await refreshTokenApi();
+      const data = await refreshTokenApi();
+      console.log(data, "autologin")
 
       if (data?.accessToken) {
         sessionStorage.setItem("accessJWT", data.accessToken);

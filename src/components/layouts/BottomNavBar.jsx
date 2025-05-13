@@ -6,43 +6,54 @@ import {
   FaShoppingCart,
   FaSignInAlt,
 } from "react-icons/fa";
+import { RiAccountCircleFill } from "react-icons/ri";
 
-const BottomNavBar = () => {
+const BottomNavBar = ({ handleCart, user }) => {
   return (
     <nav
-      className="fixed-bottom d-flex justify-content-between  bg-light d-md-none"
+      className="fixed-bottom d-flex justify-content-between bg-light d-md-none"
       style={{ height: "70px" }}
     >
       {/* left */}
       <div className="d-flex justify-content-around align-items-center left gap-0 ">
-        <div className="text-center">
+        <a href="/" className="text-center nav-link">
           <FaHome size={20} />
           <div>Home</div>
-        </div>
-
-        <div className="text-center">
+        </a>
+        <a href="/" className="text-center nav-link">
           <FaStore size={20} />
-          <div>Bazar</div>
-        </div>
+          <div>Shop</div>
+        </a>
       </div>
 
       {/* FAB Notch */}
       <div className="fab-container ">
-        <div className="fab-btn">
+        <div
+          className="fab-btn"
+          onClick={handleCart}
+          style={{ cursor: "pointer" }}
+        >
           <FaShoppingCart size={24} />
         </div>
       </div>
 
       <div className="d-flex justify-content-around align-items-center left ">
-        <div className="text-center">
+        <a href="/wishlist" className="text-center nav-link">
           <FaHeart size={20} />
           <div>Wishlist</div>
-        </div>
+        </a>
 
-        <div className="text-center">
-          <FaSignInAlt size={20} />
-          <div>Login</div>
-        </div>
+        {user?._id ? (
+          <a href="/user/account" className="text-center nav-link">
+            <RiAccountCircleFill size={20} />
+            <div>Account</div>
+          </a>
+        ) : (
+          <a href="/login" className="text-center nav-link">
+            <FaSignInAlt size={20} />
+            <div>Login</div>
+          </a>
+        )}
       </div>
     </nav>
   );
