@@ -17,6 +17,7 @@ import ProductList from "../pages/product/ProductList.jsx";
 import AddNewProduct from "../pages/product/AddNewProduct.jsx";
 import EditProduct from "../pages/product/EditProduct.jsx";
 import Categories from "../pages/admin/categories/Categories.jsx";
+// import Wishlist from "../pages/WishList.jsx";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
