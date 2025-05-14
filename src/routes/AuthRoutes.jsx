@@ -6,7 +6,6 @@ export const AuthRoute = ({ children }) => {
   const location = useLocation();
 
   const { user } = useSelector((state) => state.userInfo);
-  console.log(user, "res");
   return user?._id ? (
     children
   ) : (

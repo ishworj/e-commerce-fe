@@ -10,7 +10,6 @@ const ProductCard = ({ item }) => {
 
   const handleOnProductClick = (_id) => {
     dispatch(getSingleProductAction(_id));
-    console.log("selected item id", _id);
   };
   return (
     <Card

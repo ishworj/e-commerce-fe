@@ -1,15 +1,10 @@
 import React from "react";
 import { Stack } from "react-bootstrap";
-import {
-  FaBoxOpen,
-  FaTags,
-  FaClipboardList,
-  FaCheck,
-  FaUser,
-} from "react-icons/fa";
+import { FaBoxOpen, FaTags, FaCheck } from "react-icons/fa";
 import { MdRateReview } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { setSelectedCategory } from "../../features/category/categorySlice";
 
 const sidebarLinks = [
   {
@@ -31,14 +26,8 @@ const sidebarLinks = [
     isAdminOnly: true,
   },
   {
-    icon: <FaClipboardList />,
-    title: "My Orders",
-    to: "/orders",
-    isAdminOnly: false,
-  },
-  {
     icon: <FaCheck />,
-    title: "Admin Orders",
+    title: "Orders",
     to: "/admin/orders",
     isAdminOnly: true,
   },
@@ -48,16 +37,11 @@ const sidebarLinks = [
     to: "/admin/reviews",
     isAdminOnly: true,
   },
-  {
-    icon: <FaUser />,
-    title: "Profile",
-    to: "/profile",
-    isAdminOnly: false,
-  },
 ];
 
 export const UserSidebar = () => {
   const { user, menu } = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
 
   const visibleLinks =
     user?.role === "admin"
@@ -73,6 +57,9 @@ export const UserSidebar = () => {
           className={`p-2 nav-link ${
             title === menu ? "bg-white text-dark rounded" : ""
           }`}
+          onClick={() => {
+              dispatch(setSelectedCategory(null));
+          }}
         >
           {icon} {title}
         </Link>

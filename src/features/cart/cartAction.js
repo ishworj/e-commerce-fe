@@ -14,7 +14,6 @@ export const createCartAction = (_id, quantity) => async (dispatch) => {
 export const fetchCartAction = () => async (dispatch) => {
     const { cart } = await fetchCartApi()
     dispatch(setCart(cart.cartItems))
-    console.log(cart.cartItems, "CART")
 }
 export const deleteCartItemAction = (_id) => async (dispatch) => {
     const pending = deleteCartItemAxios(_id);

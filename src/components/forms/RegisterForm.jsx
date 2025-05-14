@@ -14,13 +14,9 @@ const RegisterForm = () => {
     useForm(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  console.log(form.confirmPassword);
   const handleOnSubmit = (e) => {
     e.preventDefault();
     const { confirmPassword, password } = form;
-
-    console.log(confirmPassword);
 
     if (confirmPassword !== password) return alert("Password do not match");
     try {
@@ -34,7 +30,6 @@ const RegisterForm = () => {
       setTimeout(() => navigate("/login"));
       return { status: "success", message: "Sign Up sucessful" };
     } catch (error) {
-      console.log(error);
 
       //show error toast if somethins goes wrong
       toast.error(error.messgae || "SignUp failed. Please try again!");

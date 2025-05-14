@@ -17,6 +17,9 @@ import ProductList from "../pages/product/ProductList.jsx";
 import AddNewProduct from "../pages/product/AddNewProduct.jsx";
 import EditProduct from "../pages/product/EditProduct.jsx";
 import Categories from "../pages/admin/categories/Categories.jsx";
+import EditCategory from "../pages/admin/categories/EditCategory.jsx";
+import AddCategory from "../pages/admin/categories/AddCategory";
+
 // import Wishlist from "../pages/WishList.jsx";
 
 const AppRoutes = () => {
@@ -49,6 +52,8 @@ const AppRoutes = () => {
         <Route path="products/new" element={<AddNewProduct />} />
         <Route path="products/edit/:_id" element={<EditProduct />} />
         <Route path="categories" element={<Categories />} />
+        <Route path="edit-category/:_id" element={<EditCategory />} />
+        <Route path="/admin/add-category" element={<AddCategory />} />
       </Route>
     </Routes>
   );
