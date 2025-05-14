@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { UserLayout } from "../../components/layouts/UserLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
@@ -18,11 +18,23 @@ const AddNewProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { form, handleOnChange } = useForm(initialState);
-  const { Categories } = useSelector((state) => state.categoryInfo);
+  const { Categories,selectedCategory } = useSelector((state) => state.categoryInfo);
 
   const [images, setImages] = useState([]);
   const [previews, setPreviews] = useState([]);
   const imageRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedCategory?._id) {
+      handleOnChange({
+        target: {
+          name: "category",
+          value: selectedCategory._id,
+        },
+      });
+    }
+  }, [selectedCategory]);
+  
 
   const handleImageChange = (e) => {
     const newFiles = Array.from(e.target.files);
@@ -63,12 +75,24 @@ const AddNewProduct = () => {
     }
   };
   return (
-    <UserLayout pageTitle="Add New Product">
-      <div>
-        <Link to="/admin/products">
-          <Button variant="secondary"> Back </Button>
+    <UserLayout pageTitle={selectedCategory?.categoryName?  `${selectedCategory?.categoryName}`: "Add New Product"}>
+      <div className="mb-3">
+        <Link
+          to={selectedCategory?._id ? "/admin/categories" : "/admin/products"}
+        >
+          <Button
+            variant="secondary"
+            onClick={() => {
+              if (selectedCategory?._id) {
+                dispatch(setSelectedCategory(null));
+              }
+            }}
+          >
+            ← Back
+          </Button>
         </Link>
       </div>
+
       <div className="mt-5">
         {/* form to add new products */}
 
@@ -90,6 +114,7 @@ const AddNewProduct = () => {
               value={form.category}
               onChange={handleOnChange}
               required
+              disabled={!!selectedCategory?._id}
             >
               <option value="">Select Category</option>
               {Categories.map((cat) => (
