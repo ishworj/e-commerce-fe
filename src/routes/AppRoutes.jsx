@@ -19,6 +19,7 @@ import EditProduct from "../pages/product/EditProduct.jsx";
 import Categories from "../pages/admin/categories/Categories.jsx";
 import EditCategory from "../pages/admin/categories/EditCategory.jsx";
 import AddCategory from "../pages/admin/categories/AddCategory";
+import PaymentResult from "../pages/payment/PaymentResult.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 
@@ -38,6 +39,7 @@ const AppRoutes = () => {
         <Route path="/category/:categoryName" element={<CategoryLanding />} />
         <Route path="/verify-user" element={<VerifyUser />} />
         <Route path="/:id" element={<ProductLandingPage />} />
+        <Route path="/payment-result" element={<PaymentResult />} />
       </Route>
       {/* private routes */}
       <Route path="/user" element={<DefaultLayout />}>
