@@ -2,9 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CartCard from "../components/cards/CartCard";
 import { RxCross1 } from "react-icons/rx";
+import { toast } from "react-toastify";
+import { makePaymentAction } from "../features/payment/PaymentActions.js";
 
 const Cart = ({ handleCart }) => {
   const { cart } = useSelector((state) => state.cartInfo);
+
+  const handleCheckoutAction = async () => {
+    try {
+      const data = await makePaymentAction();
+      console.log(data);
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      toast.error("Something went wrong during checkout");
+      console.error("Error during checkout:", error);
+    }
+  };
 
   return (
     <div className="d-flex flex-column align-items-center bg-white py-3 position-relative vh-100">
@@ -22,7 +37,19 @@ const Cart = ({ handleCart }) => {
       </div>
       <div className="mt-4">
         {cart.length != 0 ? (
-          cart.map((item, index) => <CartCard item={item} key={index} />)
+          <div>
+            {cart.map((item, index) => (
+              <CartCard item={item} key={index} />
+            ))}
+            <div className="d-flex justify-content-center">
+              <button
+                className="btn btn-primary mt-3"
+                onClick={handleCheckoutAction}
+              >
+                Pay Now
+              </button>
+            </div>
+          </div>
         ) : (
           <div className="d-flex justify-content-center">
             No Items added yet

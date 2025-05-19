@@ -18,7 +18,7 @@ const Categories = () => {
   const { products } = useSelector((state) => state.productInfo);
   useEffect(() => {
     dispatch(getAdminProductAction());
-  }, [products]);
+  }, []);
   // Calculate product count per category
   const getProductCount = (categoryId) => {
     return products?.filter((p) => p.category === categoryId).length || 0;
