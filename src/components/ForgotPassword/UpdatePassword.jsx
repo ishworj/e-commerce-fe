@@ -9,7 +9,6 @@ const UpdatePassword = ({ handleOnChange, form, isPassword }) => {
   const navigate = useNavigate();
   const handleOnUpdatePw = async (e) => {
     e.preventDefault();
-    console.log("clicked");
     const response = await dispatch(
       updatePwAction({
         email: form.email,
@@ -18,7 +17,6 @@ const UpdatePassword = ({ handleOnChange, form, isPassword }) => {
         confirmPassword: form.confirmPassword,
       })
     );
-    console.log(response, 156);
     if (response === true) {
       navigate("/login");
     }

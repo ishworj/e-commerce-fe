@@ -12,7 +12,6 @@ const ProductLandingPage = () => {
   const { selectedProduct } = useSelector((state) => state.productInfo);
 
   const { id } = useParams();
-  console.log(id, "id in Product landing page");
   const handleFavourite = () => {
     setFavourite(!favourite);
   };
@@ -21,8 +20,6 @@ const ProductLandingPage = () => {
       dispatch(getSingleProductAction(id));
     }
   }, []);
-
-  console.log(selectedProduct, 2222);
   return (
     <div className="w-100 d-flex justify-content-center py-5 position-relative">
       {/* mainpage */}

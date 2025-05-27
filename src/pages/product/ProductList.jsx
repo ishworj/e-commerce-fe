@@ -11,6 +11,7 @@ import { getAdminProductAction } from "../../features/products/productActions";
 const ProductList = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userInfo);
+  const {selectedCategory} = useSelector((state) => state.categoryInfo);
   useEffect(() => {
     dispatch(setMenu("Products"));
   }, [dispatch]);
@@ -21,7 +22,7 @@ const ProductList = () => {
 
 
   return (
-    <UserLayout pageTitle={"Products"}>
+      <UserLayout pageTitle= {selectedCategory?.categoryName || "Products"}>
       <ProductTable  />
     </UserLayout>
   );

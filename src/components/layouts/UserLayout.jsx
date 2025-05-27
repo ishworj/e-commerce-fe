@@ -6,13 +6,12 @@ import { AuthRoute } from "../../routes/AuthRoutes.jsx";
 
 export const UserLayout = ({ pageTitle = "default", children }) => {
   const { user } = useSelector((state) => state.userInfo);
-  console.log(user, "user from store");
   return (
     <AuthRoute>
       <div>
         <Container fluid>
-          <Row>
-            <Col md={3} xl={2} className="bg-dark text-light">
+          <Row style={{ minHeight: "100vh" }}>
+            <Col md={3} xl={2} className="bg-dark text-light" style={{ minHeight: "100vh" }}>
               <div className="p-3">
                 <div>Welcome Back</div>
                 <h3>{user?.fName + " " + user?.lName}</h3>

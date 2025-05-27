@@ -31,7 +31,7 @@ input::-webkit-inner-spin-button {
   height: 100%;
 }
 html,
-body {
+body,#root {
   position: relative;
   height: 100%;
   background: white;

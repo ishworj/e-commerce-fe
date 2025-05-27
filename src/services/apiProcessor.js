@@ -30,7 +30,6 @@ export const apiProcessor = async ({
   };
 
   try {
-    console.log(headers, 979879809)
     const response = await axios({
       method,
       url,

@@ -25,7 +25,6 @@ const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
     }
   };
   const handleOnAddCart = (_id, quantity) => {
-    console.log("Clicked");
     dispatch(createCartAction(_id, quantity));
   };
 

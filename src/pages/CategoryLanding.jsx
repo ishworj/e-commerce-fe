@@ -9,7 +9,7 @@ import { RxReset } from "react-icons/rx";
 import BottomNavBar from "../components/layouts/BottomNavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../features/category/categorySlice";
-import { getAllCategoriesAction } from "../features/category/CategoryActions";
+import { getAllCategoriesAction } from "../features/category/CategoryActions.js";
 import { getPublicProductAction } from "../features/products/productActions";
 import { Link } from "react-router-dom";
 
@@ -30,8 +30,6 @@ const CategoryLanding = () => {
     if (publicProducts.length === 0) {
       dispatch(getPublicProductAction());
     }
-    console.log("publicProducts", publicProducts);
-    console.log("SelectedCategory before setting:", selectedCategory);
 
     // Set selected category when categories are available
     if (!selectedCategory.categoryName && Categories.length > 0) {
@@ -69,7 +67,7 @@ const CategoryLanding = () => {
           <div className=" p-2 p-sm-4 d-flex flex-column flex-md-row justify-content-around">
             <div className="pb-1">
               <h1 className="fw-sm-bold">Check this out</h1>
-              <h3>Explore our new {selectedCategory.categoryName} arrivals</h3>
+              <h3>Display title: {selectedCategory?.displaytitle}</h3>
               <Button variant="dark">Buy now</Button>
             </div>
           </div>
@@ -78,7 +76,7 @@ const CategoryLanding = () => {
           <div>
             <img
               className="img-fluid"
-              src="https://media.istockphoto.com/id/483147081/photo/futuristic-circuit-board-blue-with-electrons.jpg?s=612x612&w=0&k=20&c=cOlFe3m-qcm4zTmCKxVmX4huAlW9mpwaR2oPZhZjqK0="
+              src={selectedCategory?.featureImageUrl}
               alt=""
               style={{ maxHeight: "200px" }}
             />
