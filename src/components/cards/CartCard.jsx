@@ -5,6 +5,7 @@ import {
   deleteCartItemAction,
   updateCartItemAction,
 } from "../../features/cart/cartAction";
+import { removeItem } from "../../features/cart/cartSlice";
 
 const CartCard = ({ item }) => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const CartCard = ({ item }) => {
         : itemCartQuantiy < 1
         ? itemCartQuantiy
         : itemCartQuantiy - 1;
+    qty === 0 ? dispatch(removeItem(_id)) : "";
     setItemCartQuantiy(qty);
     setTotalPrice(qty * price);
     dispatch(
