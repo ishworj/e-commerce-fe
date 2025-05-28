@@ -28,7 +28,6 @@ export const getOrder = () => {
 }
 
 // get all orders for the admin
-
 export const getAllOrders = () => {
     return apiProcessor({
         method: "get",

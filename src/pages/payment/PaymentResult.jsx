@@ -3,10 +3,14 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { verifyPaymentSession } from "../../features/payment/PaymentAxios";
 import { makePaymentAction } from "../../features/payment/PaymentActions";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { createOrderAction } from "../../features/orders/orderActions";
+import { resetCart } from "../../features/cart/cartSlice";
 
 const PaymentResult = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const sessionId = searchParams.get("session_id");
   const isSuccessParam = searchParams.get("success");
 
@@ -16,7 +20,7 @@ const PaymentResult = () => {
   const handleCheckoutAction = async () => {
     try {
       const data = await makePaymentAction();
-      console.log(data);
+      console.log(data, "checkout");
       if (data?.url) {
         window.location.href = data.url;
       }
@@ -34,9 +38,24 @@ const PaymentResult = () => {
       }
 
       try {
-        const data = await verifyPaymentSession(sessionId); // ✅ custom axios wrapper
-        setIsVerified(data.verified);
-        setStatus(data.status);
+        const data = await verifyPaymentSession(sessionId);
+        console.log(data, "verifyign the payment");
+        if (data) {
+          setIsVerified(data.verified);
+          setStatus(data.status);
+          const responseForCart = dispatch(
+            createOrderAction({
+              products: data.cart.data,
+              totalAmount: data.cart.data.reduce(
+                (sum, item) => sum + item.amount_total,
+                0
+              ),
+            })
+          );
+          if (responseForCart) {
+            dispatch(resetCart());
+          }
+        }
       } catch (err) {
         setIsVerified(false);
       }

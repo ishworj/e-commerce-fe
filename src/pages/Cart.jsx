@@ -34,7 +34,10 @@ const Cart = ({ handleCart }) => {
           <RxCross1 onClick={handleCart} />
         </button>
       </div>
-      <div className="mt-4" style={{ height: "auto", paddingBottom: "200px" }}>
+      <div
+        className="mt-4 w-100"
+        style={{ height: "auto", paddingBottom: "200px" }}
+      >
         {cart.length != 0 ? (
           <div>
             {cart.map((item, index) => (

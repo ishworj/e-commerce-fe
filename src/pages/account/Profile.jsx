@@ -2,20 +2,17 @@ import { Button, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserLayout } from "../../components/layouts/UserLayout";
-import Order from "./Order";
 import { useEffect } from "react";
 import { setMenu } from "../../features/user/userSlice";
-import UserDetail from "./UserDetail";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.userInfo);
-  console.log(user);
   const { menu } = useSelector((state) => state.userInfo);
   console.log(menu);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setMenu("Orders"), []);
+    dispatch(setMenu("Account Details"), []);
   });
   if (!user._id) {
     return (
@@ -49,8 +46,18 @@ const Profile = () => {
       </div>
     );
   }
-
-  return <UserDetail />;
+  return (
+    user._id && (
+      <UserLayout pageTitle="Account Details">
+        <Container
+          className="d-flex flex-column align-items-center"
+          style={{ minHeight: "85vh" }}
+        >
+          Account Details
+        </Container>
+      </UserLayout>
+    )
+  );
 };
 
 export default Profile;

@@ -5,6 +5,7 @@ import { MdRateReview } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { setSelectedCategory } from "../../features/category/categorySlice";
+import { CgProfile } from "react-icons/cg";
 
 const sidebarLinks = [
   {
@@ -38,17 +39,18 @@ const sidebarLinks = [
     isAdminOnly: true,
   },
   {
+    icon: <CgProfile />,
+    title: "Account Details",
+    to: "/user/account",
+    isUser: true,
+  },
+  {
     icon: <FaCheck />,
     title: "My Orders",
     to: "/user/orders",
     isAdminOnly: false,
   },
-  {
-    icon: <FaCheck />,
-    title: "Me",
-    to: "/user/detail",
-    isUser: true,
-  },
+
   {
     icon: <FaCheck />,
     title: "Payment Method",

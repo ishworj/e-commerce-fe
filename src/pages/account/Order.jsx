@@ -1,17 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { UserLayout } from "../../components/layouts/UserLayout";
+import { useDispatch, useSelector } from "react-redux";
+import { setMenu } from "../../features/user/userSlice";
+import OrderCard from "../../components/cards/OrderCard";
 
 const Order = () => {
+  const dispatch = useDispatch();
+  const { orders } = useSelector((state) => state.orderInfo);
+  console.log(orders, "order");
+  const [filteredData, setFilteredData] = useState([]);
+  const handleOnSearch = (e) => {};
+  useEffect(() => {
+    dispatch(setMenu("My Orders"), []);
+  });
+  useEffect(() => {
+    setFilteredData(orders);
+  }, []);
   return (
-    <UserLayout pageTitle="Orders">
-      <div>
-        <Container
-          className="d-flex flex-column justify-content-center align-items-center"
-          style={{ minHeight: "85vh" }}
-        >
-          asdlfkjsdlkjf
-        </Container>
+    <UserLayout pageTitle="Order History">
+      <div
+        className="d-flex flex-column align-items-center w-100 border"
+        style={{ minHeight: "85vh" }}
+      >
+        <div className="d-flex justify-items-end gap-2">
+          <div>
+            <input
+              type="search"
+              name="search"
+              id="search"
+              onChange={handleOnSearch}
+            />
+          </div>
+          <div>sort button</div>
+        </div>
+        <hr className="w-100" />
+        <OrderCard orders={filteredData} />
       </div>
     </UserLayout>
   );
