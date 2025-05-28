@@ -45,7 +45,7 @@ const Cart = ({ handleCart }) => {
                 className="btn btn-primary mt-3"
                 onClick={handleCheckoutAction}
               >
-                Pay Now
+                Checkout
               </button>
             </div>
           </div>

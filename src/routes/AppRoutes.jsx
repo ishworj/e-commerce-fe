@@ -20,6 +20,9 @@ import Categories from "../pages/admin/categories/Categories.jsx";
 import EditCategory from "../pages/admin/categories/EditCategory.jsx";
 import AddCategory from "../pages/admin/categories/AddCategory";
 import PaymentResult from "../pages/payment/PaymentResult.jsx";
+import Order from "../pages/account/Order.jsx";
+import UserDetail from "../pages/account/UserDetail.jsx";
+import PaymentMethod from "../pages/account/PaymentMethod.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 
@@ -46,6 +49,9 @@ const AppRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="account" element={<Profile />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="orders" element={<Order />} />
+        <Route path="detail" element={<UserDetail />} />
+        <Route path="payment-method" element={<PaymentMethod />} />
       </Route>
 
       <Route path="/admin" element={<DefaultLayout />}>

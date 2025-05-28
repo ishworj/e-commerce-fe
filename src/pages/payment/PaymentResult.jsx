@@ -66,20 +66,25 @@ const PaymentResult = () => {
   }
 
   return (
-    <div className="text-center mt-20">
+    <div
+      className="text-center mt-20 d-flex flex-column justify-content-center align-items-center"
+      style={{ height: "51vh" }}
+    >
       <h2 className="text-3xl text-red-600">❌ Payment Failed or Canceled</h2>
       <p className="mt-4 text-gray-600">
         Payment status: {status || "unknown"}
       </p>
       <button
-        className="mt-6 px-4 py-2 bg-black text-white rounded"
+        className="m-3 px-4 py-2 bg-black text-white rounded"
         onClick={() => navigate("/")}
+        style={{ width: "140px" }}
       >
         Back to Home
       </button>
       <button
         className="mt-6 px-4 py-2 bg-black text-white rounded"
         onClick={handleCheckoutAction}
+        style={{ width: "140px" }}
       >
         Try Again
       </button>
