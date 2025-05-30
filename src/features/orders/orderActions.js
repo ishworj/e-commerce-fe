@@ -13,6 +13,7 @@ export const createOrderAction = (obj) => async (dispatch) => {
     if (status === "success") {
         return true;
     }
+    console.log('the order creation took place')
 }
 export const getOrderAction = () => async (dispatch) => {
     const pending = getOrder();

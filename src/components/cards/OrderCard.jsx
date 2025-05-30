@@ -7,31 +7,46 @@ const OrderCard = ({ orders }) => {
       {orders.map((item, index) => {
         return (
           <Accordion defaultActiveKey="0">
-            <Accordion.Item eventKey={index}>
-              <Accordion.Header className="d-flex justify-items-around align-items-center">
-                <div>
-                  <div>imgs imgs imgs imgs </div>
+            <Accordion.Item eventKey={index} className="d-flex flex-column">
+              <Accordion.Header className="justify-items-around align-items-center row w-100">
+                <div className="col-5 d-flex flex-column gap-2">
+                  <div className="d-flex gap-2">
+                    {item.products.map((product, index) => {
+                      return (
+                        <img
+                          src={product.productImages}
+                          alt=""
+                          srcset=""
+                          className="border"
+                          key={index}
+                          style={{ height: "50px", width: "50px" }}
+                        />
+                      );
+                    })}
+                  </div>
                   <div>{item.createdAt.slice(0, 10)}</div>
                 </div>
-                <div>
+                <div className="col-5 text-end">
                   <b>{item.status}</b>
                   <p>${item.totalAmount}</p>
                 </div>
               </Accordion.Header>
-              <Accordion.Body>
-                {item.products.map((product) => {
+              <Accordion.Body className="d-flex flex-column gap-2">
+                {item.products.map((product, index) => {
                   return (
-                    <div className="d-flex flex-row gap-2">
+                    <div className="d-flex flex-row gap-2" key={index}>
                       <img
-                        src=""
+                        src={product.productImages}
                         alt=""
                         srcset=""
                         className="border"
-                        style={{ height: "50px", width: "50px" }}
+                        style={{ height: "80px", width: "80px" }}
                       />
+
                       <div className="d-flex flex-column">
-                        <b>itemName</b>
-                        <p>{product.quantity}</p>
+                        <b className="">{product.name}</b>
+                        <p className="mb-0">Quantity: {product.quantity}</p>
+                        <p className="mb-0">Price: {product.amount_total}</p>
                       </div>
                     </div>
                   );

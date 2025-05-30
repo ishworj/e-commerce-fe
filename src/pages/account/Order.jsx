@@ -20,7 +20,7 @@ const Order = () => {
   return (
     <UserLayout pageTitle="Order History">
       <div
-        className="d-flex flex-column align-items-center w-100 border"
+        className="d-flex flex-column align-items-center w-100"
         style={{ minHeight: "85vh" }}
       >
         <div className="d-flex justify-items-end gap-2">
@@ -35,7 +35,11 @@ const Order = () => {
           <div>sort button</div>
         </div>
         <hr className="w-100" />
-        <OrderCard orders={filteredData} />
+        {filteredData.length > 0 ? (
+          <OrderCard orders={filteredData} />
+        ) : (
+          <p>No Orders placed yet!</p>
+        )}
       </div>
     </UserLayout>
   );

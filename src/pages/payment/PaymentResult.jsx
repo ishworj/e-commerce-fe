@@ -36,24 +36,33 @@ const PaymentResult = () => {
         setIsVerified(false);
         return;
       }
-
       try {
         const data = await verifyPaymentSession(sessionId);
+
         console.log(data, "verifyign the payment");
-        if (data) {
-          setIsVerified(data.verified);
-          setStatus(data.status);
-          const responseForCart = dispatch(
-            createOrderAction({
-              products: data.cart.data,
-              totalAmount: data.cart.data.reduce(
-                (sum, item) => sum + item.amount_total,
-                0
-              ),
-            })
-          );
-          if (responseForCart) {
+        console.log(data.verified, 2342);
+
+        setIsVerified(data.verified);
+
+        console.log(data.verified, 999);
+
+        setStatus(data.status);
+        if (data.verified) {
+          try {
+            const responseForCart = await dispatch(
+              createOrderAction({
+                products: data.cart,
+                totalAmount: data.cart.reduce(
+                  (sum, item) => sum + item.amount_total,
+                  0
+                ),
+              })
+            );
+
+            console.log("Order creation success:", responseForCart);
             dispatch(resetCart());
+          } catch (err) {
+            console.error("Order creation failed:", err);
           }
         }
       } catch (err) {
@@ -63,6 +72,8 @@ const PaymentResult = () => {
 
     verify();
   }, [sessionId]);
+
+  console.log(isVerified, status);
 
   if (isVerified === null)
     return <p className="text-center mt-20">Verifying payment...</p>;
