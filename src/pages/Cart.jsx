@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CartCard from "../components/cards/CartCard";
 import { RxCross1 } from "react-icons/rx";
@@ -35,7 +34,10 @@ const Cart = ({ handleCart }) => {
           <RxCross1 onClick={handleCart} />
         </button>
       </div>
-      <div className="mt-4">
+      <div
+        className="mt-4 w-100"
+        style={{ height: "auto", paddingBottom: "200px" }}
+      >
         {cart.length != 0 ? (
           <div>
             {cart.map((item, index) => (
@@ -46,7 +48,7 @@ const Cart = ({ handleCart }) => {
                 className="btn btn-primary mt-3"
                 onClick={handleCheckoutAction}
               >
-                Pay Now
+                Checkout
               </button>
             </div>
           </div>

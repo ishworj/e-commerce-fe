@@ -5,6 +5,7 @@ import { MdRateReview } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { setSelectedCategory } from "../../features/category/categorySlice";
+import { CgProfile } from "react-icons/cg";
 
 const sidebarLinks = [
   {
@@ -37,6 +38,25 @@ const sidebarLinks = [
     to: "/admin/reviews",
     isAdminOnly: true,
   },
+  {
+    icon: <CgProfile />,
+    title: "Account Details",
+    to: "/user/account",
+    isUser: true,
+  },
+  {
+    icon: <FaCheck />,
+    title: "My Orders",
+    to: "/user/orders",
+    isAdminOnly: false,
+  },
+
+  {
+    icon: <FaCheck />,
+    title: "Payment Method",
+    to: "/user/payment-method",
+    isUser: true,
+  },
 ];
 
 export const UserSidebar = () => {
@@ -45,8 +65,8 @@ export const UserSidebar = () => {
 
   const visibleLinks =
     user?.role === "admin"
-      ? sidebarLinks
-      : sidebarLinks.filter((link) => !link.isAdminOnly);
+      ? sidebarLinks.filter((link) => link.isAdminOnly || link.isUser)
+      : sidebarLinks.filter((link) => !link.isAdminOnly || link.isUser);
 
   return (
     <Stack gap={1}>
@@ -58,7 +78,7 @@ export const UserSidebar = () => {
             title === menu ? "bg-white text-dark rounded" : ""
           }`}
           onClick={() => {
-              dispatch(setSelectedCategory(null));
+            dispatch(setSelectedCategory(null));
           }}
         >
           {icon} {title}

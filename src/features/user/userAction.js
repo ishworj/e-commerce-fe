@@ -13,7 +13,12 @@ import { setUser } from "./userSlice.js";
 
 // login action
 export const loginAction = (form, navigate) => async (dispatch) => {
-  const data = await loginApi({ ...form });
+  const pending = loginApi({ ...form });
+  const data = await pending;
+
+  toast.promise(pending, {
+    pending: "Logging..."
+  })
 
   if (data?.status == "success") {
     //update the store

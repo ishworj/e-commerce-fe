@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { getPublicProductAction } from "./features/products/productActions";
 import { fetchCartAction } from "./features/cart/cartAction.js";
 import { autoLogin } from "./features/user/userAction.js";
+import { getOrderAction } from "./features/orders/orderActions.js";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const App = () => {
     dispatch(getAllCategoriesAction());
     dispatch(fetchCartAction());
     dispatch(autoLogin());
+    dispatch(getOrderAction());
   }, []);
 
   return (
