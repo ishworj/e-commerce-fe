@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Accordion } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Accordion, Button, Col, Form, Row } from "react-bootstrap";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { CiEdit } from "react-icons/ci";
@@ -14,17 +14,93 @@ import {
   handleOnUpdateOrder,
   handleOnUpdateProductFromOrder,
 } from "../../utils/ordersFunctions";
+import useForm from "../../hooks/useForm";
+import { useDispatch, useSelector } from "react-redux";
+import { filterFunctionOrders } from "../../utils/filterProducts";
+import {
+  getAdminOrderAction,
+  getOrderAction,
+} from "../../features/orders/orderActions";
 
-const AdminOrdersCard = ({ orders }) => {
+const AdminOrdersCard = () => {
+  const dispatch = useDispatch();
+  const { orders } = useSelector((state) => state.orderInfo);
+  const { user } = useSelector((state) => state.userInfo);
+  console.log(user, 22);
   const [activeKey, setActiveKey] = useState(null);
+  const [displayOrders, setDisplayOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { form, handleOnChange, setForm } = useForm({
+    searchQuery: "",
+    status: "all",
+    date: "newest",
+  });
 
   const toggleAccordion = (key) => {
     setActiveKey((prev) => (prev === key ? null : key));
   };
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      setIsLoading(true);
+      user.role === "admin"
+        ? dispatch(getAdminOrderAction())
+        : dispatch(getOrderAction());
+      setIsLoading(false);
+    };
+    fetchOrders();
+  }, [dispatch]);
+
+  console.log(displayOrders, "orders for the admin ");
+  console.log(orders);
+  useEffect(() => {
+    const data = filterFunctionOrders(form, orders);
+    setDisplayOrders(data);
+  }, [form, orders]);
   return (
     <div className="w-100 d-flex flex-column gap-2">
-      {orders.map((item, index) => {
+      {/* controls bar */}
+      <Form>
+        <Row>
+          <Col md={6}>
+            <Form.Control
+              name="searchQuery"
+              type="text"
+              placeholder="Search Orders ..."
+              onChange={handleOnChange}
+            />
+          </Col>
+          <Col className="d-flex justify-content-center gap-1 gap-sm-2">
+            <Form.Group>
+              <Form.Select
+                name="status"
+                value={form.status}
+                onChange={handleOnChange}
+              >
+                <option value="all">All</option>
+                {orders.map((item, index) => (
+                  <option key={index} value={item.status}>
+                    {item.status}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Select
+                name="date"
+                value={form.date}
+                onChange={handleOnChange}
+              >
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+        </Row>
+      </Form>
+      <hr />
+      {displayOrders?.map((item, index) => {
         const key = index.toString();
         const isOpen = activeKey === key;
         return (
@@ -61,33 +137,48 @@ const AdminOrdersCard = ({ orders }) => {
                       </p>
                       {/* status */}
                       <div className="" style={{ height: "auto" }}>
-                        {item.createdAt.slice(0, 10)} |
-                        <select
-                          className={
-                            item.status === "pending"
-                              ? "text-warning"
-                              : item.status === "shipped"
-                              ? "text-primary"
-                              : "text-success"
-                          }
-                          style={{
-                            border: "0px",
-                            background: "transparent",
-                            outline: "none",
-                          }}
-                          value={item.status}
-                          onChange={handleOnStatus}
-                        >
-                          <option value="pending" className="text-warning">
-                            Pending
-                          </option>
-                          <option value="shipped" className="text-primary">
-                            Shipped
-                          </option>
-                          <option value="delivered" className="text-success">
-                            Delivered
-                          </option>
-                        </select>
+                        {item.createdAt.slice(0, 10)} | &nbsp;
+                        {user.role === "admin" ? (
+                          <select
+                            className={
+                              item.status === "pending"
+                                ? "text-warning"
+                                : item.status === "shipped"
+                                ? "text-primary"
+                                : "text-success"
+                            }
+                            style={{
+                              border: "0px",
+                              background: "transparent",
+                              outline: "none",
+                            }}
+                            value={item.status}
+                            onChange={handleOnStatus}
+                          >
+                            <option value="pending" className="text-warning">
+                              Pending
+                            </option>
+                            <option value="shipped" className="text-primary">
+                              Shipped
+                            </option>
+                            <option value="delivered" className="text-success">
+                              Delivered
+                            </option>
+                          </select>
+                        ) : (
+                          <span
+                            className={
+                              item.status === "pending"
+                                ? "text-warning"
+                                : item.status === "shipped"
+                                ? "text-primary"
+                                : "text-success"
+                            }
+                          >
+                            {item.status.charAt(0).toUpperCase() +
+                              item.status.slice(1)}
+                          </span>
+                        )}
                       </div>
                     </div>
                     {/* images */}
@@ -129,13 +220,15 @@ const AdminOrdersCard = ({ orders }) => {
                         >
                           <LiaFileInvoiceDollarSolid className="fs-4" />
                         </div>
-                        <div
-                          //   variant="primary"
-                          onClick={handleOnUpdateOrder}
-                          title="Update"
-                        >
-                          <CiEdit className="fs-4 text-primary" />
-                        </div>
+                        {user.role === "admin" && (
+                          <div
+                            //   variant="primary"
+                            onClick={handleOnUpdateOrder}
+                            title="Update"
+                          >
+                            <CiEdit className="fs-4 text-primary" />
+                          </div>
+                        )}
                         <div onClick={handleOnCancelOrder} title="Cancel">
                           <TbShoppingCartCancel className="fs-4 text-danger" />
                         </div>
@@ -166,20 +259,22 @@ const AdminOrdersCard = ({ orders }) => {
                         </div>
                       </div>
                       {/* actions for the particular product within the order */}
-                      <div className="d-flex gap-3">
-                        <CiEdit
-                          className="fs-4 text-primary"
-                          style={{ cursor: "pointer" }}
-                          title="Update"
-                          onClick={handleOnUpdateProductFromOrder}
-                        />
-                        <AiOutlineDelete
-                          className="fs-4 text-danger"
-                          style={{ cursor: "pointer" }}
-                          title="Delete"
-                          onClick={handleOnDeleteProductFromOrder}
-                        />
-                      </div>
+                      {user.role === "admin" && (
+                        <div className="d-flex gap-3">
+                          <CiEdit
+                            className="fs-4 text-primary"
+                            style={{ cursor: "pointer" }}
+                            title="Update"
+                            onClick={handleOnUpdateProductFromOrder}
+                          />
+                          <AiOutlineDelete
+                            className="fs-4 text-danger"
+                            style={{ cursor: "pointer" }}
+                            title="Delete"
+                            onClick={handleOnDeleteProductFromOrder}
+                          />
+                        </div>
+                      )}
                     </div>
                   );
                 })}
