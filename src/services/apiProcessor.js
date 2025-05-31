@@ -72,17 +72,3 @@ export const apiProcessor = async ({
     };
   }
 };
-
-// renewing the accessJwt token
-
-// export const renewAccessJWT = async () => {
-//   const { accessToken } = await apiProcessor({
-//     method: "get",
-//     url: authEp + "/renew-jwt",
-//     isPrivate: true,
-//     isRefreshToken: true,
-//   });
-
-//   sessionStorage.setItem("accessJWT", accessToken);
-//   return accessToken;
-// };

@@ -22,6 +22,8 @@ import AddCategory from "../pages/admin/categories/AddCategory";
 import PaymentResult from "../pages/payment/PaymentResult.jsx";
 import Order from "../pages/account/Order.jsx";
 import PaymentMethod from "../pages/account/PaymentMethod.jsx";
+import AdminOrders from "../pages/account/AdminOrders.jsx";
+import Logout from "../components/Logout.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 
@@ -50,6 +52,7 @@ const AppRoutes = () => {
         <Route path="cart" element={<Cart />} />
         <Route path="orders" element={<Order />} />
         <Route path="payment-method" element={<PaymentMethod />} />
+        <Route path="logout" element={<Logout />} />
       </Route>
 
       <Route path="/admin" element={<DefaultLayout />}>
@@ -60,6 +63,7 @@ const AppRoutes = () => {
         <Route path="categories" element={<Categories />} />
         <Route path="edit-category/:_id" element={<EditCategory />} />
         <Route path="/admin/add-category" element={<AddCategory />} />
+        <Route path="orders" element={<AdminOrders />} />
       </Route>
     </Routes>
   );

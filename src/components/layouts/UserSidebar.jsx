@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { setSelectedCategory } from "../../features/category/categorySlice";
 import { CgProfile } from "react-icons/cg";
+import { PiSignOutFill } from "react-icons/pi";
 
 const sidebarLinks = [
   {
@@ -28,7 +29,7 @@ const sidebarLinks = [
   },
   {
     icon: <FaCheck />,
-    title: "Orders",
+    title: "Orders List",
     to: "/admin/orders",
     isAdminOnly: true,
   },
@@ -55,6 +56,12 @@ const sidebarLinks = [
     icon: <FaCheck />,
     title: "Payment Method",
     to: "/user/payment-method",
+    isUser: true,
+  },
+  {
+    icon: <PiSignOutFill />,
+    title: "Logout",
+    to: "/user/logout",
     isUser: true,
   },
 ];

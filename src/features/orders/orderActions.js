@@ -23,12 +23,11 @@ export const getOrderAction = () => async (dispatch) => {
 }
 export const getAdminOrderAction = () => async (dispatch) => {
     const pending = getAllOrders();
-    toast.promise(pending, {
-        pending: "Gathering all orders..."
-    })
     const { status, message, orders } = await pending;
     dispatch(setOrders(orders))
-    toast[status](message);
+    if (status === "success") {
+        return true
+    }
 }
 export const updateOrderAction = () => async (dispatch) => {
     const pending = updateOrder();

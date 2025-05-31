@@ -92,3 +92,13 @@ export const refreshTokenApi = async () => {
     throw error;
   }
 };
+
+// logout api 
+export const logoutApi = async () => {
+  return apiProcessor({
+    method: "get",
+    url: authUrl + "/logout",
+    isRefreshToken: true,
+    isPrivate: true
+  })
+}
