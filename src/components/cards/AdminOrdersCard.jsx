@@ -1,0 +1,195 @@
+import React, { useState } from "react";
+import { Accordion } from "react-bootstrap";
+import { AiOutlineDelete } from "react-icons/ai";
+import { BsChevronDown } from "react-icons/bs";
+import { CiEdit } from "react-icons/ci";
+import { GoCopy } from "react-icons/go";
+import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
+import { TbShoppingCartCancel } from "react-icons/tb";
+import {
+  handleOnCancelOrder,
+  handleOnDeleteProductFromOrder,
+  handleOnInvoiceOrder,
+  handleOnStatus,
+  handleOnUpdateOrder,
+  handleOnUpdateProductFromOrder,
+} from "../../utils/ordersFunctions";
+
+const AdminOrdersCard = ({ orders }) => {
+  const [activeKey, setActiveKey] = useState(null);
+
+  const toggleAccordion = (key) => {
+    setActiveKey((prev) => (prev === key ? null : key));
+  };
+
+  return (
+    <div className="w-100 d-flex flex-column gap-2">
+      {orders.map((item, index) => {
+        const key = index.toString();
+        const isOpen = activeKey === key;
+        return (
+          <Accordion activeKey={activeKey} key={key}>
+            <Accordion.Item eventKey={key} className="d-flex flex-column w-100">
+              <Accordion.Header
+                as="div"
+                className="justify-items-around align-items-center row w-100"
+                onClick={(e) => e.preventDefault()}
+              >
+                <div className="d-flex flex-column gap-2 w-100">
+                  <div className="d-flex flex-column gap-2 align-items-between w-100">
+                    {/* status and the creation date  */}
+                    <div
+                      className="d-flex justify-content-between flex-wrap"
+                      style={{ width: "98%" }}
+                    >
+                      {/* order id */}
+                      <p>
+                        <b>Order Id:</b>
+                        {item._id}
+                        &nbsp;
+                        <GoCopy
+                          onClick={() =>
+                            navigator.clipboard.writeText(item._id)
+                          }
+                          style={{
+                            cursor: "pointer",
+                            userSelect: "text",
+                            color: "blue",
+                          }}
+                          title="Copy Order Id"
+                        />
+                      </p>
+                      {/* status */}
+                      <div className="" style={{ height: "auto" }}>
+                        {item.createdAt.slice(0, 10)} |
+                        <select
+                          className={
+                            item.status === "pending"
+                              ? "text-warning"
+                              : item.status === "shipped"
+                              ? "text-primary"
+                              : "text-success"
+                          }
+                          style={{
+                            border: "0px",
+                            background: "transparent",
+                            outline: "none",
+                          }}
+                          value={item.status}
+                          onChange={handleOnStatus}
+                        >
+                          <option value="pending" className="text-warning">
+                            Pending
+                          </option>
+                          <option value="shipped" className="text-primary">
+                            Shipped
+                          </option>
+                          <option value="delivered" className="text-success">
+                            Delivered
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    {/* images */}
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div className="d-flex gap-2 flex-wrap">
+                        {item.products.map((product, index) => {
+                          return (
+                            <img
+                              src={product.productImages}
+                              alt=""
+                              srcSet=""
+                              className="border"
+                              key={index}
+                              style={{ height: "50px", width: "50px" }}
+                            />
+                          );
+                        })}
+                      </div>
+                      <BsChevronDown
+                        className={`fs-4 ${isOpen ? "rotate-180" : ""}`}
+                        onClick={() => toggleAccordion(key)}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </div>
+                    {/* total amounts and action buttons*/}
+                    <div
+                      className="d-flex align-items-center justify-content-between"
+                      style={{ width: "98%" }}
+                    >
+                      <p className="mb-0" style={{ height: "20px" }}>
+                        $ {item.totalAmount}
+                      </p>
+                      {/* buttons */}
+                      <div className="d-flex gap-2">
+                        <div
+                          //   variant="light"
+                          onClick={handleOnInvoiceOrder}
+                          title="Invoice"
+                        >
+                          <LiaFileInvoiceDollarSolid className="fs-4" />
+                        </div>
+                        <div
+                          //   variant="primary"
+                          onClick={handleOnUpdateOrder}
+                          title="Update"
+                        >
+                          <CiEdit className="fs-4 text-primary" />
+                        </div>
+                        <div onClick={handleOnCancelOrder} title="Cancel">
+                          <TbShoppingCartCancel className="fs-4 text-danger" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Accordion.Header>
+              <Accordion.Body className="d-flex flex-column gap-2">
+                {item.products.map((product, index) => {
+                  return (
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="d-flex flex-row gap-2" key={index}>
+                        <img
+                          src={product.productImages}
+                          alt=""
+                          srcSet=""
+                          className="border"
+                          style={{ height: "80px", width: "80px" }}
+                        />
+
+                        <div className="d-flex flex-column">
+                          <b className="">{product.name}</b>
+                          <p className="mb-0">Quantity: {product.quantity}</p>
+                          <p className="mb-0">
+                            Unit Price: {product.amount_total}
+                          </p>
+                        </div>
+                      </div>
+                      {/* actions for the particular product within the order */}
+                      <div className="d-flex gap-3">
+                        <CiEdit
+                          className="fs-4 text-primary"
+                          style={{ cursor: "pointer" }}
+                          title="Update"
+                          onClick={handleOnUpdateProductFromOrder}
+                        />
+                        <AiOutlineDelete
+                          className="fs-4 text-danger"
+                          style={{ cursor: "pointer" }}
+                          title="Delete"
+                          onClick={handleOnDeleteProductFromOrder}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        );
+      })}
+    </div>
+  );
+};
+
+export default AdminOrdersCard;

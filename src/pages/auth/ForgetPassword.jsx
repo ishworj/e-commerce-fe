@@ -18,7 +18,7 @@ const ForgetPassword = () => {
   return (
     <div
       className="d-flex justify-content-center align-items-center"
-      style={{ height: "810px" }}
+      style={{ minHeight: "50vh" }}
     >
       <div className="d-flex w-lg-100 w-md-75 w-sm-50 mx-2 justify-content-center align-items-center py-4 px-5 border">
         <Form className="d-flex flex-column">

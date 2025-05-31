@@ -12,7 +12,7 @@ const userSlice = createSlice({
       state.user = payload;
     },
     resetUser: (state) => {
-      state.user = null;
+      state.user = {};
     },
     setMenu: (state, action) => {
       state.menu = action.payload;
