@@ -4,6 +4,7 @@ import {
   logoutApi,
   refreshTokenApi,
   registerApi,
+  updateAddressApi,
   updatePwApi,
   verifyEmailAndSendOTPApi,
   verifyOTPApi,
@@ -169,4 +170,12 @@ export const logoutAction = () => async (dispatch) => {
     console.log(error?.message, 5555)
   }
 
+}
+
+export const updateAddressAction = (obj) => async (dispatch) => {
+  const { status, message } = await updateAddressApi(obj);
+  if (status === "success") {
+    dispatch(fetchUserAction())
+  }
+  toast[status](message)
 }

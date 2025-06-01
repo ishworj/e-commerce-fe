@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { verifyPaymentSession } from "../../features/payment/PaymentAxios";
 import { makePaymentAction } from "../../features/payment/PaymentActions";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createOrderAction } from "../../features/orders/orderActions";
 import { resetCart } from "../../features/cart/cartSlice";
 
@@ -14,6 +14,7 @@ const PaymentResult = () => {
   const sessionId = searchParams.get("session_id");
   const isSuccessParam = searchParams.get("success");
 
+  const { user } = useSelector((state) => state.userInfo);
   const [isVerified, setIsVerified] = useState(null);
   const [status, setStatus] = useState("");
 
@@ -73,20 +74,23 @@ const PaymentResult = () => {
     verify();
   }, [sessionId]);
 
-  console.log(isVerified, status);
+  console.log(user);
 
   if (isVerified === null)
     return <p className="text-center mt-20">Verifying payment...</p>;
 
   if (isVerified && isSuccessParam === "true") {
     return (
-      <div className="text-center mt-20">
+      <div
+        className="text-center d-flex flex-column justify-content-center align-items-center"
+        style={{ height: "55vh", margin: "auto" }}
+      >
         <h2 className="text-3xl text-green-600">
           🎉 Thank you for your purchase!
         </h2>
         <p className="mt-4 text-gray-600">Your payment was successful.</p>
         <button
-          className="mt-6 px-4 py-2 bg-black text-white rounded"
+          className="mt-6 px-4 py-2 bg-black text-white rounded col-2"
           onClick={() => navigate("/")}
         >
           Back to Home

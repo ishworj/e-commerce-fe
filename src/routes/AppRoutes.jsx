@@ -24,6 +24,7 @@ import Order from "../pages/account/Order.jsx";
 import PaymentMethod from "../pages/account/PaymentMethod.jsx";
 import AdminOrders from "../pages/account/AdminOrders.jsx";
 import Logout from "../components/Logout.jsx";
+import ShippingAddress from "../components/ShippingAddress.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 
@@ -53,6 +54,7 @@ const AppRoutes = () => {
         <Route path="orders" element={<Order />} />
         <Route path="payment-method" element={<PaymentMethod />} />
         <Route path="logout" element={<Logout />} />
+        <Route path="shippingAddress" element={<ShippingAddress />} />
       </Route>
 
       <Route path="/admin" element={<DefaultLayout />}>
