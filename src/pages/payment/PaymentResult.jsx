@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { verifyPaymentSession } from "../../features/payment/PaymentAxios";
 import { makePaymentAction } from "../../features/payment/PaymentActions";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createOrderAction } from "../../features/orders/orderActions";
 import { resetCart } from "../../features/cart/cartSlice";
 
@@ -17,6 +17,8 @@ const PaymentResult = () => {
   const [isVerified, setIsVerified] = useState(null);
   const [status, setStatus] = useState("");
 
+  const { user } = useSelector((state) => state.userInfo);
+  console.log(user.address);
   const handleCheckoutAction = async () => {
     try {
       const data = await makePaymentAction();
@@ -33,60 +35,43 @@ const PaymentResult = () => {
   useEffect(() => {
     const verify = async () => {
       if (!sessionId) {
+        console.log("no sessopnId");
         setIsVerified(false);
         return;
       }
-      try {
-        const data = await verifyPaymentSession(sessionId);
+      const data = await verifyPaymentSession(sessionId, {
+        shippingAddress: user.address,
+        products: data.cart,
+        totalAmount: data.cart.reduce(
+          (sum, item) => sum + item.amount_total,
+          0
+        ),
+      });
 
-        console.log(data, "verifyign the payment");
-        console.log(data.verified, 2342);
-
-        setIsVerified(data.verified);
-
-        console.log(data.verified, 999);
-
-        setStatus(data.status);
-        if (data.verified) {
-          try {
-            const responseForCart = await dispatch(
-              createOrderAction({
-                products: data.cart,
-                totalAmount: data.cart.reduce(
-                  (sum, item) => sum + item.amount_total,
-                  0
-                ),
-              })
-            );
-
-            console.log("Order creation success:", responseForCart);
-            dispatch(resetCart());
-          } catch (err) {
-            console.error("Order creation failed:", err);
-          }
-        }
-      } catch (err) {
-        setIsVerified(false);
-      }
+      setIsVerified(data.verified);
+      setStatus(data.status);
     };
 
     verify();
   }, [sessionId]);
 
-  console.log(isVerified, status);
+  // console.log(user, "00000");
 
   if (isVerified === null)
     return <p className="text-center mt-20">Verifying payment...</p>;
 
   if (isVerified && isSuccessParam === "true") {
     return (
-      <div className="text-center mt-20">
+      <div
+        className="text-center d-flex flex-column justify-content-center align-items-center"
+        style={{ height: "55vh", margin: "auto" }}
+      >
         <h2 className="text-3xl text-green-600">
           🎉 Thank you for your purchase!
         </h2>
         <p className="mt-4 text-gray-600">Your payment was successful.</p>
         <button
-          className="mt-6 px-4 py-2 bg-black text-white rounded"
+          className="mt-6 px-4 py-2 bg-black text-white rounded col-2"
           onClick={() => navigate("/")}
         >
           Back to Home

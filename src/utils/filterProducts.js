@@ -34,5 +34,31 @@ export const filterFunction = ({ category, searchQuery, others }, products) => {
       break;
   }
 
+
   return filtered;
 };
+
+export const filterFunctionOrders = ({ date, searchQuery, status }, orders) => {
+  let filtered = [...orders];
+
+  // Filter by Orders' status
+  if (status !== "all") {
+    filtered = filtered.filter(item => item.status === status)
+  }
+
+  // Filter by search query
+  if (searchQuery.trim()) {
+    filtered = filtered.filter((item) => item.products.some(product => product.name.toLowerCase().includes(searchQuery.toLowerCase())) || item._id.includes(searchQuery))
+  }
+
+  switch (date) {
+    case "newest":
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      break;
+    case "oldest":
+      filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      break;
+
+  }
+  return filtered;
+}

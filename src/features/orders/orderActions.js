@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { createOrder, getAllOrders, getOrder, updateOrder } from "./orderAxios"
+import { createOrder, deleteOrderApi, getAllOrders, getOrder, updateOrder } from "./orderAxios"
 import { setOrders } from "./orderSlice";
 
 export const createOrderAction = (obj) => async (dispatch) => {
@@ -13,7 +13,6 @@ export const createOrderAction = (obj) => async (dispatch) => {
     if (status === "success") {
         return true;
     }
-    console.log('the order creation took place')
 }
 export const getOrderAction = () => async (dispatch) => {
     const pending = getOrder();
@@ -29,12 +28,26 @@ export const getAdminOrderAction = () => async (dispatch) => {
         return true
     }
 }
-export const updateOrderAction = () => async (dispatch) => {
-    const pending = updateOrder();
+export const updateOrderAction = (updateObj) => async (dispatch) => {
+    const pending = updateOrder(updateObj);
     toast.promise(pending, {
         pending: "Updating the status of the order..."
     })
     const { status, message } = await pending;
-    dispatch(getOrderAction());
+    if (status === "success") {
+        dispatch(getAdminOrderAction());
+    }
+    toast[status](message);
+}
+export const deleteOrderAction = (_id) => async (dispatch) => {
+    const pending = deleteOrderApi(_id);
+    toast.promise(pending, {
+        pending: "Deleting the Order ..."
+    })
+    const { status, message } = await pending;
+    if (status === "success") {
+        dispatch(getAdminOrderAction())
+        dispatch(getOrderAction())
+    }
     toast[status](message);
 }
