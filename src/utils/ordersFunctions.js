@@ -1,8 +1,5 @@
 
 
-export const handleOnInvoiceOrder = () => {
-
-}
 
 
 

@@ -13,7 +13,6 @@ export const createOrderAction = (obj) => async (dispatch) => {
     if (status === "success") {
         return true;
     }
-    console.log('the order creation took place')
 }
 export const getOrderAction = () => async (dispatch) => {
     const pending = getOrder();
@@ -48,6 +47,7 @@ export const deleteOrderAction = (_id) => async (dispatch) => {
     const { status, message } = await pending;
     if (status === "success") {
         dispatch(getAdminOrderAction())
+        dispatch(getOrderAction())
     }
     toast[status](message);
 }

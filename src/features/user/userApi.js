@@ -84,6 +84,7 @@ export const refreshTokenApi = async () => {
   } catch (error) {
     sessionStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    console.log(error)
     throw error;
   }
 };

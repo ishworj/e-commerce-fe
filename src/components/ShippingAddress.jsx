@@ -19,16 +19,16 @@ const ShippingAddress = () => {
     console.log(fullAddress);
     dispatch(updateAddressAction({ address: fullAddress }));
 
-    // try {
-    //   const data = await makePaymentAction();
-    //   console.log(data);
-    //   if (data?.url) {
-    //     window.location.href = data.url;
-    //   }
-    // } catch (error) {
-    //   toast.error("Something went wrong during checkout");
-    //   console.error("Error during checkout:", error);
-    // }
+    try {
+      const data = await makePaymentAction();
+      console.log(data);
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      toast.error("Something went wrong during checkout");
+      console.error("Error during checkout:", error);
+    }
   };
 
   return (

@@ -4,11 +4,8 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { CiEdit } from "react-icons/ci";
 import { GoCopy } from "react-icons/go";
-import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
-import { TbShoppingCartCancel } from "react-icons/tb";
 import {
   handleOnDeleteProductFromOrder,
-  handleOnInvoiceOrder,
   handleOnUpdateProductFromOrder,
 } from "../../utils/ordersFunctions";
 import useForm from "../../hooks/useForm";
@@ -21,6 +18,7 @@ import {
   updateOrderAction,
 } from "../../features/orders/orderActions";
 import { IoCloseOutline } from "react-icons/io5";
+import { generateInvoice } from "../../features/invoice/invoiceApi";
 
 const AdminOrdersCard = () => {
   const dispatch = useDispatch();
@@ -54,6 +52,21 @@ const AdminOrdersCard = () => {
   // update the order
   const handleOnUpdateOrder = () => {
     setIsUpdate(!isUpdate);
+  };
+
+  // invoice
+  const handleOnInvoice = async (id) => {
+    try {
+      // const invoiceUrl =
+      //   import.meta.env.VITE_BACKEND_BASE_URL + `/invoice/${id}`;
+      const response = await generateInvoice(id);
+      console.log(response);
+      const blob = new Blob([response], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch (error) {
+      console.log(error?.message);
+    }
   };
 
   useEffect(() => {
@@ -123,7 +136,7 @@ const AdminOrdersCard = () => {
       </Form>
       <hr />
       {displayOrders?.map((item, index) => {
-        const key = index.toString();
+        const key = item._id.toString();
         const isOpen = activeKey === key;
         return (
           <Accordion activeKey={activeKey} key={key} className="z-1">
@@ -236,11 +249,11 @@ const AdminOrdersCard = () => {
                       {/* buttons */}
                       <div className="d-flex gap-2 text-decoration-underline">
                         <div
-                          onClick={handleOnInvoiceOrder}
+                          onClick={() => handleOnInvoice(item._id)}
                           title="Invoice"
                           className=" text-primary"
                         >
-                          Download Invoice
+                          Invoice
                         </div>
                         {user.role === "admin" && (
                           <div
@@ -248,7 +261,7 @@ const AdminOrdersCard = () => {
                             onClick={handleOnUpdateOrder}
                             title="Update"
                           >
-                            Change Shipping Address
+                            Shipping Address
                           </div>
                         )}
                         <div

@@ -14,10 +14,11 @@ const PaymentResult = () => {
   const sessionId = searchParams.get("session_id");
   const isSuccessParam = searchParams.get("success");
 
-  const { user } = useSelector((state) => state.userInfo);
   const [isVerified, setIsVerified] = useState(null);
   const [status, setStatus] = useState("");
 
+  const { user } = useSelector((state) => state.userInfo);
+  console.log(user.address);
   const handleCheckoutAction = async () => {
     try {
       const data = await makePaymentAction();
@@ -34,47 +35,27 @@ const PaymentResult = () => {
   useEffect(() => {
     const verify = async () => {
       if (!sessionId) {
+        console.log("no sessopnId");
         setIsVerified(false);
         return;
       }
-      try {
-        const data = await verifyPaymentSession(sessionId);
+      const data = await verifyPaymentSession(sessionId, {
+        shippingAddress: user.address,
+        products: data.cart,
+        totalAmount: data.cart.reduce(
+          (sum, item) => sum + item.amount_total,
+          0
+        ),
+      });
 
-        console.log(data, "verifyign the payment");
-        console.log(data.verified, 2342);
-
-        setIsVerified(data.verified);
-
-        console.log(data.verified, 999);
-
-        setStatus(data.status);
-        if (data.verified) {
-          try {
-            const responseForCart = await dispatch(
-              createOrderAction({
-                products: data.cart,
-                totalAmount: data.cart.reduce(
-                  (sum, item) => sum + item.amount_total,
-                  0
-                ),
-              })
-            );
-
-            console.log("Order creation success:", responseForCart);
-            dispatch(resetCart());
-          } catch (err) {
-            console.error("Order creation failed:", err);
-          }
-        }
-      } catch (err) {
-        setIsVerified(false);
-      }
+      setIsVerified(data.verified);
+      setStatus(data.status);
     };
 
     verify();
   }, [sessionId]);
 
-  console.log(user);
+  // console.log(user, "00000");
 
   if (isVerified === null)
     return <p className="text-center mt-20">Verifying payment...</p>;
