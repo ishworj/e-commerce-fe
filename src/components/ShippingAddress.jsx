@@ -32,8 +32,8 @@ const ShippingAddress = () => {
   };
 
   return (
-    <div className="d-flex w-100 justify-content-center m-5">
-      <div className="row" style={{ width: "30%" }}>
+    <div className="d-flex w-100 justify-content-center my-5">
+      <div className="row col-9 col-md-6 col-lg-5">
         <h1 className="py-2">Shipping Address</h1>
         <Form onSubmit={handleCheckoutAction}>
           {addressInput.map((item) => (

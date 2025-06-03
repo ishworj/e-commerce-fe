@@ -85,6 +85,13 @@ const AdminOrdersCard = () => {
     fetchOrders();
   }, []);
 
+  if (displayOrders.length <= 0) {
+    return (
+      <p className="text-center" style={{ minHeight: "80vh" }}>
+        No orders here yet...
+      </p>
+    );
+  }
   return (
     <div className="w-100 d-flex flex-column gap-2 position-relative">
       {/* controls bar */}
