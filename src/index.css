@@ -126,3 +126,10 @@ body,#root {
   position: static;
   }
 }
+
+@media (max-width : 767px){
+  .heightForSmallScreen{
+  min-height: 100px !important;
+  }
+}
+
