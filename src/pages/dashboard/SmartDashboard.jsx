@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { chatApi } from "./chatapi";
+import MyChart from "../../Charts/MyChart";
 
 const SmartDashboard = () => {
   const chatBoxRef = useRef(null);
@@ -39,11 +40,24 @@ const SmartDashboard = () => {
     try {
       const res = await chatApi(input);
 
-      const botMessage = {
-        from: "bot",
-        type: res.type || "text", // future-proof for other types
-        text: res.data || "No response received.",
-      };
+      let botMessage;
+
+      if (res.type === "chart") {
+        botMessage = {
+          from: "bot",
+          type: "chart",
+          chartType: res.chartType,
+          labels: res.labels,
+          values: res.values,
+          explanation: res.explanation,
+        };
+      } else {
+        botMessage = {
+          from: "bot",
+          type: "text",
+          text: res.data || res.text || "No response received.",
+        };
+      }
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (err) {
@@ -76,8 +90,20 @@ const SmartDashboard = () => {
                 dangerouslySetInnerHTML={{ __html: msg.text }}
                 style={{ fontSize: "14px" }}
               />
+            ) : msg.type === "chart" ? (
+              <div style={{ maxWidth: "100%" }}>
+                <div
+                  dangerouslySetInnerHTML={{ __html: msg.explanation }}
+                  style={{ fontSize: "14px", marginBottom: "10px" }}
+                />
+                <MyChart
+                  type={msg.chartType}
+                  labels={msg.labels}
+                  values={msg.values}
+                />
+              </div>
             ) : (
-              <span>{msg.text}</span> // fallback for future types
+              <span>{msg.text}</span>
             )}
           </div>
         ))}
@@ -101,26 +127,38 @@ const SmartDashboard = () => {
 
 const styles = {
   container: {
-    width: "100%",
-    maxWidth: "600px",
     margin: "0 auto",
-    height: "80vh",
+    height: "80vh", // already good
+    maxWidth: "800px", // optional, center it nicely
     display: "flex",
     flexDirection: "column",
     border: "1px solid #ccc",
     borderRadius: "10px",
     backgroundColor: "#fff",
-    overflow: "hidden",
+    position: "relative", // ensure children can be positioned
+    overflow: "hidden", // prevent outer scroll
   },
+
   chatBox: {
-    height: "100%",
-    maxHeight: "calc(100% - 70px)",
+    flex: 1, // takes all remaining height above input
     overflowY: "auto",
     padding: "10px",
     display: "flex",
     flexDirection: "column",
     gap: "10px",
   },
+  inputArea: {
+    height: "70px",
+    display: "flex",
+    padding: "10px",
+    borderTop: "1px solid #ddd",
+    backgroundColor: "#fff",
+    position: "sticky", // or "absolute" if preferred
+    bottom: 0,
+    width: "100%",
+    zIndex: 10,
+  },
+
   message: {
     padding: "10px 15px",
     borderRadius: "20px",
@@ -129,13 +167,7 @@ const styles = {
     wordWrap: "break-word",
     whiteSpace: "pre-wrap",
   },
-  inputArea: {
-    height: "70px",
-    display: "flex",
-    padding: "10px",
-    borderTop: "1px solid #ddd",
-    backgroundColor: "#fff",
-  },
+
   input: {
     flex: 1,
     padding: "10px",

@@ -19,7 +19,7 @@ export const UserLayout = ({ pageTitle = "default", children }) => {
               <hr />
               <UserSidebar />
             </Col>
-            <Col>
+            <Col md={9} xl={10} className="bg-light" style={{ minHeight: "100vh" }}>
               <div className="p-2">
                 <h1>
                   <b>{pageTitle}</b>
