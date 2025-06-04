@@ -148,6 +148,9 @@ body,#root {
   .outer-container {
     aspect-ratio: 4 / 3;
   }
+  .orderAccordion{
+    height: auto;
+  }
 }
 
 @media (min-width: 768px) {
@@ -155,7 +158,7 @@ body,#root {
     aspect-ratio: 2 / 1;
   }
 }
-
+/* css for stepper */
 .step-circle-container {
   margin-left: auto;
   margin-right: auto;

@@ -185,7 +185,7 @@ function SlideTransition({ children, direction, onHeightReady }) {
       initial="enter"
       animate="center"
       exit="exit"
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.3 }}
       style={{ position: "absolute", left: 0, right: 0, top: 0 }}
     >
       {children}
@@ -203,7 +203,7 @@ const stepVariants = {
     opacity: 1,
   },
   exit: (dir) => ({
-    x: dir >= 0 ? "50%" : "-50%",
+    x: dir >= 0 ? "-50%" : "50%",
     opacity: 0,
   }),
 };

@@ -28,11 +28,9 @@ export const loginAction = (form, navigate) => async (dispatch) => {
     localStorage.setItem("refreshJWT", refreshToken);
     //update the store
     dispatch(setUser(user));
-    setTimeout(() => {
-      navigate("/");
-    }, 0);
-  }
-};
+    navigate("/");
+  };
+}
 
 // register action
 export const registerUserAction = (registerObj) => async (dispatch) => {
@@ -109,10 +107,10 @@ export const fetchUserAction = () => async (dispatch) => {
     const { foundUser } = await fetchUserApi();
     // console.log(data, 666)
 
-    foundUser && dispatch(setUser(foundUser));
+    foundUser && await dispatch(setUser(foundUser));
   } catch (error) {
     console.log(error);
-    if (error.messgae === "jwt expired") {
+    if (error.message === "jwt expired") {
       sessionStorage.removeItem("accessJWT");
       localStorage.removeItem("refreshJWT");
     }
@@ -178,4 +176,7 @@ export const updateAddressAction = (obj) => async (dispatch) => {
     dispatch(fetchUserAction())
   }
   toast[status](message)
+  if (status === "success") {
+    return true
+  }
 }

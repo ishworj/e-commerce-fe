@@ -19,7 +19,7 @@ const ForgetPassword = () => {
   return (
     <div
       className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: "50vh" }}
+      style={{ height: "51vh" }}
     >
       {/* <div className="d-flex w-lg-100 w-md-75 w-sm-50 mx-2 justify-content-center align-items-center py-4 px-5"> */}
       <Stepper

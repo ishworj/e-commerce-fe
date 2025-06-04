@@ -3,12 +3,12 @@ import { makePaymentAction } from "../features/payment/PaymentActions";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import useForm from "../hooks/useForm";
-import { Button, Form } from "react-bootstrap";
-import {
-  addressInput,
-  countryList,
-} from "../assets/form-data/ShippingAddressInput";
+import { Form } from "react-bootstrap";
+
 import { updateAddressAction } from "../features/user/userAction";
+import ShippingAddressForm from "./shippingAddress/ShippingAddressForm";
+import { updateOrderAction } from "../features/orders/orderActions";
+import { setShippingAddress } from "../features/orders/orderSlice";
 
 const ShippingAddress = () => {
   const dispatch = useDispatch();
@@ -18,9 +18,16 @@ const ShippingAddress = () => {
 
   // checkout
   const handleCheckoutAction = async (mode) => {
+    const fullAddress = `Unit ${form.unit}/${form.street}, ${form.city}, ${form.state}, ${form.postalCode}, ${form.country}`;
     if (mode === "update") {
-      const fullAddress = `Unit ${form.unit}/${form.street}, ${form.city}, ${form.state}, ${form.postalCode}, ${form.country}`;
-      dispatch(updateAddressAction({ address: fullAddress }));
+      await dispatch(setShippingAddress(fullAddress));
+      localStorage.setItem("shippingAddressNew", fullAddress);
+      if (!user.address || user.address.length === 0) {
+        dispatch(updateAddressAction({ address: fullAddress }));
+      }
+    }
+    if (mode === "existing") {
+      dispatch(setShippingAddress(fullAddress));
     }
 
     try {
@@ -36,7 +43,7 @@ const ShippingAddress = () => {
   return (
     <div className="d-flex w-100 justify-content-center my-5">
       <div className="row col-9 col-md-6 col-lg-5">
-        <h1 className="py-2">Shipping Address</h1>
+        <h1 className="py-2">Add Shipping Address</h1>
         {/* if user wants to go with existing address */}
         {user.address && (
           <>
@@ -49,49 +56,17 @@ const ShippingAddress = () => {
                 Existing address
               </button>
             </div>
-            <b className="my-4">Or, update address</b>
+            <b className="my-4">Or, New address</b>
           </>
         )}
-
+        {/*  */}
         <Form
           onSubmit={(e) => {
             e.preventDefault();
             handleCheckoutAction("update");
           }}
         >
-          {addressInput.map((item, index) => (
-            <Form.Group className="mb-3" controlId={item.name} key={index}>
-              <Form.Label>{item.label}</Form.Label>
-              <Form.Control
-                type={item.type}
-                name={item.name}
-                value={form[item.name]}
-                onChange={handleOnChange}
-                placeholder={item.placeholder}
-                required={item.required}
-              />
-            </Form.Group>
-          ))}
-          <Form.Group className="mb-3" controlId="country">
-            <Form.Label>Country</Form.Label>
-            <Form.Select
-              name="country"
-              value={form.country}
-              onChange={handleOnChange}
-              required
-            >
-              <option value="">Select Country</option>
-              {countryList.map((country, index) => (
-                <option key={index} value={country}>
-                  {country}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-
-          <Button variant="primary" type="submit" className="col-12">
-            Update Address
-          </Button>
+          <ShippingAddressForm form={form} handleOnChange={handleOnChange} />
         </Form>
       </div>
     </div>

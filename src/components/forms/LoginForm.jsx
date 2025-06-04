@@ -30,14 +30,16 @@ const LoginForm = () => {
     dispatch(loginAction(form, navigate));
   };
   return (
-    <div>
+    <div className="">
       <Form onSubmit={handleOnSubmit}>
         {UserLoginInputes.map((item) => {
           return (
             <CustomInput key={item.name} {...item} onChange={handleOnChange} />
           );
         })}
-        <Button type="submit">Login</Button>
+        <Button type="submit" className="col-3 ">
+          Login
+        </Button>
       </Form>
     </div>
   );

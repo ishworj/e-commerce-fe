@@ -18,6 +18,8 @@ const PaymentResult = () => {
 
   const { user } = useSelector((state) => state.userInfo);
   const { cart } = useSelector((state) => state.cartInfo);
+  const { shippingAddress } = useSelector((state) => state.orderInfo);
+  console.log(shippingAddress, "addreess");
   console.log(cart);
   const handleCheckoutAction = async () => {
     try {
@@ -30,7 +32,6 @@ const PaymentResult = () => {
       console.error("Error during checkout:", error);
     }
   };
-  console.log({ shippingAddress: user.address, userId: user._id });
   useEffect(() => {
     const verify = async () => {
       if (!sessionId) {
@@ -42,13 +43,9 @@ const PaymentResult = () => {
       }
 
       // consoling
-      console.log(sessionId, {
-        shippingAddress: user.address,
-        userId: user._id,
-      });
-
+      console.log(shippingAddress?.trim() ? user.address : shippingAddress);
       const data = await verifyPaymentSession(sessionId, {
-        shippingAddress: user.address,
+        shippingAddress: localStorage.getItem("shippingAddressNew"),
         userId: user._id,
       });
 
