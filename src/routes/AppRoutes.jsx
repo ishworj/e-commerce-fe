@@ -24,6 +24,9 @@ import Order from "../pages/account/Order.jsx";
 import PaymentMethod from "../pages/account/PaymentMethod.jsx";
 import AdminOrders from "../pages/account/AdminOrders.jsx";
 import Logout from "../components/Logout.jsx";
+import ShippingAddress from "../components/ShippingAddress.jsx";
+import AboutPage from "../pages/AboutPage.jsx";
+import SearchPage from "../pages/SearchPage.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 
@@ -44,6 +47,8 @@ const AppRoutes = () => {
         <Route path="/verify-user" element={<VerifyUser />} />
         <Route path="/:id" element={<ProductLandingPage />} />
         <Route path="/payment-result" element={<PaymentResult />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Route>
       {/* private routes */}
       <Route path="/user" element={<DefaultLayout />}>
@@ -53,6 +58,7 @@ const AppRoutes = () => {
         <Route path="orders" element={<Order />} />
         <Route path="payment-method" element={<PaymentMethod />} />
         <Route path="logout" element={<Logout />} />
+        <Route path="shippingAddress" element={<ShippingAddress />} />
       </Route>
 
       <Route path="/admin" element={<DefaultLayout />}>

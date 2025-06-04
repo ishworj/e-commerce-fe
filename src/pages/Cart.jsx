@@ -1,25 +1,15 @@
 import { useSelector } from "react-redux";
 import CartCard from "../components/cards/CartCard";
 import { RxCross1 } from "react-icons/rx";
-import { toast } from "react-toastify";
-import { makePaymentAction } from "../features/payment/PaymentActions.js";
+import { useNavigate } from "react-router-dom";
 
 const Cart = ({ handleCart }) => {
   const { cart } = useSelector((state) => state.cartInfo);
-
-  const handleCheckoutAction = async () => {
-    try {
-      const data = await makePaymentAction();
-      console.log(data);
-      if (data?.url) {
-        window.location.href = data.url;
-      }
-    } catch (error) {
-      toast.error("Something went wrong during checkout");
-      console.error("Error during checkout:", error);
-    }
+  const navigate = useNavigate();
+  const finaliseOrder = () => {
+    handleCart();
+    navigate("/user/shippingAddress");
   };
-
   return (
     <div className="d-flex flex-column align-items-center bg-white py-3 position-relative vh-100">
       <div
@@ -44,10 +34,7 @@ const Cart = ({ handleCart }) => {
               <CartCard item={item} key={index} />
             ))}
             <div className="d-flex justify-content-center">
-              <button
-                className="btn btn-primary mt-3"
-                onClick={handleCheckoutAction}
-              >
+              <button className="btn btn-primary mt-3" onClick={finaliseOrder}>
                 Checkout
               </button>
             </div>

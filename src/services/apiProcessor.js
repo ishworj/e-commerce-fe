@@ -18,6 +18,7 @@ export const apiProcessor = async ({
   isRefreshToken = false,
   data,
   contentType = "application/json",
+  responseType = undefined,
 }) => {
   // setting the headers
   const headers = {
@@ -35,6 +36,7 @@ export const apiProcessor = async ({
       url,
       data,
       headers,
+      responseType
     });
     return response.data;
   } catch (error) {
@@ -52,6 +54,8 @@ export const apiProcessor = async ({
         // here the accesstoken is again set in the sessionStorage
         sessionStorage.setItem("accessJWT", refreshData.accessToken);
         // returning the actual original api processor
+
+        // console.log("renew")
         return apiProcessor({
           method,
           data,

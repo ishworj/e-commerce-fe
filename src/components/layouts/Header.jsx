@@ -6,7 +6,19 @@ import BottomNavBar from "./BottomNavBar";
 
 const Header = ({ handleCart, setNavHeight }) => {
   const { user } = useSelector((state) => state.userInfo);
+
+  const [expanded, setExpanded] = useState(false);
+
   const navRef = useRef(0);
+
+  const handleInternalChange = () => {
+    const isMobile = window.innerWidth < 992;
+    if (isMobile) {
+      setExpanded(false);
+    }
+    handleCart();
+  };
+
   useEffect(() => {
     const updateHeight = () => {
       setNavHeight(navRef.current.offsetHeight);
@@ -18,6 +30,8 @@ const Header = ({ handleCart, setNavHeight }) => {
   return (
     <Navbar
       expand="lg"
+      expanded={expanded}
+      onToggle={() => setExpanded((prev) => !prev)}
       className="bg-body-tertiary w-100 sticky-top"
       ref={navRef}
     >
@@ -66,7 +80,10 @@ const Header = ({ handleCart, setNavHeight }) => {
             )}
 
             {/*  changed to button as we are expecting the div for cart to be rendered above the current page, as we are not navigating to another separate page acc to the figma design */}
-            <button className="px-3 text-start nav-link" onClick={handleCart}>
+            <button
+              className="px-3 text-start nav-link"
+              onClick={handleInternalChange}
+            >
               CART
             </button>
           </Nav>

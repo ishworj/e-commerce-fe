@@ -15,7 +15,6 @@ export const loginApi = (loginObj) => {
     isRefreshToken: false,
   });
 };
-
 // register api
 export const registerApi = (registerObj) => {
   return apiProcessor({
@@ -31,7 +30,6 @@ export const verifyUserApi = ({ sessionId, token }) => {
     url: `${rootUrl}/verify-user?sessionId=${sessionId}&t=${token}`,
   });
 };
-
 // verify email api
 export const verifyEmailAndSendOTPApi = (email) => {
   return apiProcessor({
@@ -40,7 +38,6 @@ export const verifyEmailAndSendOTPApi = (email) => {
     data: email,
   });
 };
-
 export const verifyOTPApi = ({ Otp, email }) => {
   return apiProcessor({
     method: "post",
@@ -61,7 +58,6 @@ export const updatePwApi = ({ email, Otp, password, confirmPassword }) => {
     },
   });
 };
-
 // fetch user api
 export const fetchUserApi = () => {
   try {
@@ -75,7 +71,6 @@ export const fetchUserApi = () => {
     throw error;
   }
 };
-
 // refrsh token api
 export const refreshTokenApi = async () => {
   console.log("called")
@@ -89,10 +84,10 @@ export const refreshTokenApi = async () => {
   } catch (error) {
     sessionStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    console.log(error)
     throw error;
   }
 };
-
 // logout api 
 export const logoutApi = async () => {
   return apiProcessor({
@@ -102,3 +97,14 @@ export const logoutApi = async () => {
     isPrivate: true
   })
 }
+// update address api
+export const updateAddressApi = ({ address }) => {
+  return apiProcessor({
+    method: "put",
+    url: authUrl,
+    data: {
+      address
+    },
+    isPrivate: true
+  });
+};

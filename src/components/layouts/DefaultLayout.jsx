@@ -43,7 +43,7 @@ const DefaultLayout = () => {
         {showCart && (
           <div>
             <div
-              className="bg-black position-absolute w-100 h-100 opacity-50"
+              className="bg-transparent position-absolute w-100 h-100"
               style={{ top: 0, right: 0, zIndex: 99 }}
             ></div>
             <div

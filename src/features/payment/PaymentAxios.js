@@ -8,12 +8,14 @@ export const makePaymentAxios = () => {
   });
 };
 
-export const verifyPaymentSession = (sessionId) => {
+export const verifyPaymentSession = (sessionId, orderObj) => {
+  console.log(orderObj, "orderObj in verify FFE")
   return apiProcessor({
-    method: "get",
+    method: "post",
     url:
       import.meta.env.VITE_BACKEND_BASE_URL +
       `/payment/verify-session?session_id=${sessionId}`,
     isPrivate: false,
+    data: orderObj
   });
 };

@@ -3,9 +3,8 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { verifyPaymentSession } from "../../features/payment/PaymentAxios";
 import { makePaymentAction } from "../../features/payment/PaymentActions";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { createOrderAction } from "../../features/orders/orderActions";
-import { resetCart } from "../../features/cart/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AuthRoute } from "../../routes/AuthRoutes";
 
 const PaymentResult = () => {
   const [searchParams] = useSearchParams();
@@ -13,80 +12,73 @@ const PaymentResult = () => {
   const dispatch = useDispatch();
   const sessionId = searchParams.get("session_id");
   const isSuccessParam = searchParams.get("success");
+  const [cartAfterPay, setCartAfterPay] = useState([]);
 
   const [isVerified, setIsVerified] = useState(null);
   const [status, setStatus] = useState("");
 
+  const { user } = useSelector((state) => state.userInfo);
+  console.log(user._id);
   const handleCheckoutAction = async () => {
     try {
       const data = await makePaymentAction();
-      console.log(data, "checkout");
       if (data?.url) {
         window.location.href = data.url;
       }
+      setCartAfterPay(data.cart);
+      console.log(data.cart);
     } catch (error) {
       toast.error("Something went wrong during checkout");
       console.error("Error during checkout:", error);
     }
   };
-
+  console.log({ shippingAddress: user.address, userId: user._id });
   useEffect(() => {
     const verify = async () => {
       if (!sessionId) {
         setIsVerified(false);
         return;
       }
-      try {
-        const data = await verifyPaymentSession(sessionId);
-
-        console.log(data, "verifyign the payment");
-        console.log(data.verified, 2342);
-
-        setIsVerified(data.verified);
-
-        console.log(data.verified, 999);
-
-        setStatus(data.status);
-        if (data.verified) {
-          try {
-            const responseForCart = await dispatch(
-              createOrderAction({
-                products: data.cart,
-                totalAmount: data.cart.reduce(
-                  (sum, item) => sum + item.amount_total,
-                  0
-                ),
-              })
-            );
-
-            console.log("Order creation success:", responseForCart);
-            dispatch(resetCart());
-          } catch (err) {
-            console.error("Order creation failed:", err);
-          }
-        }
-      } catch (err) {
-        setIsVerified(false);
+      if (!user || !user._id || !user.address) {
+        return <p className="text-center mt-20">Loading user info...</p>;
       }
+
+      // consoling
+      console.log(sessionId, {
+        shippingAddress: user.address,
+        userId: user._id,
+      });
+
+      const data = await verifyPaymentSession(sessionId, {
+        shippingAddress: user.address,
+        userId: user._id,
+      });
+
+      console.log(data);
+      setIsVerified(data.verified);
+      setStatus(data.status);
     };
-
-    verify();
-  }, [sessionId]);
-
-  console.log(isVerified, status);
+    user && verify();
+    // if (data) {
+    //   dispatch(deleteCartItemAction());
+    // }
+  }, [sessionId, user]);
 
   if (isVerified === null)
     return <p className="text-center mt-20">Verifying payment...</p>;
 
   if (isVerified && isSuccessParam === "true") {
     return (
-      <div className="text-center mt-20">
+      <div
+        className="text-center d-flex flex-column justify-content-center align-items-center"
+        style={{ height: "55vh", margin: "auto" }}
+      >
         <h2 className="text-3xl text-green-600">
           🎉 Thank you for your purchase!
         </h2>
         <p className="mt-4 text-gray-600">Your payment was successful.</p>
         <button
-          className="mt-6 px-4 py-2 bg-black text-white rounded"
+          className="mt-6 px-4 py-2 bg-black text-white rounded col-2"
           onClick={() => navigate("/")}
         >
           Back to Home

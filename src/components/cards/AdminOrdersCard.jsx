@@ -1,34 +1,152 @@
-import React, { useState } from "react";
-import { Accordion } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Accordion, Button, Col, Container, Form, Row } from "react-bootstrap";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { CiEdit } from "react-icons/ci";
 import { GoCopy } from "react-icons/go";
-import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
-import { TbShoppingCartCancel } from "react-icons/tb";
 import {
-  handleOnCancelOrder,
   handleOnDeleteProductFromOrder,
-  handleOnInvoiceOrder,
-  handleOnStatus,
-  handleOnUpdateOrder,
   handleOnUpdateProductFromOrder,
 } from "../../utils/ordersFunctions";
+import useForm from "../../hooks/useForm";
+import { useDispatch, useSelector } from "react-redux";
+import { filterFunctionOrders } from "../../utils/filterProducts";
+import {
+  deleteOrderAction,
+  getAdminOrderAction,
+  getOrderAction,
+  updateOrderAction,
+} from "../../features/orders/orderActions";
+import { IoCloseOutline } from "react-icons/io5";
+import { generateInvoice } from "../../features/invoice/invoiceApi";
 
-const AdminOrdersCard = ({ orders }) => {
+const AdminOrdersCard = () => {
+  const dispatch = useDispatch();
+  const { orders } = useSelector((state) => state.orderInfo);
+  const { user } = useSelector((state) => state.userInfo);
+
   const [activeKey, setActiveKey] = useState(null);
+  const [displayOrders, setDisplayOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const { form, handleOnChange, setForm } = useForm({
+    searchQuery: "",
+    status: "all",
+    date: "newest",
+  });
 
   const toggleAccordion = (key) => {
     setActiveKey((prev) => (prev === key ? null : key));
   };
 
+  // order status
+  const handleOnStatus = (e, id) => {
+    console.log(e.target.value);
+    dispatch(updateOrderAction({ _id: id, status: e.target.value }));
+  };
+  // deleting the order
+  const handleOnCancelOrder = (_id) => {
+    dispatch(deleteOrderAction(_id));
+  };
+
+  // update the order
+  const handleOnUpdateOrder = () => {
+    setIsUpdate(!isUpdate);
+  };
+
+  // invoice
+  const handleOnInvoice = async (id) => {
+    try {
+      // const invoiceUrl =
+      //   import.meta.env.VITE_BACKEND_BASE_URL + `/invoice/${id}`;
+      const response = await generateInvoice(id);
+      console.log(response);
+      const blob = new Blob([response], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch (error) {
+      console.log(error?.message);
+    }
+  };
+
+  useEffect(() => {
+    const data = filterFunctionOrders(form, orders);
+    setDisplayOrders(data);
+  }, [form, orders]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      setIsLoading(true);
+      user.role === "admin"
+        ? dispatch(getAdminOrderAction())
+        : dispatch(getOrderAction());
+      setIsLoading(false);
+    };
+    fetchOrders();
+  }, []);
+
+  if (displayOrders.length <= 0) {
+    return (
+      <p className="text-center" style={{ minHeight: "80vh" }}>
+        No orders here yet...
+      </p>
+    );
+  }
   return (
-    <div className="w-100 d-flex flex-column gap-2">
-      {orders.map((item, index) => {
-        const key = index.toString();
+    <div className="w-100 d-flex flex-column gap-2 position-relative">
+      {/* controls bar */}
+      <Form>
+        <Row>
+          {/* searching feature */}
+          <Col md={6}>
+            <Form.Control
+              name="searchQuery"
+              type="text"
+              placeholder="Search Orders ..."
+              onChange={handleOnChange}
+            />
+          </Col>
+          {/* status and the date sorting orders */}
+          <Col className="d-flex justify-content-end gap-1 gap-sm-2 mt-3 mt-sm-0">
+            {/* sorting acc to status */}
+            <Form.Group>
+              <Form.Select
+                name="status"
+                value={form.status}
+                onChange={handleOnChange}
+              >
+                <option value="all">All</option>
+                <option value="pending" className="text-warning">
+                  Pending
+                </option>
+                <option value="shipped" className="text-primary">
+                  Shipped
+                </option>
+                <option value="delivered" className="text-success">
+                  Delivered
+                </option>
+              </Form.Select>
+            </Form.Group>
+            {/* sorting acc to date */}
+            <Form.Group>
+              <Form.Select
+                name="date"
+                value={form.date}
+                onChange={handleOnChange}
+              >
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+        </Row>
+      </Form>
+      <hr />
+      {displayOrders?.map((item, index) => {
+        const key = item._id.toString();
         const isOpen = activeKey === key;
         return (
-          <Accordion activeKey={activeKey} key={key}>
+          <Accordion activeKey={activeKey} key={key} className="z-1">
             <Accordion.Item eventKey={key} className="d-flex flex-column w-100">
               <Accordion.Header
                 as="div"
@@ -44,7 +162,7 @@ const AdminOrdersCard = ({ orders }) => {
                     >
                       {/* order id */}
                       <p>
-                        <b>Order Id:</b>
+                        <b>Tracking Number:</b>
                         {item._id}
                         &nbsp;
                         <GoCopy
@@ -61,33 +179,48 @@ const AdminOrdersCard = ({ orders }) => {
                       </p>
                       {/* status */}
                       <div className="" style={{ height: "auto" }}>
-                        {item.createdAt.slice(0, 10)} |
-                        <select
-                          className={
-                            item.status === "pending"
-                              ? "text-warning"
-                              : item.status === "shipped"
-                              ? "text-primary"
-                              : "text-success"
-                          }
-                          style={{
-                            border: "0px",
-                            background: "transparent",
-                            outline: "none",
-                          }}
-                          value={item.status}
-                          onChange={handleOnStatus}
-                        >
-                          <option value="pending" className="text-warning">
-                            Pending
-                          </option>
-                          <option value="shipped" className="text-primary">
-                            Shipped
-                          </option>
-                          <option value="delivered" className="text-success">
-                            Delivered
-                          </option>
-                        </select>
+                        {item.createdAt.slice(0, 10)} | &nbsp;
+                        {user.role === "admin" ? (
+                          <select
+                            className={
+                              item.status === "pending"
+                                ? "text-warning"
+                                : item.status === "shipped"
+                                ? "text-primary"
+                                : "text-success"
+                            }
+                            style={{
+                              border: "0px",
+                              background: "transparent",
+                              outline: "none",
+                            }}
+                            value={item.status}
+                            onChange={(e) => handleOnStatus(e, item._id)}
+                          >
+                            <option value="pending" className="text-warning">
+                              Pending
+                            </option>
+                            <option value="shipped" className="text-primary">
+                              Shipped
+                            </option>
+                            <option value="delivered" className="text-success">
+                              Delivered
+                            </option>
+                          </select>
+                        ) : (
+                          <span
+                            className={
+                              item.status === "pending"
+                                ? "text-warning"
+                                : item.status === "shipped"
+                                ? "text-primary"
+                                : "text-success"
+                            }
+                          >
+                            {item.status.charAt(0).toUpperCase() +
+                              item.status.slice(1)}
+                          </span>
+                        )}
                       </div>
                     </div>
                     {/* images */}
@@ -121,23 +254,29 @@ const AdminOrdersCard = ({ orders }) => {
                         $ {item.totalAmount}
                       </p>
                       {/* buttons */}
-                      <div className="d-flex gap-2">
+                      <div className="d-flex gap-2 text-decoration-underline">
                         <div
-                          //   variant="light"
-                          onClick={handleOnInvoiceOrder}
+                          onClick={() => handleOnInvoice(item._id)}
                           title="Invoice"
+                          className=" text-primary"
                         >
-                          <LiaFileInvoiceDollarSolid className="fs-4" />
+                          Invoice
                         </div>
+                        {user.role === "admin" && (
+                          <div
+                            className="text-black"
+                            onClick={handleOnUpdateOrder}
+                            title="Update"
+                          >
+                            Shipping Address
+                          </div>
+                        )}
                         <div
-                          //   variant="primary"
-                          onClick={handleOnUpdateOrder}
-                          title="Update"
+                          className="text-danger"
+                          onClick={() => handleOnCancelOrder(item._id)}
+                          title="Cancel"
                         >
-                          <CiEdit className="fs-4 text-primary" />
-                        </div>
-                        <div onClick={handleOnCancelOrder} title="Cancel">
-                          <TbShoppingCartCancel className="fs-4 text-danger" />
+                          Cancel
                         </div>
                       </div>
                     </div>
@@ -147,7 +286,10 @@ const AdminOrdersCard = ({ orders }) => {
               <Accordion.Body className="d-flex flex-column gap-2">
                 {item.products.map((product, index) => {
                   return (
-                    <div className="d-flex align-items-center justify-content-between">
+                    <div
+                      className="d-flex align-items-center justify-content-between"
+                      key={index}
+                    >
                       <div className="d-flex flex-row gap-2" key={index}>
                         <img
                           src={product.productImages}
@@ -166,20 +308,22 @@ const AdminOrdersCard = ({ orders }) => {
                         </div>
                       </div>
                       {/* actions for the particular product within the order */}
-                      <div className="d-flex gap-3">
-                        <CiEdit
-                          className="fs-4 text-primary"
-                          style={{ cursor: "pointer" }}
-                          title="Update"
-                          onClick={handleOnUpdateProductFromOrder}
-                        />
-                        <AiOutlineDelete
-                          className="fs-4 text-danger"
-                          style={{ cursor: "pointer" }}
-                          title="Delete"
-                          onClick={handleOnDeleteProductFromOrder}
-                        />
-                      </div>
+                      {user.role === "admin" && (
+                        <div className="d-flex gap-3">
+                          <CiEdit
+                            className="fs-4 text-primary"
+                            style={{ cursor: "pointer" }}
+                            title="Update"
+                            onClick={handleOnUpdateProductFromOrder}
+                          />
+                          <AiOutlineDelete
+                            className="fs-4 text-danger"
+                            style={{ cursor: "pointer" }}
+                            title="Delete"
+                            onClick={handleOnDeleteProductFromOrder}
+                          />
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -188,6 +332,26 @@ const AdminOrdersCard = ({ orders }) => {
           </Accordion>
         );
       })}
+      {isUpdate && (
+        <>
+          <Container
+            className="position-absolute z-3 text-black w-50 p-2 px-3 rounded-2 updateBox"
+            style={{ top: "0", left: "25%", height: "500px" }}
+          >
+            <div className="d-flex flex-column align-items-center justify-content-center">
+              <header className="d-flex justify-content-between align-items-center mt-2 w-100">
+                <h1>Update!</h1>
+                <IoCloseOutline
+                  className="fs-1"
+                  onClick={handleOnUpdateOrder}
+                  style={{ cursor: "pointer" }}
+                />
+              </header>
+              <hr className="w-100" />
+            </div>
+          </Container>
+        </>
+      )}
     </div>
   );
 };
