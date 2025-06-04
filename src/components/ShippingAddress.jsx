@@ -13,21 +13,23 @@ import { updateAddressAction } from "../features/user/userAction";
 const ShippingAddress = () => {
   const dispatch = useDispatch();
   const { handleOnChange, form, setForm } = useForm({});
-  const handleCheckoutAction = async (e) => {
-    e.preventDefault();
-    const fullAddress = `Unit ${form.unit}/${form.street}, ${form.city}, ${form.state}, ${form.postalCode}, ${form.country}`;
-    console.log(fullAddress);
-    dispatch(updateAddressAction({ address: fullAddress }));
+
+  const { user } = useSelector((state) => state.userInfo);
+
+  // checkout
+  const handleCheckoutAction = async (mode) => {
+    if (mode === "update") {
+      const fullAddress = `Unit ${form.unit}/${form.street}, ${form.city}, ${form.state}, ${form.postalCode}, ${form.country}`;
+      dispatch(updateAddressAction({ address: fullAddress }));
+    }
 
     try {
       const data = await makePaymentAction();
-      console.log(data);
       if (data?.url) {
         window.location.href = data.url;
       }
     } catch (error) {
       toast.error("Something went wrong during checkout");
-      console.error("Error during checkout:", error);
     }
   };
 
@@ -35,9 +37,30 @@ const ShippingAddress = () => {
     <div className="d-flex w-100 justify-content-center my-5">
       <div className="row col-9 col-md-6 col-lg-5">
         <h1 className="py-2">Shipping Address</h1>
-        <Form onSubmit={handleCheckoutAction}>
-          {addressInput.map((item) => (
-            <Form.Group className="mb-3" controlId={item.name}>
+        {/* if user wants to go with existing address */}
+        {user.address && (
+          <>
+            <div className="d-flex justify-content-between align-items-center">
+              <p className="mb-0 border px-3 rounded">{user.address}</p>
+              <button
+                className="btn btn-link"
+                onClick={() => handleCheckoutAction("existing")}
+              >
+                Existing address
+              </button>
+            </div>
+            <b className="my-4">Or, update address</b>
+          </>
+        )}
+
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleCheckoutAction("update");
+          }}
+        >
+          {addressInput.map((item, index) => (
+            <Form.Group className="mb-3" controlId={item.name} key={index}>
               <Form.Label>{item.label}</Form.Label>
               <Form.Control
                 type={item.type}
@@ -67,7 +90,7 @@ const ShippingAddress = () => {
           </Form.Group>
 
           <Button variant="primary" type="submit" className="col-12">
-            Finalise Order
+            Update Address
           </Button>
         </Form>
       </div>
