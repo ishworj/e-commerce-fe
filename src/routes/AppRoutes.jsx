@@ -23,11 +23,11 @@ import PaymentResult from "../pages/payment/PaymentResult.jsx";
 import Order from "../pages/order/Order.jsx";
 import PaymentMethod from "../pages/order/PaymentMethod.jsx";
 import AdminOrders from "../pages/order/AdminOrders.jsx";
-import Logout from "../components/Logout.jsx";
 import ShippingAddress from "../components/ShippingAddress.jsx";
 import AboutPage from "../pages/AboutPage.jsx";
 import SearchPage from "../pages/SearchPage.jsx";
 import AddressUpdate from "../components/shippingAddress/AddressUpdate.jsx";
+import Logout from "../pages/auth/Logout.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 

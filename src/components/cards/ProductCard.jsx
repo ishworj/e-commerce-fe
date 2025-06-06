@@ -9,7 +9,7 @@ import { createCartAction } from "../../features/cart/cartAction";
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
   const { _id, name, description, price, images } = item;
-  console.log(item);
+  // console.log(item);
 
   const handleOnProductClick = (_id) => {
     dispatch(getSingleProductAction(_id));
@@ -24,7 +24,7 @@ const ProductCard = ({ item }) => {
   return (
     <Card
       // width: "18em",
-      style={{ height: "22em" }}
+      style={{ height: "30em" }}
       className="mb-2 mb-md-0 shadow-lg border-0"
       onClick={() => handleOnProductClick(_id)}
     >

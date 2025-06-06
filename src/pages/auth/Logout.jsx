@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { logoutAction } from "../features/user/userAction";
 import { useNavigate } from "react-router-dom";
-import { setMenu } from "../features/user/userSlice";
+import { logoutAction } from "../../features/user/userAction";
+import { setMenu } from "../../features/user/userSlice";
 
 const Logout = () => {
   const dispatch = useDispatch();

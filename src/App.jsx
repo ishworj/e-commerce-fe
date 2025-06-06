@@ -9,6 +9,7 @@ import { autoLogin } from "./features/user/userAction.js";
 import { getOrderAction } from "./features/orders/orderActions.js";
 import { ThreeCircles } from "react-loader-spinner";
 import { finsishAppLoading } from "./features/loading/LoadingSlice.js";
+import { getOrCreateSession } from "./utils/sessionHistory.js";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const App = () => {
     const login = async () => {
       await dispatch(autoLogin());
     };
+    getOrCreateSession();
     dispatch(getPublicProductAction());
     dispatch(getAllCategoriesAction());
     dispatch(fetchCartAction());
@@ -52,15 +54,15 @@ const App = () => {
       <AppRoutes />
       <ToastContainer
         position="top-center"
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
+        newestOnTop
+        closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme="colored"
         transition={Bounce}
       />
     </div>

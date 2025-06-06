@@ -56,8 +56,6 @@ const AdminOrdersCard = () => {
   // invoice
   const handleOnInvoice = async (id) => {
     try {
-      // const invoiceUrl =
-      //   import.meta.env.VITE_BACKEND_BASE_URL + `/invoice/${id}`;
       const response = await generateInvoice(id);
       console.log(response);
       const blob = new Blob([response], { type: "application/pdf" });
@@ -89,13 +87,6 @@ const AdminOrdersCard = () => {
     fetchOrders();
   }, []);
 
-  if (displayOrders.length <= 0) {
-    return (
-      <p className="text-center" style={{ minHeight: "80vh" }}>
-        No orders here yet...
-      </p>
-    );
-  }
   return (
     <div className="w-100 d-flex flex-column gap-2 position-relative">
       {/* controls bar */}
@@ -146,6 +137,12 @@ const AdminOrdersCard = () => {
         </Row>
       </Form>
       <hr />
+      {displayOrders.length <= 0 && (
+        <p className="text-center" style={{ minHeight: "80vh" }}>
+          No orders here yet...
+        </p>
+      )}
+
       {displayOrders?.map((item, index) => {
         const key = item._id.toString();
         const isOpen = activeKey === key;

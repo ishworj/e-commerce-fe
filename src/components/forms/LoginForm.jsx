@@ -27,7 +27,10 @@ const LoginForm = () => {
     //prevent default
     e.preventDefault();
     // call loginAction
-    dispatch(loginAction(form, navigate));
+    const isLogin = dispatch(loginAction(form));
+    if (isLogin) {
+      navigate("/");
+    }
   };
   return (
     <div className="">

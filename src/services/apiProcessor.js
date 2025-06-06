@@ -21,13 +21,23 @@ export const apiProcessor = async ({
   responseType = undefined,
 }) => {
   // setting the headers
+  // const headers = {
+  //   Authorization: isPrivate
+  //     ? getAccessJWT()
+  //     : isRefreshToken
+  //       ? getRefreshJWT()
+  //       : null,
+  //   "Content-type": contentType,
+  // };
+  const token = isPrivate
+    ? getAccessJWT()
+    : isRefreshToken
+      ? getRefreshJWT()
+      : null;
+
   const headers = {
-    Authorization: isPrivate
-      ? getAccessJWT()
-      : isRefreshToken
-        ? getRefreshJWT()
-        : null,
     "Content-type": contentType,
+    ...(token && { Authorization: token }), // Only include if token exists
   };
 
   try {
@@ -54,6 +64,7 @@ export const apiProcessor = async ({
         // here the accesstoken is again set in the sessionStorage
         sessionStorage.setItem("accessJWT", refreshData.accessToken);
         // returning the actual original api processor
+
 
         // console.log("renew")
         return apiProcessor({
