@@ -27,22 +27,17 @@ const LoginForm = () => {
     //prevent default
     e.preventDefault();
     // call loginAction
-    const isLogin = dispatch(loginAction(form));
-    if (isLogin) {
-      navigate("/");
-    }
+    dispatch(loginAction(form, navigate));
   };
   return (
-    <div className="">
+    <div>
       <Form onSubmit={handleOnSubmit}>
         {UserLoginInputes.map((item) => {
           return (
             <CustomInput key={item.name} {...item} onChange={handleOnChange} />
           );
         })}
-        <Button type="submit" className="col-3 ">
-          Login
-        </Button>
+        <Button type="submit">Login</Button>
       </Form>
     </div>
   );

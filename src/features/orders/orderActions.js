@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { createOrder, deleteOrderApi, deleteOrderItemApi, getAllOrders, getOrder, updateOrder } from "./orderAxios"
+import { createOrder, deleteOrderApi, getAllOrders, getOrder, updateOrder } from "./orderAxios"
 import { setOrders } from "./orderSlice";
 
 export const createOrderAction = (obj) => async (dispatch) => {
@@ -23,7 +23,7 @@ export const getOrderAction = () => async (dispatch) => {
 export const getAdminOrderAction = () => async (dispatch) => {
     const pending = getAllOrders();
     const { status, message, orders } = await pending;
-    await dispatch(setOrders(orders))
+    dispatch(setOrders(orders))
     if (status === "success") {
         return true
     }
@@ -31,7 +31,7 @@ export const getAdminOrderAction = () => async (dispatch) => {
 export const updateOrderAction = (updateObj) => async (dispatch) => {
     const pending = updateOrder(updateObj);
     toast.promise(pending, {
-        pending: "Updating..."
+        pending: "Updating the status of the order..."
     })
     const { status, message } = await pending;
     if (status === "success") {
@@ -41,18 +41,6 @@ export const updateOrderAction = (updateObj) => async (dispatch) => {
 }
 export const deleteOrderAction = (_id) => async (dispatch) => {
     const pending = deleteOrderApi(_id);
-    toast.promise(pending, {
-        pending: "Cancelling the Order ..."
-    })
-    const { status, message } = await pending;
-    if (status === "success") {
-        dispatch(getAdminOrderAction())
-        dispatch(getOrderAction())
-    }
-    toast[status](message);
-}
-export const deleteOrderItemAction = (_id, ID) => async (dispatch) => {
-    const pending = deleteOrderItemApi(_id, ID);
     toast.promise(pending, {
         pending: "Deleting the Order ..."
     })
