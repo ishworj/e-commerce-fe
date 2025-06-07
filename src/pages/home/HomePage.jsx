@@ -4,7 +4,6 @@ import ProductCard from "../../components/cards/ProductCard";
 import CarouselHomePage from "../../components/carousel/CarouselHomePage";
 import { useSelector } from "react-redux";
 import { createUserHistoryAction } from "../../features/userHistory/userHistoryAction";
-import { style } from "framer-motion/client";
 
 const HomePage = () => {
   const { publicProducts } = useSelector((state) => state.productInfo);
@@ -34,7 +33,7 @@ const HomePage = () => {
                     categoryId: item.category,
                     action: "click",
                   });
-                  alert("history created ");
+                  // alert("history created ");
                   window.location.href = `/${item._id}`;
                 }}
               >

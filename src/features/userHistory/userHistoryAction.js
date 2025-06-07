@@ -1,17 +1,18 @@
 import { getOrCreateSession } from "../../utils/sessionHistory"
 import { createUserHistory, getUserHistory } from "./userHistoryAPI";
 
+
 export const createUserHistoryAction = async (data) => {
     console.log("creating")
+    const { userId } = data;
+    const sessionId = !userId ? getOrCreateSession() : null;
+    console.log(userId, sessionId)
     try {
-        const { userId } = data;
-        const sessionId = !userId ? getOrCreateSession() : null;
-
         const payload = {
             ...(userId ? { userId } : { guestSessionId: sessionId }),
             ...data
         };
-
+        console.log(payload, 999)
         return await createUserHistory(payload);
     } catch (error) {
         console.log(error?.message)
