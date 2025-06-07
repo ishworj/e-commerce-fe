@@ -14,25 +14,24 @@ import { toast } from "react-toastify";
 import { resetUser, setUser } from "./userSlice.js";
 
 // login action
-export const loginAction = (form, navigate) => async (dispatch) => {
+export const loginAction = (form) => async (dispatch) => {
   const pending = loginApi({ ...form });
   toast.promise(pending, {
     pending: "Logging..."
   })
   const { status, message, user, accessToken, refreshToken } = await pending;
   toast[status](message);
-  if (status == "success") {
+  if (status === "success") {
     //upddate storage session for access token
     sessionStorage.setItem("accessJWT", accessToken);
     // update local storage for refresh token
     localStorage.setItem("refreshJWT", refreshToken);
     //update the store
     dispatch(setUser(user));
-    setTimeout(() => {
-      navigate("/");
-    }, 0);
-  }
-};
+    return true
+  };
+
+}
 
 // register action
 export const registerUserAction = (registerObj) => async (dispatch) => {
@@ -109,10 +108,10 @@ export const fetchUserAction = () => async (dispatch) => {
     const { foundUser } = await fetchUserApi();
     // console.log(data, 666)
 
-    foundUser && dispatch(setUser(foundUser));
+    foundUser && await dispatch(setUser(foundUser));
   } catch (error) {
     console.log(error);
-    if (error.messgae === "jwt expired") {
+    if (error.message === "jwt expired") {
       sessionStorage.removeItem("accessJWT");
       localStorage.removeItem("refreshJWT");
     }
@@ -178,4 +177,7 @@ export const updateAddressAction = (obj) => async (dispatch) => {
     dispatch(fetchUserAction())
   }
   toast[status](message)
+  if (status === "success") {
+    return true
+  }
 }

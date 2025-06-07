@@ -19,13 +19,19 @@ const CartCard = ({ item }) => {
   };
 
   const handleQuantityChange = (mode, _id) => {
+    console.log(item, "before");
+    const currentQty = quantity;
+    console.log(currentQty);
     let qty =
       mode == "add"
-        ? itemCartQuantiy + 1
-        : itemCartQuantiy < 1
-        ? itemCartQuantiy
-        : itemCartQuantiy - 1;
-    qty === 0 ? dispatch(removeItem(_id)) : "";
+        ? currentQty + 1
+        : currentQty < 1
+        ? currentQty
+        : currentQty - 1;
+    // qty === 0 ? dispatch(removeItem(_id)) : "";
+    console.log(qty);
+    if (qty < 0) return;
+    console.log(qty);
     setItemCartQuantiy(qty);
     setTotalPrice(qty * price);
     dispatch(
@@ -35,6 +41,8 @@ const CartCard = ({ item }) => {
         totalPrice: qty * price,
       })
     );
+    console.log(qty);
+    console.log(item, "after");
   };
 
   useEffect(() => {

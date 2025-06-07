@@ -4,12 +4,7 @@ import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { verifyEmailAndSendOTPAction } from "../../features/user/userAction";
 
-const VerifyEmail = ({
-  handleOnChange,
-  form,
-  setIsVerifyOtpUI,
-  setHeading,
-}) => {
+const VerifyEmail = ({ handleOnChange, form, setIsVerifyOtpUI }) => {
   const dispatch = useDispatch();
   const [isEmail, setIsEmail] = useState(false);
 
@@ -20,7 +15,6 @@ const VerifyEmail = ({
     );
     if (response === true) {
       setIsVerifyOtpUI(true);
-      setHeading("Enter your OTP...");
       setIsEmail(true);
     }
   };

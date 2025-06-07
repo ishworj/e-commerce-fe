@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { UserLayout } from "../../components/layouts/UserLayout";
-import { setMenu } from "../../features/user/userSlice";
-import AdminOrdersCard from "../../components/cards/AdminOrdersCard";
 import { useDispatch } from "react-redux";
+import { setMenu } from "../../features/user/userSlice";
+import { UserLayout } from "../../components/layouts/UserLayout";
+import AdminOrdersCard from "../../components/cards/AdminOrdersCard";
 
 const AdminOrders = () => {
   const dispatch = useDispatch();

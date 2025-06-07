@@ -1,15 +1,21 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CartCard from "../components/cards/CartCard";
 import { RxCross1 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { fetchCartAction } from "../features/cart/cartAction";
 
 const Cart = ({ handleCart }) => {
   const { cart } = useSelector((state) => state.cartInfo);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const finaliseOrder = () => {
     handleCart();
     navigate("/user/shippingAddress");
   };
+  useEffect(() => {
+    dispatch(fetchCartAction());
+  }, []);
   return (
     <div className="d-flex flex-column align-items-center bg-white py-3 position-relative vh-100">
       <div
