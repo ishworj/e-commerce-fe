@@ -1,12 +1,11 @@
 import { toast } from "react-toastify";
 import {
   createCartApi,
-  deleteCartAxios,
   deleteCartItemAxios,
   fetchCartApi,
   updateCartItemAxios,
 } from "./cartAxios";
-import { resetCart, setCart } from "./cartSlice";
+import { setCart } from "./cartSlice";
 
 export const createCartAction = (_id, quantity) => async (dispatch) => {
   const pending = createCartApi(_id, quantity);
@@ -34,23 +33,11 @@ export const deleteCartItemAction = (_id) => async (dispatch) => {
 };
 export const updateCartItemAction =
   ({ quantity, _id, totalPrice }) =>
-    async (dispatch) => {
-      const { status, message, response } = await updateCartItemAxios({
-        quantity,
-        _id,
-        totalPrice,
-      });
-      dispatch(fetchCartAction())
-    };
-export const deleteCartAction = () => async (dispatch) => {
-  const pending = deleteCartAxios();
-  toast.promise(pending, {
-    pending: "Deleting ...",
-  });
-  const { status, message } = await pending;
-  // toast[status](message);
-  if (status === "success") {
-    dispatch(resetCart())
-    dispatch(fetchCartAction());
-  }
-};
+  async (dispatch) => {
+    const { status, message, response } = await updateCartItemAxios({
+      quantity,
+      _id,
+      totalPrice,
+    });
+    // dispatch(fetchCartAction())
+  };

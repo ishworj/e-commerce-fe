@@ -3,28 +3,18 @@ import { Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { getSingleProductAction } from "../../features/products/productActions";
 import Stars from "../rating/Stars";
-import { BiSolidCartAdd } from "react-icons/bi";
-import { createCartAction } from "../../features/cart/cartAction";
 
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
-  const { _id, name, description, price, images } = item;
-  // console.log(item);
+  const { name, description, price, images, _id } = item;
 
   const handleOnProductClick = (_id) => {
     dispatch(getSingleProductAction(_id));
   };
-
-  const handleAddToCart = (_id) => {
-    console.log("clcicked");
-    const quantity = 1;
-    dispatch(createCartAction(_id, quantity));
-  };
-
   return (
     <Card
       // width: "18em",
-      style={{ height: "30em" }}
+      style={{ height: "22em" }}
       className="mb-2 mb-md-0 shadow-lg border-0"
       onClick={() => handleOnProductClick(_id)}
     >
@@ -33,29 +23,18 @@ const ProductCard = ({ item }) => {
         className="d-flex flex-column justify-content-between"
         style={{ height: "25%" }}
       >
-        <b style={{ fontSize: "11px", height: "10px" }}>
+        <b style={{ fontSize: "11px" }}>
           {name.slice(0, 50)}
           {name.length > 50 ? "..." : ""}
         </b>
-        <div className="text-end my-1">
-          <button
-            className="fs-3 btn"
-            title="Add to Cart"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              handleAddToCart(_id);
-            }}
-          >
-            <BiSolidCartAdd />
-          </button>
-        </div>
         <div
-          className="d-flex justify-content-between align-items-center py-2"
+          className="d-flex justify-content-between"
           style={{ height: "20px" }}
         >
-          $ {price}
-          <Stars />
+          <Card.Title style={{ fontSize: "15px" }}>$ {price}</Card.Title>
+          <div style={{ fontSize: "10px" }}>
+            <Stars />
+          </div>
         </div>
       </Card.Body>
     </Card>

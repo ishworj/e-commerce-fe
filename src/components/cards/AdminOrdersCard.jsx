@@ -13,19 +13,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { filterFunctionOrders } from "../../utils/filterProducts";
 import {
   deleteOrderAction,
-  deleteOrderItemAction,
   getAdminOrderAction,
   getOrderAction,
   updateOrderAction,
 } from "../../features/orders/orderActions";
 import { IoCloseOutline } from "react-icons/io5";
 import { generateInvoice } from "../../features/invoice/invoiceApi";
-import ShippingAddressForm from "../shippingAddress/ShippingAddressForm";
-import { useNavigate } from "react-router-dom";
 
 const AdminOrdersCard = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { orders } = useSelector((state) => state.orderInfo);
   const { user } = useSelector((state) => state.userInfo);
 
@@ -53,9 +49,16 @@ const AdminOrdersCard = () => {
     dispatch(deleteOrderAction(_id));
   };
 
+  // update the order
+  const handleOnUpdateOrder = () => {
+    setIsUpdate(!isUpdate);
+  };
+
   // invoice
   const handleOnInvoice = async (id) => {
     try {
+      // const invoiceUrl =
+      //   import.meta.env.VITE_BACKEND_BASE_URL + `/invoice/${id}`;
       const response = await generateInvoice(id);
       console.log(response);
       const blob = new Blob([response], { type: "application/pdf" });
@@ -64,11 +67,6 @@ const AdminOrdersCard = () => {
     } catch (error) {
       console.log(error?.message);
     }
-  };
-
-  // remove items from the order
-  const handleItemsOnOrder = (id, ID) => {
-    dispatch(deleteOrderItemAction(id, ID));
   };
 
   useEffect(() => {
@@ -87,6 +85,13 @@ const AdminOrdersCard = () => {
     fetchOrders();
   }, []);
 
+  if (displayOrders.length <= 0) {
+    return (
+      <p className="text-center" style={{ minHeight: "80vh" }}>
+        No orders here yet...
+      </p>
+    );
+  }
   return (
     <div className="w-100 d-flex flex-column gap-2 position-relative">
       {/* controls bar */}
@@ -137,12 +142,6 @@ const AdminOrdersCard = () => {
         </Row>
       </Form>
       <hr />
-      {displayOrders.length <= 0 && (
-        <p className="text-center" style={{ minHeight: "80vh" }}>
-          No orders here yet...
-        </p>
-      )}
-
       {displayOrders?.map((item, index) => {
         const key = item._id.toString();
         const isOpen = activeKey === key;
@@ -151,8 +150,7 @@ const AdminOrdersCard = () => {
             <Accordion.Item eventKey={key} className="d-flex flex-column w-100">
               <Accordion.Header
                 as="div"
-                className="justify-items-around align-items-center row w-100 orderAccordion"
-                style={{ minHeight: "12rem" }}
+                className="justify-items-around align-items-center row w-100"
                 onClick={(e) => e.preventDefault()}
               >
                 <div className="d-flex flex-column gap-2 w-100">
@@ -162,9 +160,9 @@ const AdminOrdersCard = () => {
                       className="d-flex justify-content-between flex-wrap"
                       style={{ width: "98%" }}
                     >
-                      {/* tracking id */}
-                      <p className="mb-0 ">
-                        <b>Tracking Id: </b>
+                      {/* order id */}
+                      <p>
+                        <b>Tracking Number:</b>
                         {item._id}
                         &nbsp;
                         <GoCopy
@@ -179,7 +177,6 @@ const AdminOrdersCard = () => {
                           title="Copy Order Id"
                         />
                       </p>
-
                       {/* status */}
                       <div className="" style={{ height: "auto" }}>
                         {item.createdAt.slice(0, 10)} | &nbsp;
@@ -226,7 +223,6 @@ const AdminOrdersCard = () => {
                         )}
                       </div>
                     </div>
-
                     {/* images */}
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="d-flex gap-2 flex-wrap">
@@ -251,29 +247,11 @@ const AdminOrdersCard = () => {
                     </div>
                     {/* total amounts and action buttons*/}
                     <div
-                      className="d-flex align-items-end justify-content-between"
+                      className="d-flex align-items-center justify-content-between"
                       style={{ width: "98%" }}
                     >
-                      <p
-                        className="d-flex flex-column w-75"
-                        style={{ height: "auto" }}
-                      >
+                      <p className="mb-0" style={{ height: "20px" }}>
                         $ {item.totalAmount}
-                        {/* shipping address */}
-                        {user.role === "admin" && (
-                          <span className="mb-0 ">
-                            <b>Shipping to: </b>
-                            {item.shippingAddress} &nbsp;
-                            <a
-                              href=""
-                              onClick={() =>
-                                navigate(`/user/address/${item._id}`)
-                              }
-                            >
-                              Change
-                            </a>
-                          </span>
-                        )}
                       </p>
                       {/* buttons */}
                       <div className="d-flex gap-2 text-decoration-underline">
@@ -284,6 +262,15 @@ const AdminOrdersCard = () => {
                         >
                           Invoice
                         </div>
+                        {user.role === "admin" && (
+                          <div
+                            className="text-black"
+                            onClick={handleOnUpdateOrder}
+                            title="Update"
+                          >
+                            Shipping Address
+                          </div>
+                        )}
                         <div
                           className="text-danger"
                           onClick={() => handleOnCancelOrder(item._id)}
@@ -333,9 +320,7 @@ const AdminOrdersCard = () => {
                             className="fs-4 text-danger"
                             style={{ cursor: "pointer" }}
                             title="Delete"
-                            onClick={() =>
-                              handleItemsOnOrder(item._id, product.id)
-                            }
+                            onClick={handleOnDeleteProductFromOrder}
                           />
                         </div>
                       )}
@@ -348,10 +333,10 @@ const AdminOrdersCard = () => {
         );
       })}
       {isUpdate && (
-        <div>
+        <>
           <Container
             className="position-absolute z-3 text-black w-50 p-2 px-3 rounded-2 updateBox"
-            style={{ top: "0", left: "25%", height: "auto" }}
+            style={{ top: "0", left: "25%", height: "500px" }}
           >
             <div className="d-flex flex-column align-items-center justify-content-center">
               <header className="d-flex justify-content-between align-items-center mt-2 w-100">
@@ -363,20 +348,9 @@ const AdminOrdersCard = () => {
                 />
               </header>
               <hr className="w-100" />
-              <Form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleCheckoutAction("update");
-                }}
-              >
-                <ShippingAddressForm
-                  form={form}
-                  handleOnChange={handleOnChange}
-                />
-              </Form>
             </div>
           </Container>
-        </div>
+        </>
       )}
     </div>
   );

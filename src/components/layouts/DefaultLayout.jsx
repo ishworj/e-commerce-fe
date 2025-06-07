@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
@@ -12,7 +12,6 @@ const DefaultLayout = () => {
   const [navHeight, setNavHeight] = useState(0);
   const [showCart, setShowCart] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const cartRef = useRef(null);
 
   const handleCart = () => {
     if (isCart) {
@@ -27,21 +26,6 @@ const DefaultLayout = () => {
     }
     setIsCart(!isCart);
   };
-  const useClickOutside = (cartRef, onClickOutside) => {
-    useEffect(() => {
-      const handleClick = (e) => {
-        if (cartRef.current && !cartRef.current.contains(e.target)) {
-          onClickOutside();
-        }
-      };
-      document.addEventListener("mousedown", handleClick);
-      return () => {
-        document.removeEventListener("mousedown", handleClick);
-      };
-    }, [cartRef, onClickOutside]);
-  };
-
-  useClickOutside(cartRef, handleCart);
 
   useEffect(() => {
     if (isCart && !showCart) {
@@ -57,7 +41,11 @@ const DefaultLayout = () => {
         <Outlet />
 
         {showCart && (
-          <div ref={cartRef} className="border-start border-dark">
+          <div>
+            <div
+              className="bg-transparent position-absolute w-100 h-100"
+              style={{ top: 0, right: 0, zIndex: 99 }}
+            ></div>
             <div
               className={`col-12 col-lg-6 col-md-8 bg-white overflow-y-scroll ${
                 isClosing ? "cart-animation-close" : "cart-animation-open"

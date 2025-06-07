@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setMenu } from "../../features/user/userSlice";
 import { UserLayout } from "../../components/layouts/UserLayout";
 import { Container } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { setMenu } from "../../features/user/userSlice";
 
 const PaymentMethod = () => {
   const dispatch = useDispatch();

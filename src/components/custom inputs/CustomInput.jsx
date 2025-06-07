@@ -3,8 +3,8 @@ import { Form } from "react-bootstrap";
 
 const CustomInput = ({ label, passRef, type, options = [], ...rest }) => {
   return (
-    <Form.Group className="mb-3 text-start" controlId={rest.name}>
-      <Form.Label className="">{label}</Form.Label>
+    <Form.Group className="mb-3" controlId={rest.name}>
+      <Form.Label>{label}</Form.Label>
 
       {type === "select" ? (
         <Form.Select {...rest} ref={passRef}>

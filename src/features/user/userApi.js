@@ -73,7 +73,7 @@ export const fetchUserApi = () => {
 };
 // refrsh token api
 export const refreshTokenApi = async () => {
-  // console.log("called")
+  console.log("called")
   try {
     return apiProcessor({
       method: "get",
