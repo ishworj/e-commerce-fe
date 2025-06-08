@@ -7,7 +7,7 @@ export const createCategoryAction = (formData) => async (dispatch) => {
   const { status, message } = await pending;
 
   if (status === "success") {
-    dispatch(getAllCategoriesAction()); 
+    dispatch(getAllCategoriesAction());
   }
 
   toast[status](message);
@@ -15,7 +15,7 @@ export const createCategoryAction = (formData) => async (dispatch) => {
 };
 
 export const getAllCategoriesAction = () => async (dispatch) => {
-  const { status, categories } = await getAllCategoriesApi();
+  const { status, categories, message } = await getAllCategoriesApi();
   if (status == "success") {
     dispatch(setCategories(categories));
   } else {
