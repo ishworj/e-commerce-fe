@@ -4,7 +4,7 @@ import { verifyPaymentSession } from "../../features/payment/PaymentAxios";
 import { makePaymentAction } from "../../features/payment/PaymentActions";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCartAction } from "../../features/cart/cartAction";
+import { AuthRoute } from "../../routes/AuthRoutes";
 
 const PaymentResult = () => {
   const [searchParams] = useSearchParams();
@@ -12,26 +12,27 @@ const PaymentResult = () => {
   const dispatch = useDispatch();
   const sessionId = searchParams.get("session_id");
   const isSuccessParam = searchParams.get("success");
+  const [cartAfterPay, setCartAfterPay] = useState([]);
 
   const [isVerified, setIsVerified] = useState(null);
   const [status, setStatus] = useState("");
 
   const { user } = useSelector((state) => state.userInfo);
-  const { cart } = useSelector((state) => state.cartInfo);
-  const { shippingAddress } = useSelector((state) => state.orderInfo);
-  console.log(shippingAddress, "addreess");
-  console.log(cart);
+  console.log(user._id);
   const handleCheckoutAction = async () => {
     try {
       const data = await makePaymentAction();
       if (data?.url) {
         window.location.href = data.url;
       }
+      setCartAfterPay(data.cart);
+      console.log(data.cart);
     } catch (error) {
       toast.error("Something went wrong during checkout");
       console.error("Error during checkout:", error);
     }
   };
+  console.log({ shippingAddress: user.address, userId: user._id });
   useEffect(() => {
     const verify = async () => {
       if (!sessionId) {
@@ -43,19 +44,24 @@ const PaymentResult = () => {
       }
 
       // consoling
-      console.log(shippingAddress?.trim() ? user.address : shippingAddress);
-      const data = await verifyPaymentSession(sessionId, {
-        shippingAddress: localStorage.getItem("shippingAddressNew"),
+      console.log(sessionId, {
+        shippingAddress: user.address,
         userId: user._id,
       });
 
+      const data = await verifyPaymentSession(sessionId, {
+        shippingAddress: user.address,
+        userId: user._id,
+      });
+
+      console.log(data);
       setIsVerified(data.verified);
       setStatus(data.status);
-      if (data.verified) {
-        dispatch(deleteCartAction());
-      }
     };
     user && verify();
+    // if (data) {
+    //   dispatch(deleteCartItemAction());
+    // }
   }, [sessionId, user]);
 
   if (isVerified === null)

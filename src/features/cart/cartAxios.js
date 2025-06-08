@@ -36,11 +36,3 @@ export const updateCartItemAxios = ({ quantity, _id, totalPrice }) => {
     data: { quantity, _id, totalPrice },
   });
 };
-
-export const deleteCartAxios = () => {
-  return apiProcessor({
-    method: "delete",
-    url: cartUrl,
-    isPrivate: true
-  });
-};

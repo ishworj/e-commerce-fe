@@ -31,9 +31,9 @@ const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
   return (
     // selectedProduct detail
     <div className="col-sm-12 col-md-8 rounded p-3" style={{ height: "auto" }}>
-      <strong className="fs-2" style={{ width: "90%" }}>
+      <h2 className="fs-5" style={{ width: "90%" }}>
         {selectedProduct.name}
-      </strong>
+      </h2>
       <div className="fs-3 w-100 d-flex flex-column align-items-start w-100 justify-content-center py-3">
         <div className="fs-5 border text-primary">tag</div>
         <div className="d-flex justify-content-between w-100">
