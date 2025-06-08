@@ -10,11 +10,11 @@ export const createOrder = (obj) => {
     })
 }
 
-export const updateOrder = ({ _id, status }) => {
+export const updateOrder = (obj) => {
     return apiProcessor({
         method: "put",
-        url: `${orderUrl}/status`,
-        data: { _id, status },
+        url: `${orderUrl}`,
+        data: obj,
         isPrivate: true,
     })
 }
@@ -41,5 +41,13 @@ export const deleteOrderApi = (_id) => {
         method: "delete",
         url: orderUrl + `/${_id}/delete`,
         isPrivate: true
+    })
+}
+
+export const deleteOrderItemApi = (_id, ID) => {
+    return apiProcessor({
+        method: "delete",
+        url: orderUrl + `/${_id}/delete/${ID}`,
+        isPrivate: true,
     })
 }

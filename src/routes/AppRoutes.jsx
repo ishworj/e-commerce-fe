@@ -20,13 +20,14 @@ import Categories from "../pages/admin/categories/Categories.jsx";
 import EditCategory from "../pages/admin/categories/EditCategory.jsx";
 import AddCategory from "../pages/admin/categories/AddCategory";
 import PaymentResult from "../pages/payment/PaymentResult.jsx";
-import Order from "../pages/account/Order.jsx";
-import PaymentMethod from "../pages/account/PaymentMethod.jsx";
-import AdminOrders from "../pages/account/AdminOrders.jsx";
-import Logout from "../components/Logout.jsx";
+import Order from "../pages/order/Order.jsx";
+import PaymentMethod from "../pages/order/PaymentMethod.jsx";
+import AdminOrders from "../pages/order/AdminOrders.jsx";
 import ShippingAddress from "../components/ShippingAddress.jsx";
 import AboutPage from "../pages/AboutPage.jsx";
 import SearchPage from "../pages/SearchPage.jsx";
+import AddressUpdate from "../components/shippingAddress/AddressUpdate.jsx";
+import Logout from "../pages/auth/Logout.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 
@@ -59,6 +60,7 @@ const AppRoutes = () => {
         <Route path="payment-method" element={<PaymentMethod />} />
         <Route path="logout" element={<Logout />} />
         <Route path="shippingAddress" element={<ShippingAddress />} />
+        <Route path="address/:id" element={<AddressUpdate />} />
       </Route>
 
       <Route path="/admin" element={<DefaultLayout />}>
