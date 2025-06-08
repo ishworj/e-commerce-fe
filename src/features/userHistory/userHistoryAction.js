@@ -13,6 +13,7 @@ export const createUserHistoryAction = async (data) => {
             ...data
         };
         console.log(payload, 999)
+
         return await createUserHistory(payload);
     } catch (error) {
         console.log(error?.message)

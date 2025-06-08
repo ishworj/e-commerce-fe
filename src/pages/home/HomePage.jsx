@@ -15,17 +15,16 @@ const HomePage = () => {
       </div>
       <h3>Categories</h3>
       <CategoryList />
-      <div className="py-5 w-100 d-flex justify-content-sm-between justify-content-center">
-        {/* <div className="row d-flex justify-content-center w-100"> */}
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <div className="py-5 w-100 d-flex justify-content-center">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 w-100">
           {publicProducts.map((item, index) => {
             return (
               <div
                 className="text-decoration-none col"
                 style={{ cursor: "pointer" }}
                 key={index}
-                onClick={async (e) => {
-                  e.preventDefault();
+                onClick={async () => {
+                  // e.preventDefault();
                   console.log("on the way");
                   await createUserHistoryAction({
                     userId: user._id || null,
@@ -33,8 +32,6 @@ const HomePage = () => {
                     categoryId: item.category,
                     action: "click",
                   });
-                  // alert("history created ");
-                  debugger;
                   window.location.href = `/${item._id}`;
                 }}
               >

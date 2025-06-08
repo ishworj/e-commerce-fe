@@ -28,7 +28,7 @@ const AddressUpdate = () => {
     }
   };
   return (
-    <div className="d-flex flex-column align-items-center w-100">
+    <div className="d-flex flex-column align-items-center w-100 my-5">
       <h1>Update Shipping Address</h1>
       <Form
         onSubmit={(e) => {

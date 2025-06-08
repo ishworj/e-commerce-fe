@@ -33,9 +33,9 @@ const ProductCard = ({ item }) => {
         className="d-flex flex-column justify-content-between"
         style={{ height: "25%" }}
       >
-        <b style={{ fontSize: "11px", height: "10px" }}>
-          {name.slice(0, 50)}
-          {name.length > 50 ? "..." : ""}
+        <b style={{ height: "10px" }} className="fs-3">
+          {name.slice(0, 45)}
+          {name.length > 45 ? "..." : ""}
         </b>
         <div className="text-end my-1">
           <button
@@ -50,10 +50,7 @@ const ProductCard = ({ item }) => {
             <BiSolidCartAdd />
           </button>
         </div>
-        <div
-          className="d-flex justify-content-between align-items-center py-2"
-          style={{ height: "20px" }}
-        >
+        <div className="d-flex justify-content-between align-items-center py-2 fs-4">
           $ {price}
           <Stars />
         </div>
