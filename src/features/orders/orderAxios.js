@@ -1,15 +1,6 @@
 import { apiProcessor } from "../../services/apiProcessor"
 const orderUrl = import.meta.env.VITE_BACKEND_BASE_URL + "/orders";
 
-export const createOrder = (obj) => {
-    return apiProcessor({
-        method: "post",
-        url: orderUrl,
-        data: obj,
-        isPrivate: true,
-    })
-}
-
 export const updateOrder = (obj) => {
     return apiProcessor({
         method: "put",

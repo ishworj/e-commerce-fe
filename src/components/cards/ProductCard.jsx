@@ -24,7 +24,7 @@ const ProductCard = ({ item }) => {
   return (
     <Card
       // width: "18em",
-      style={{ height: "30em" }}
+      style={{ height: "28em" }}
       className="mb-2 mb-md-0 shadow-lg border-0"
       onClick={() => handleOnProductClick(_id)}
     >
@@ -33,7 +33,7 @@ const ProductCard = ({ item }) => {
         className="d-flex flex-column justify-content-between"
         style={{ height: "25%" }}
       >
-        <b style={{ height: "10px" }} className="fs-3">
+        <b style={{ height: "20px" }} className="fs-5">
           {name.slice(0, 45)}
           {name.length > 45 ? "..." : ""}
         </b>

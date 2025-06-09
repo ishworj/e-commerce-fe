@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Col, Container, Form, Row } from "react-bootstrap";
+import { Accordion } from "react-bootstrap";
 import useForm from "../../hooks/useForm";
 import { useDispatch, useSelector } from "react-redux";
 import { filterFunctionOrders } from "../../utils/filterProducts";
@@ -22,7 +22,6 @@ const AdminOrdersCard = () => {
   const [activeKey, setActiveKey] = useState(null);
   const [displayOrders, setDisplayOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isUpdateQuantity, setIsUpdateQuantity] = useState(false);
   const { form, handleOnChange, setForm } = useForm({
     searchQuery: "",
     status: "all",
@@ -106,15 +105,10 @@ const AdminOrdersCard = () => {
                           style={{ height: "80px", width: "80px" }}
                         />
                         {/* product quantity and the unit price */}
-                        <ItemPriceQuantity
-                          isUpdateQuantity={isUpdateQuantity}
-                          product={product}
-                        />
+                        <ItemPriceQuantity product={product} />
                       </div>
                       {/* actions for the particular product within the order */}
                       <ActionsForItems
-                        isUpdateQuantity={isUpdateQuantity}
-                        setIsUpdateQuantity={setIsUpdateQuantity}
                         user={user}
                         item={item}
                         product={product}

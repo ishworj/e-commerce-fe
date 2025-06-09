@@ -4,7 +4,7 @@ import { verifyPaymentSession } from "../../features/payment/PaymentAxios";
 import { makePaymentAction } from "../../features/payment/PaymentActions";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthRoute } from "../../routes/AuthRoutes";
+import { deleteCartAction } from "../../features/cart/cartAction";
 
 const PaymentResult = () => {
   const [searchParams] = useSearchParams();
@@ -12,27 +12,23 @@ const PaymentResult = () => {
   const dispatch = useDispatch();
   const sessionId = searchParams.get("session_id");
   const isSuccessParam = searchParams.get("success");
-  const [cartAfterPay, setCartAfterPay] = useState([]);
 
   const [isVerified, setIsVerified] = useState(null);
   const [status, setStatus] = useState("");
 
   const { user } = useSelector((state) => state.userInfo);
-  console.log(user._id);
+  const { cart } = useSelector((state) => state.cartInfo);
+
   const handleCheckoutAction = async () => {
     try {
       const data = await makePaymentAction();
       if (data?.url) {
         window.location.href = data.url;
       }
-      setCartAfterPay(data.cart);
-      console.log(data.cart);
     } catch (error) {
       toast.error("Something went wrong during checkout");
-      console.error("Error during checkout:", error);
     }
   };
-  console.log({ shippingAddress: user.address, userId: user._id });
   useEffect(() => {
     const verify = async () => {
       if (!sessionId) {
@@ -43,25 +39,20 @@ const PaymentResult = () => {
         return <p className="text-center mt-20">Loading user info...</p>;
       }
 
-      // consoling
-      console.log(sessionId, {
-        shippingAddress: user.address,
-        userId: user._id,
-      });
-
       const data = await verifyPaymentSession(sessionId, {
         shippingAddress: user.address,
         userId: user._id,
       });
 
-      console.log(data);
       setIsVerified(data.verified);
       setStatus(data.status);
+
+      if (data.verified) {
+        console.log(cart);
+        dispatch(deleteCartAction(cart._id));
+      }
     };
     user && verify();
-    // if (data) {
-    //   dispatch(deleteCartItemAction());
-    // }
   }, [sessionId, user]);
 
   if (isVerified === null)

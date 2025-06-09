@@ -20,7 +20,7 @@ const HomePage = () => {
           {publicProducts.map((item, index) => {
             return (
               <div
-                className="text-decoration-none col"
+                className="col"
                 style={{ cursor: "pointer" }}
                 key={index}
                 onClick={async () => {

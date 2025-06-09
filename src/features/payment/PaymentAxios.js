@@ -9,7 +9,7 @@ export const makePaymentAxios = () => {
 };
 
 export const verifyPaymentSession = (sessionId, orderObj) => {
-  console.log(orderObj, "orderObj in verify FFE")
+  // console.log(orderObj, "orderObj in verify FFE")
   return apiProcessor({
     method: "post",
     url:
