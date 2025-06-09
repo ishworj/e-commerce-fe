@@ -66,7 +66,7 @@ const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
       <div className="d-flex align-items-center">
         <p className="px-2 my-2">Quantity:</p>
         <button
-          className="border border-black px-2 py-0 fs-4"
+          className="border border-black px-2 py-0 fs-5"
           onClick={handleOnSubtract}
         >
           -
@@ -77,7 +77,7 @@ const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
         </span>
 
         <button
-          className="border border-black px-2 py-0 fs-4"
+          className="border border-black px-2 py-0 fs-5"
           onClick={handleOnAdd}
         >
           +

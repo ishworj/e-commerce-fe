@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
@@ -8,6 +8,7 @@ import { fetchCartAction } from "../../features/cart/cartAction";
 
 const DefaultLayout = () => {
   const dispatch = useDispatch();
+  const cartRef = useRef();
   const [isCart, setIsCart] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
   const [showCart, setShowCart] = useState(false);
@@ -33,6 +34,19 @@ const DefaultLayout = () => {
     }
   }, [isCart]);
 
+  useEffect(() => {
+    if (!showCart) return;
+    const handleClickOutsideCart = (event) => {
+      if (cartRef && !cartRef.current.contains(event.target)) {
+        handleCart();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutsideCart);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideCart);
+    };
+  }, [showCart, handleCart]);
+
   return (
     <div className="position-relative">
       <Header handleCart={handleCart} setNavHeight={setNavHeight} />
@@ -41,11 +55,7 @@ const DefaultLayout = () => {
         <Outlet />
 
         {showCart && (
-          <div>
-            <div
-              className="bg-transparent position-absolute w-100 h-100"
-              style={{ top: 0, right: 0, zIndex: 99 }}
-            ></div>
+          <div ref={cartRef}>
             <div
               className={`col-12 col-lg-6 col-md-8 bg-white overflow-y-scroll ${
                 isClosing ? "cart-animation-close" : "cart-animation-open"

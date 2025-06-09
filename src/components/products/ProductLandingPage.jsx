@@ -6,6 +6,7 @@ import { getSingleProductAction } from "../../features/products/productActions";
 import ProductsImages from "./ProductsImages";
 import ProductsDetails from "./ProductsDetails";
 import ProductReviews from "./ProductReviews";
+import ShareProduct from "./ShareProduct";
 const ProductLandingPage = () => {
   const [favourite, setFavourite] = useState(false);
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const ProductLandingPage = () => {
     }
   }, []);
   return (
-    <div className="w-100 d-flex justify-content-center py-5 position-relative">
+    <div className="w-100 d-flex justify-content-center py-2 position-relative">
       {/* mainpage */}
       <div className="d-flex align-items-center w-100 flex-column">
         {/* image and product details */}
@@ -45,12 +46,7 @@ const ProductLandingPage = () => {
       </div>
 
       {/* absolute share button */}
-      <div
-        className="position-absolute fs-3"
-        style={{ top: "2%", right: "5%" }}
-      >
-        <FiShare2 />
-      </div>
+      <ShareProduct />
     </div>
   );
 };
