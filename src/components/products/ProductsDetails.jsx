@@ -59,11 +59,6 @@ const ProductsDetails = ({
         <div className="fs-3">
           <Stars avgRating={avgRating} />
         </div>
-        <div className="fs-3">
-          <span> &nbsp;({avgRating}</span>
-          <span> / </span>
-          <span>{ttlRatings})</span>
-        </div>
       </div>
       {/* quantity */}
       <div className="d-flex align-items-center">
