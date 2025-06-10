@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { getSingleProductAction } from "../../features/products/productActions";
@@ -8,8 +8,11 @@ import { createCartAction } from "../../features/cart/cartAction";
 
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
-  const { _id, name, description, price, images } = item;
-  // console.log(item);
+  const { _id, name, description, price, images, ratings } = item;
+  console.log(item);
+
+  const [avgRating, setAvgRating] = useState(0);
+  const [ttlRatings, setTtlRatings] = useState(0);
 
   const handleOnProductClick = (_id) => {
     dispatch(getSingleProductAction(_id));
@@ -21,6 +24,15 @@ const ProductCard = ({ item }) => {
     dispatch(createCartAction(_id, quantity));
   };
 
+  useEffect(() => {
+    const avgRatings = async () => {
+      const sum = await ratings.reduce((acc, curr) => acc + curr, 0);
+      setTtlRatings(ratings.length);
+      setAvgRating(sum / ratings.length);
+      return sum / ratings.length;
+    };
+    avgRatings();
+  }, []);
   return (
     <Card
       // width: "18em",
@@ -28,7 +40,12 @@ const ProductCard = ({ item }) => {
       className="mb-2 mb-md-0 shadow-lg border-0"
       onClick={() => handleOnProductClick(_id)}
     >
-      <Card.Img variant="top" src={images[0]} style={{ height: "65%" }} />
+      <Card.Img
+        variant="top"
+        src={images[0]}
+        style={{ height: "60%" }}
+        loading="lazy"
+      />
       <Card.Body
         className="d-flex flex-column justify-content-between"
         style={{ height: "25%" }}
@@ -52,7 +69,7 @@ const ProductCard = ({ item }) => {
         </div>
         <div className="d-flex justify-content-between align-items-center py-2 fs-4">
           $ {price}
-          <Stars />
+          <Stars avgRating={avgRating} />
         </div>
       </Card.Body>
     </Card>

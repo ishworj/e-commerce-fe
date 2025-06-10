@@ -41,7 +41,7 @@ const sidebarLinks = [
   },
   {
     icon: <CgProfile />,
-    title: "Account Details",
+    title: "Login & Security",
     to: "/user/account",
     isUser: true,
   },

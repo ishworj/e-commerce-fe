@@ -3,7 +3,6 @@ import axios from "axios";
 const authEp = import.meta.env.VITE_BACKEND_BASE_URL + "/auth";
 
 const getAccessJWT = () => {
-  // note: I am just using this name from my side if you agree, then use the same name for Access Token
   return sessionStorage.getItem("accessJWT");
 };
 
@@ -48,14 +47,13 @@ export const apiProcessor = async ({
         url: authEp + "/renew-jwt",
         isPrivate: false,
         isRefreshToken: true,
-
       });
+
       if (refreshData && refreshData?.status == "success") {
         // here the accesstoken is again set in the sessionStorage
         sessionStorage.setItem("accessJWT", refreshData.accessToken);
         // returning the actual original api processor
 
-        // console.log("renew")
         return apiProcessor({
           method,
           data,

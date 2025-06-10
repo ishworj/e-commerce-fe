@@ -4,7 +4,7 @@ import { updatePwAction } from "../../features/user/userAction";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-const UpdatePassword = ({ handleOnChange, form, isPassword }) => {
+const UpdatePassword = ({ handleOnChange, form, isPassword, from }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleOnUpdatePw = async (e) => {
@@ -18,7 +18,7 @@ const UpdatePassword = ({ handleOnChange, form, isPassword }) => {
       })
     );
     if (response === true) {
-      navigate("/login");
+      navigate(from, { replace: true });
     }
   };
   return (

@@ -1,18 +1,44 @@
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserLayout } from "../../components/layouts/UserLayout";
 import { useEffect } from "react";
 import { setMenu } from "../../features/user/userSlice";
+import LoginSecurityCard from "./LoginSecurityCard";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.userInfo);
-  const { menu } = useSelector((state) => state.userInfo);
-  console.log(menu);
   const dispatch = useDispatch();
+  const profileInputs = [
+    {
+      label: "Name",
+      data: user.fName + " " + user.lName,
+      schemaName: "fullName",
+      type: "text",
+    },
+    {
+      label: "Email",
+      data: user.email,
+      schemaName: "email",
+      type: "email",
+    },
+    {
+      label: "Primary Phone Number",
+      data: user.phone,
+      schemaName: "phone",
+      type: "number",
+    },
+    {
+      label: "Password",
+      data: "********",
+      schemaName: "password",
+      type: "password",
+    },
+  ];
+
   useEffect(() => {
-    dispatch(setMenu("Account Details"), []);
+    dispatch(setMenu("Login & Security"), []);
   });
   if (!user._id) {
     return (
@@ -48,13 +74,14 @@ const Profile = () => {
   }
   return (
     user._id && (
-      <UserLayout pageTitle="Account Details">
-        <Container
-          className="d-flex flex-column align-items-center"
-          style={{ minHeight: "85vh" }}
-        >
-          Account Details
-        </Container>
+      <UserLayout pageTitle="Login & Security">
+        <div className="w-100 d-flex justify-content-center align-items-center">
+          <div className="border col-12 col-md-10 col-lg-6 rounded pt-3 d-flex flex-column align-items-center">
+            {profileInputs.map((item, index) => (
+              <LoginSecurityCard item={item} key={index} />
+            ))}
+          </div>
+        </div>
       </UserLayout>
     )
   );

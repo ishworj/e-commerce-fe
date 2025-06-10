@@ -10,7 +10,7 @@ export const UserLayout = ({ pageTitle = "default", children }) => {
     <AuthRoute>
       <div>
         <Container fluid>
-          <Row style={{ minHeight: "100vh" }}>
+          <Row>
             <Col
               md={3}
               xl={2}

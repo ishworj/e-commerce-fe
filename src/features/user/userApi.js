@@ -98,13 +98,11 @@ export const logoutApi = async () => {
   })
 }
 // update address api
-export const updateAddressApi = ({ address }) => {
+export const updateUserApi = (obj) => {
   return apiProcessor({
     method: "put",
     url: authUrl,
-    data: {
-      address
-    },
+    data: obj,
     isPrivate: true
   });
 };

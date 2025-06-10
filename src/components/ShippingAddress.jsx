@@ -5,14 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import useForm from "../hooks/useForm";
 import { Form } from "react-bootstrap";
 
-import { updateAddressAction } from "../features/user/userAction";
+import { updateUserAction } from "../features/user/userAction";
 import ShippingAddressForm from "./shippingAddress/ShippingAddressForm";
-import { updateOrderAction } from "../features/orders/orderActions";
 import { setShippingAddress } from "../features/orders/orderSlice";
 
 const ShippingAddress = () => {
   const dispatch = useDispatch();
-  const { handleOnChange, form, setForm } = useForm({});
+  const { handleOnChange, form } = useForm({});
 
   const { user } = useSelector((state) => state.userInfo);
 
@@ -23,7 +22,7 @@ const ShippingAddress = () => {
       await dispatch(setShippingAddress(fullAddress));
       localStorage.setItem("shippingAddressNew", fullAddress);
       if (!user.address || user.address.length === 0) {
-        dispatch(updateAddressAction({ address: fullAddress }));
+        dispatch(updateUserAction({ address: fullAddress }));
       }
     }
     if (mode === "existing") {

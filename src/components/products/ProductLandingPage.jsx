@@ -9,6 +9,8 @@ import ProductReviews from "./ProductReviews";
 import ShareProduct from "./ShareProduct";
 const ProductLandingPage = () => {
   const [favourite, setFavourite] = useState(false);
+  const [avgRating, setAvgRating] = useState(0);
+  const [ttlRatings, setTtlRatings] = useState(0);
   const dispatch = useDispatch();
   const { selectedProduct } = useSelector((state) => state.productInfo);
 
@@ -20,7 +22,20 @@ const ProductLandingPage = () => {
     if (!selectedProduct._id) {
       dispatch(getSingleProductAction(id));
     }
-  }, []);
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    const avgRatings = async () => {
+      const sum = await selectedProduct.ratings.reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
+      setTtlRatings(selectedProduct.ratings.length);
+      setAvgRating(sum / selectedProduct.ratings.length);
+      return sum / selectedProduct.ratings.length;
+    };
+    avgRatings();
+  }, [selectedProduct]);
   return (
     <div className="w-100 d-flex justify-content-center py-2 position-relative">
       {/* mainpage */}
@@ -37,6 +52,8 @@ const ProductLandingPage = () => {
             handleFavourite={handleFavourite}
             favourite={favourite}
             selectedProduct={selectedProduct}
+            avgRating={avgRating}
+            ttlRatings={ttlRatings}
           />
         </div>
         {/* latest reviews  */}

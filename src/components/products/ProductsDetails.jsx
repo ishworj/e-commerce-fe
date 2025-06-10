@@ -7,10 +7,13 @@ import { useDispatch } from "react-redux";
 import { createCartAction } from "../../features/cart/cartAction";
 import Description from "./Description";
 
-const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
-  const avgRating = 3.5;
-  const ttlRatings = 10;
-
+const ProductsDetails = ({
+  handleFavourite,
+  favourite,
+  selectedProduct,
+  avgRating,
+  ttlRatings,
+}) => {
   const dispatch = useDispatch();
 
   const [quantity, setQuantity] = useState(1);
@@ -54,11 +57,11 @@ const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
       {/* latest reviews */}
       <div className="my-2 fs-1 d-flex align-items-center">
         <div className="fs-3">
-          <Stars />
+          <Stars avgRating={avgRating} />
         </div>
         <div className="fs-3">
-          <span>({avgRating}</span>
-          <span>/</span>
+          <span> &nbsp;({avgRating}</span>
+          <span> / </span>
           <span>{ttlRatings})</span>
         </div>
       </div>
@@ -90,7 +93,7 @@ const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
       >
         Add to cart
       </Button>
-      <Description />
+      <Description description={selectedProduct.description} />
     </div>
   );
 };
