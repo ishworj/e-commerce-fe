@@ -7,15 +7,29 @@ import ProductsImages from "./ProductsImages";
 import ProductsDetails from "./ProductsDetails";
 import ProductReviews from "./ProductReviews";
 import ShareProduct from "./ShareProduct";
+import { createWishlistAction } from "../../features/wishlist/wishlistAction";
 const ProductLandingPage = () => {
   const [favourite, setFavourite] = useState(false);
   const [avgRating, setAvgRating] = useState(0);
   const [ttlRatings, setTtlRatings] = useState(0);
   const dispatch = useDispatch();
   const { selectedProduct } = useSelector((state) => state.productInfo);
-
+  console.log(selectedProduct);
   const { id } = useParams();
+
   const handleFavourite = () => {
+    const obj = {
+      productId: selectedProduct._id,
+      name: selectedProduct.name,
+      unitPrice: selectedProduct.price,
+      stockStatus: selectedProduct.stock,
+      image: selectedProduct.images[0],
+    };
+    setFavourite(!favourite);
+    dispatch(createWishlistAction(obj));
+  };
+
+  const handleDeleteWishlist = () => {
     setFavourite(!favourite);
   };
   useEffect(() => {
@@ -50,6 +64,7 @@ const ProductLandingPage = () => {
           {/* selectedProduct detail */}
           <ProductsDetails
             handleFavourite={handleFavourite}
+            handleDeleteWishlist={handleDeleteWishlist}
             favourite={favourite}
             selectedProduct={selectedProduct}
             avgRating={avgRating}

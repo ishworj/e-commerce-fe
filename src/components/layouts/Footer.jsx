@@ -58,7 +58,7 @@ const Footer = () => {
             <h6 className="fw-semibold mb-3">About</h6>
             <ul className="list-unstyled">
               <li>
-                <a href="/about-us" className="text-decoration-none text-dark">
+                <a href="/about" className="text-decoration-none text-dark">
                   About Us
                 </a>
               </li>

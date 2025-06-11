@@ -1,6 +1,6 @@
 import { apiProcessor } from "../../services/apiProcessor"
 
-const URL = ""
+const URL = import.meta.env.VITE_BACKEND_BASE_URL + "/wishlist"
 // creating the wishlist 
 export const createWishlistApi = (obj) => {
     return apiProcessor({
@@ -21,23 +21,21 @@ export const getWishlistApi = () => {
     })
 }
 
-// deleting the wishlist item 
-export const deleteWishlistItemApi = (id, ID) => {
-    // here use the id and ID to send through params in the url
-    // this is the update in the wishlist in BE that's why put
+// deleting the whole wishlist
+export const deleteWishlistApi = () => {
     return apiProcessor({
-        method: "put",
+        method: "delete",
         url: URL,
         isPrivate: true
     })
 }
 
-// deleting the whole wishlist
-export const deleteWishlistApi = (id) => {
+// deleting the wishlist item 
+export const deleteWishlistItemApi = (_id) => {
     // here use the id to send through params in the url
     return apiProcessor({
         method: "delete",
-        url: URL,
+        url: URL + `/${_id}`,
         isPrivate: true
     })
 }

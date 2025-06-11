@@ -9,10 +9,10 @@ import Description from "./Description";
 
 const ProductsDetails = ({
   handleFavourite,
+  handleDeleteWishlist,
   favourite,
   selectedProduct,
   avgRating,
-  ttlRatings,
 }) => {
   const dispatch = useDispatch();
 
@@ -20,6 +20,7 @@ const ProductsDetails = ({
   const handleOnAdd = () => {
     setQuantity((prev) => (prev += 1));
   };
+
   const handleOnSubtract = () => {
     if (quantity <= 1) {
       setQuantity(1);
@@ -45,13 +46,15 @@ const ProductsDetails = ({
             <strong>{selectedProduct.price}</strong>
           </span>
 
-          <button className="border-0 pe-4" onClick={handleFavourite}>
-            {favourite ? (
+          {favourite ? (
+            <button className="border-0 pe-4" onClick={handleDeleteWishlist}>
               <GoHeartFill className="fs-4" />
-            ) : (
+            </button>
+          ) : (
+            <button className="border-0 pe-4" onClick={handleFavourite}>
               <FaRegHeart className="fs-4" />
-            )}
-          </button>
+            </button>
+          )}
         </div>
       </div>
       {/* latest reviews */}

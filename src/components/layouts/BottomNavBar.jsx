@@ -20,7 +20,7 @@ const BottomNavBar = ({ handleCart, user }) => {
           <FaHome size={20} />
           <div>Home</div>
         </a>
-        <a href="/" className="text-center nav-link">
+        <a href="/shop" className="text-center nav-link">
           <FaStore size={20} />
           <div>Shop</div>
         </a>
@@ -38,7 +38,7 @@ const BottomNavBar = ({ handleCart, user }) => {
       </div>
 
       <div className="d-flex justify-content-around align-items-center left ">
-        <a href="/wishlist" className="text-center nav-link">
+        <a href="/user/wishlist" className="text-center nav-link">
           <FaHeart size={20} />
           <div>Wishlist</div>
         </a>

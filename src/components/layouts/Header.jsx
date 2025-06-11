@@ -27,6 +27,7 @@ const Header = ({ handleCart, setNavHeight }) => {
     window.addEventListener("resize", updateHeight);
     return () => window.removeEventListener("resize", updateHeight);
   }, []);
+
   return (
     <Navbar
       expand="lg"
@@ -39,13 +40,13 @@ const Header = ({ handleCart, setNavHeight }) => {
         {/* Left-aligned links (Shop, About) - Hidden on mobile */}
         <Navbar.Collapse id="navbar-left" className="order-1 order-lg-0">
           <Nav>
-            <a href="/" className="px-3 nav-link">
+            <a href="/shop" className="px-3 nav-link">
               SHOP
             </a>
             <a href="/about" className="px-3 nav-link">
               ABOUT
             </a>
-            <a href="/wishlist" className="px-3 nav-link">
+            <a href="/user/wishlist" className="px-3 nav-link">
               WISHLIST
             </a>
           </Nav>

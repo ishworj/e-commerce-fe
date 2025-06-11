@@ -28,6 +28,8 @@ import AboutPage from "../pages/AboutPage.jsx";
 import SearchPage from "../pages/SearchPage.jsx";
 import AddressUpdate from "../components/shippingAddress/AddressUpdate.jsx";
 import Logout from "../pages/auth/Logout.jsx";
+import Shop from "../pages/shop/Shop.jsx";
+import WishList from "../pages/wishList/WishList.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 
@@ -41,6 +43,7 @@ const AppRoutes = () => {
       {/* public routes */}
       <Route path="/" element={<DefaultLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="/shop" element={<Shop />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
@@ -61,6 +64,7 @@ const AppRoutes = () => {
         <Route path="logout" element={<Logout />} />
         <Route path="shippingAddress" element={<ShippingAddress />} />
         <Route path="address/:id" element={<AddressUpdate />} />
+        <Route path="wishlist" element={<WishList />} />
       </Route>
 
       <Route path="/admin" element={<DefaultLayout />}>
