@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import ProductCard from "../components/cards/ProductCard";
 import CategoryBar from "../components/layouts/CategoryBar";
 import CategoryList from "../components/layouts/CategoryList";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { CiFilter } from "react-icons/ci";
 import { RxReset } from "react-icons/rx";
 import BottomNavBar from "../components/layouts/BottomNavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../features/category/categorySlice";
+import { getAllCategoriesAction } from "../features/category/CategoryActions.js";
+import { getPublicProductAction } from "../features/products/productActions";
+import { Link } from "react-router-dom";
 
 const CategoryLanding = () => {
   const dispatch = useDispatch();
@@ -17,20 +20,44 @@ const CategoryLanding = () => {
   const { selectedCategory, Categories } = useSelector(
     (state) => state.categoryInfo
   );
+  useEffect(() => {
+    // Load categories if empty
+    if (Categories.length === 0) {
+      dispatch(getAllCategoriesAction());
+    }
 
-  const getCategoryByName = () => {
-    return Categories.find(
-      (category) => category.categoryName === categoryName
+    // Load public products if empty
+    if (publicProducts.length === 0) {
+      dispatch(getPublicProductAction());
+    }
+
+    // Set selected category when categories are available
+    if (!selectedCategory.categoryName && Categories.length > 0) {
+      const category = Categories.find(
+        (cat) => cat.categoryName.toLowercase === categoryName.toLowerCase()
+      );
+      if (category) {
+        dispatch(setSelectedCategory(category));
+      }
+    }
+  }, [
+    dispatch,
+    Categories,
+    categoryName,
+    selectedCategory.categoryName,
+    publicProducts.length,
+  ]);
+
+  const productsByCategory = publicProducts.filter((product) => {
+    console.log(
+      "product.category:",
+      product.category,
+      "| selectedCategory._id:",
+      selectedCategory._id
     );
-  };
+    return product.category == selectedCategory._id;
+  });
 
-  if (!selectedCategory.categoryName) {
-    dispatch(setSelectedCategory(getCategoryByName()));
-  }
-
-  const productsByCategory = publicProducts.filter(
-    (product) => product.category == selectedCategory._id
-  );
   return (
     <Container>
       <CategoryBar />
@@ -40,7 +67,7 @@ const CategoryLanding = () => {
           <div className=" p-2 p-sm-4 d-flex flex-column flex-md-row justify-content-around">
             <div className="pb-1">
               <h1 className="fw-sm-bold">Check this out</h1>
-              <h3>Explore our new {selectedCategory.categoryName} arrivals</h3>
+              <h3>Display title: {selectedCategory?.displaytitle}</h3>
               <Button variant="dark">Buy now</Button>
             </div>
           </div>
@@ -49,7 +76,7 @@ const CategoryLanding = () => {
           <div>
             <img
               className="img-fluid"
-              src="https://media.istockphoto.com/id/483147081/photo/futuristic-circuit-board-blue-with-electrons.jpg?s=612x612&w=0&k=20&c=cOlFe3m-qcm4zTmCKxVmX4huAlW9mpwaR2oPZhZjqK0="
+              src={selectedCategory?.featureImageUrl}
               alt=""
               style={{ maxHeight: "200px" }}
             />
@@ -59,7 +86,7 @@ const CategoryLanding = () => {
 
       <Row className="mt-4 mt-sm-5">
         <Col>
-          <h5>20 results found</h5>
+          <h5>{productsByCategory.length} results found</h5>
         </Col>
         <Col className="d-flex justify-content-end">
           <div className="d-flex flex-column ">
@@ -79,23 +106,24 @@ const CategoryLanding = () => {
 
       <Row className="py-5">
         <Col className="d-flex flex-wrap flex-row justify-content-start gap-md-4">
-          {productsByCategory.map((item, index) => {
-            return (
-              <a
+          {productsByCategory.length > 0 ? (
+            productsByCategory.map((item, index) => (
+              <Link
                 className="text-decoration-none"
-                href={`/${item._id}`}
+                to={`/${item._id}`}
                 key={index}
               >
                 <ProductCard item={item} />
-              </a>
-            );
-          })}
+              </Link>
+            ))
+          ) : (
+            <p>No products available in this category.</p>
+          )}
         </Col>
       </Row>
       <div className="bg-light text-center p-1">
         <p>See all results </p>
       </div>
-      <BottomNavBar />
     </Container>
   );
 };

@@ -4,12 +4,11 @@ import { updatePwAction } from "../../features/user/userAction";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-const UpdatePassword = ({ handleOnChange, form, isPassword }) => {
+const UpdatePassword = ({ handleOnChange, form, isPassword, from }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleOnUpdatePw = async (e) => {
     e.preventDefault();
-    console.log("clicked");
     const response = await dispatch(
       updatePwAction({
         email: form.email,
@@ -18,9 +17,8 @@ const UpdatePassword = ({ handleOnChange, form, isPassword }) => {
         confirmPassword: form.confirmPassword,
       })
     );
-    console.log(response, 156);
     if (response === true) {
-      navigate("/login");
+      navigate(from, { replace: true });
     }
   };
   return (

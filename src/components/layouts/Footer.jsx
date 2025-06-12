@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="bg-light shadow-sm mt-5 pt-5 pb-3">
+    <footer className="mt-5 pt-5 pb-3">
       <Container>
         <Row className="gy-4">
           <Col md={3}>
@@ -58,7 +58,7 @@ const Footer = () => {
             <h6 className="fw-semibold mb-3">About</h6>
             <ul className="list-unstyled">
               <li>
-                <a href="/about-us" className="text-decoration-none text-dark">
+                <a href="/about" className="text-decoration-none text-dark">
                   About Us
                 </a>
               </li>

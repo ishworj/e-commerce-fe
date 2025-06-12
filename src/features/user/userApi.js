@@ -15,7 +15,6 @@ export const loginApi = (loginObj) => {
     isRefreshToken: false,
   });
 };
-
 // register api
 export const registerApi = (registerObj) => {
   return apiProcessor({
@@ -31,7 +30,6 @@ export const verifyUserApi = ({ sessionId, token }) => {
     url: `${rootUrl}/verify-user?sessionId=${sessionId}&t=${token}`,
   });
 };
-
 // verify email api
 export const verifyEmailAndSendOTPApi = (email) => {
   return apiProcessor({
@@ -40,7 +38,6 @@ export const verifyEmailAndSendOTPApi = (email) => {
     data: email,
   });
 };
-
 export const verifyOTPApi = ({ Otp, email }) => {
   return apiProcessor({
     method: "post",
@@ -59,5 +56,53 @@ export const updatePwApi = ({ email, Otp, password, confirmPassword }) => {
       password: password,
       confirmPassword: confirmPassword,
     },
+  });
+};
+// fetch user api
+export const fetchUserApi = () => {
+  try {
+    return apiProcessor({
+      method: "get",
+      url: authUrl,
+      isPrivate: true,
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+// refrsh token api
+export const refreshTokenApi = async () => {
+  console.log("called")
+  try {
+    return apiProcessor({
+      method: "get",
+      url: authUrl + "/renew-jwt",
+      isPrivate: false,
+      isRefreshToken: true,
+    });
+  } catch (error) {
+    sessionStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    console.log(error)
+    throw error;
+  }
+};
+// logout api 
+export const logoutApi = async () => {
+  return apiProcessor({
+    method: "get",
+    url: authUrl + "/logout",
+    isRefreshToken: true,
+    isPrivate: true
+  })
+}
+// update address api
+export const updateUserApi = (obj) => {
+  return apiProcessor({
+    method: "put",
+    url: authUrl,
+    data: obj,
+    isPrivate: true
   });
 };

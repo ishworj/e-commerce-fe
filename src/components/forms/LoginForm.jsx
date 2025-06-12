@@ -14,17 +14,14 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  //to handle return location
-
   const { user } = useSelector((state) => state.userInfo);
 
   // set sendTo location depending upon user url.
-  const sendTo = location?.state?.from?.location?.pathname || "/";
-
+  const sendTo = location?.state?.from?.location?.pathname || "/login";
   useEffect(() => {
-    //navigate to location ehrn the user travelled from
-    user?.id && navigate(sendTo);
-  }, [user?.id, navigate, sendTo]);
+    //navigate to location when the user travelled from
+    user?._id && navigate(sendTo);
+  }, [user?._id, navigate, sendTo]);
 
   const handleOnSubmit = async (e) => {
     //prevent default

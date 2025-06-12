@@ -5,7 +5,10 @@ import LoginForm from "../../components/forms/LoginForm";
 
 const Login = () => {
   return (
-    <Container className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    <Container
+      className="d-flex justify-content-center align-items-center bg-light"
+      style={{ minHeight: "90vh" }}
+    >
       <Card
         className="shadow rounded p-4 text-center"
         style={{ width: "100%", maxWidth: "400px" }}
