@@ -28,6 +28,7 @@ export const loginAction = (form, navigate) => async (dispatch) => {
     localStorage.setItem("refreshJWT", refreshToken);
     //update the store
     dispatch(setUser(user));
+    dispatch(fetchUserAction())
     setTimeout(() => {
       navigate("/");
     }, 0);

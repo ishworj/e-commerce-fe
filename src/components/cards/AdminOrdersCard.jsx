@@ -22,7 +22,8 @@ const AdminOrdersCard = () => {
   const [activeKey, setActiveKey] = useState(null);
   const [displayOrders, setDisplayOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { form, handleOnChange, setForm } = useForm({
+  const [isReviewing, setIsReviewing] = useState(null);
+  const { form, handleOnChange } = useForm({
     searchQuery: "",
     status: "all",
     date: "newest",
@@ -30,6 +31,9 @@ const AdminOrdersCard = () => {
 
   const toggleAccordion = (key) => {
     setActiveKey((prev) => (prev === key ? null : key));
+  };
+  const handleToggleReview = (id) => {
+    setIsReviewing((prevId) => (prevId === id ? null : id));
   };
 
   useEffect(() => {
@@ -63,7 +67,7 @@ const AdminOrdersCard = () => {
         const key = item._id.toString();
         const isOpen = activeKey === key;
         return (
-          <Accordion activeKey={activeKey} key={key} className="z-1">
+          <Accordion activeKey={activeKey} key={key} style={{ zIndex: 9 }}>
             <Accordion.Item eventKey={key} className="d-flex flex-column w-100">
               <Accordion.Header
                 as="div"
@@ -112,6 +116,9 @@ const AdminOrdersCard = () => {
                         user={user}
                         item={item}
                         product={product}
+                        handleToggleReview={handleToggleReview}
+                        setIsReviewing={setIsReviewing}
+                        isReviewing={isReviewing}
                       />
                     </div>
                   );

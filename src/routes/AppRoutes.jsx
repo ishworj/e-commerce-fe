@@ -30,6 +30,7 @@ import AddressUpdate from "../components/shippingAddress/AddressUpdate.jsx";
 import Logout from "../pages/auth/Logout.jsx";
 import Shop from "../pages/shop/Shop.jsx";
 import WishList from "../pages/wishList/WishList.jsx";
+import Review from "../pages/review/Review.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 
