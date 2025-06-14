@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { FaStar } from "react-icons/fa";
 import { MdOutlineRateReview } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createReviewAction } from "../../features/reviews/reviewAction";
 
 const Review = ({
   productId,
@@ -12,48 +13,71 @@ const Review = ({
   handleToggleReview,
 }) => {
   const [ratings, setRatings] = useState(1);
+  const [comment, setComment] = useState("");
 
   const { user } = useSelector((state) => state.userInfo);
-  //   console.log(isReviewing);
-  const isOpen = isReviewing === productId;
+
+  const dispatch = useDispatch();
+
+  const isOpen = String(isReviewing) === String(productId);
+
   // review
-  const handleReview = (productId) => {};
+  const handleReview = (userId, productId, ratings, comment) => {
+    const obj = {
+      userId,
+      productId,
+      rating: ratings,
+      comment,
+    };
+    const postReview = dispatch(createReviewAction(obj));
+    if (postReview) {
+      handleToggleReview(null);
+    }
+  };
   return (
-    <div className="position-relative">
+    <div className="d-flex">
       {isOpen && (
         <div
-          className="border rounded shadow bg-white d-flex z-3 gap-3 align-items-center position-absolute"
+          className="rounded shadow bg-white d-flex gap-3  justify-content-center position-absolute border"
           style={{
-            minHeight: "200px",
-            minWidth: "300px",
-            top: "-50px",
-            left: "-325px",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "100%",
+            maxWidth: "400px",
+            padding: "20px",
+            // boxSizing: "border-box",
+            zIndex: 9999,
           }}
         >
           {/* stars */}
           <div
-            className="d-flex flex-column gap-2 position-absolute align-items-center"
-            style={{
-              top: "10px",
-              left: "18%",
-              bottom: "10px",
-            }}
+            className="d-flex flex-column gap-2 w-100 position-relative"
+            style={{}}
           >
-            <div className="d-flex">
-              {new Array(5).fill("").map((item, i) => (
-                <FaStar
-                  key={i}
-                  onClick={() => setRatings(i + 1)}
-                  className={i < ratings ? "text-warning" : "text-secondary"}
-                  style={{ fontSize: "20px" }}
-                />
-              ))}
+            <div className="d-flex align-items-center gap-2">
+              <p className="m-0 fs-4">
+                <strong>Select Rating:</strong>
+              </p>
+              <div className="d-flex">
+                {new Array(5).fill("").map((item, i) => (
+                  <FaStar
+                    key={i}
+                    onClick={() => setRatings(i + 1)}
+                    className={`${
+                      i < ratings ? "text-warning" : "text-secondary"
+                    } fs-2`}
+                  />
+                ))}
+              </div>
             </div>
             <textarea
-              name=""
-              id=""
+              name="comment"
+              id="comment"
               className="px-2"
               placeholder="Comment Here ...."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
               style={{
                 width: "100%",
                 height: "120px",
@@ -62,25 +86,31 @@ const Review = ({
                 fontSize: "16px",
               }}
             ></textarea>
-            <Button>Submit</Button>
+            <Button
+              onClick={() =>
+                handleReview(user._id, productId, ratings, comment)
+              }
+            >
+              Submit
+            </Button>
           </div>
+          <RxCross1
+            className="fs-4 text-danger position-absolute"
+            style={{ cursor: "pointer", top: "5px", right: "5px" }}
+            title="Close"
+            onClick={() => handleToggleReview(null)}
+          />
         </div>
       )}
-      {!isOpen ? (
-        <MdOutlineRateReview
-          className="fs-4"
-          style={{ cursor: "pointer" }}
-          title="Feedback"
-          onClick={() => handleToggleReview(productId)}
-        />
-      ) : (
-        <RxCross1
-          className="fs-4 text-danger border"
-          style={{ cursor: "pointer" }}
-          title="Close"
-          onClick={() => setIsReviewing(!isReviewing)}
-        />
-      )}
+      <MdOutlineRateReview
+        className={`fs-4 ${isOpen ? "text-secondary" : "text-black"}`}
+        style={{ cursor: "pointer" }}
+        title="Feedback"
+        onClick={() => {
+          handleToggleReview(productId);
+          console.log(isOpen, productId);
+        }}
+      />
     </div>
   );
 };

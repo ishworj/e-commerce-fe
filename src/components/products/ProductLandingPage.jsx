@@ -59,7 +59,7 @@ const ProductLandingPage = () => {
       <div className="d-flex align-items-center w-100 flex-column">
         {/* image and product details */}
         <div
-          className="d-flex flex-column flex-md-row justify-content-around col-11 col-lg-8 col-md-12"
+          className="d-flex flex-column flex-md-row justify-content-around container col-11 col-lg-8 col-md-12"
           style={{ background: "#eee" }}
         >
           {/* image */}
@@ -75,7 +75,7 @@ const ProductLandingPage = () => {
           />
         </div>
         {/* latest reviews  */}
-        <div className="d-flex align-items-center w-100 flex-column">
+        <div className="d-flex flex-column flex-md-row justify-content-around col-11 col-lg-8 col-md-12">
           <ProductReviews selectedProduct={selectedProduct} />
         </div>
       </div>

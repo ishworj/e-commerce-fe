@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table } from "react-bootstrap";
-import { MdOutlineRateReview } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import Review from "../review/Review";
 
 const PlaceOrder = ({ item }) => {
   const { products } = item;
+
+  const [isReviewing, setIsReviewing] = useState(null);
+
+  const handleToggleReview = (id) => {
+    setIsReviewing((prevId) => (prevId === id ? null : id));
+  };
+
   return (
     <Table
       hover
@@ -22,24 +27,28 @@ const PlaceOrder = ({ item }) => {
         </tr>
       </thead>
       <tbody className="text-start">
-        {products.map((item, i) => (
-          <tr key={item._id}>
+        {products.map((product, i) => (
+          <tr key={product._id}>
             <td style={{ maxWidth: "50px" }}>
               <img
-                src={item.productImages[0]}
-                alt={item.name}
+                src={product.productImages[0]}
+                alt={product.name}
                 height={50}
                 width={50}
                 className="rounded d-block"
               />
             </td>
             <td style={{ width: "600px" }}>
-              <b>{item.name}</b>
+              <b>{product.name}</b>
             </td>
-            <td style={{ width: "100px" }}>$ {item.price}</td>
+            <td style={{ width: "100px" }}>$ {product.price}</td>
 
             <td className="">
-              <Review productId={item._id} />
+              <Review
+                productId={product._id}
+                isReviewing={isReviewing}
+                handleToggleReview={handleToggleReview}
+              />
             </td>
           </tr>
         ))}

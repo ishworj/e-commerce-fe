@@ -17,6 +17,7 @@ const PaymentResult = () => {
   const [isVerified, setIsVerified] = useState(null);
   const [status, setStatus] = useState("");
   const [placedOrder, setPlacedOrder] = useState({});
+  console.log(placedOrder, 999);
 
   const { user } = useSelector((state) => state.userInfo);
   const { cart } = useSelector((state) => state.cartInfo);
@@ -72,9 +73,8 @@ const PaymentResult = () => {
         <p className="mt-4 text-gray-600">Your payment was successful.</p>
 
         {/* placed order detail */}
-        {placedOrder.map((item) => (
-          <PlaceOrder item={item} />
-        ))}
+
+        <PlaceOrder item={placedOrder} />
 
         <button
           className="mt-6 px-4 py-2 bg-black text-white rounded col-2"

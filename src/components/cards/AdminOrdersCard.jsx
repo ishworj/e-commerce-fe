@@ -53,7 +53,7 @@ const AdminOrdersCard = () => {
   }, []);
 
   return (
-    <div className="w-100 d-flex flex-column gap-2 position-relative">
+    <div className="w-100 d-flex flex-column gap-2">
       {/* controls bar */}
       <ControlBar form={form} handleOnChange={handleOnChange} />
       <hr />
@@ -67,7 +67,12 @@ const AdminOrdersCard = () => {
         const key = item._id.toString();
         const isOpen = activeKey === key;
         return (
-          <Accordion activeKey={activeKey} key={key} style={{ zIndex: 9 }}>
+          <Accordion
+            activeKey={activeKey}
+            key={key}
+            style={{ zIndex: 9 }}
+            className="position-relative"
+          >
             <Accordion.Item eventKey={key} className="d-flex flex-column w-100">
               <Accordion.Header
                 as="div"

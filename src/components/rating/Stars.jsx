@@ -13,20 +13,20 @@ const Stars = ({ avgRating }) => {
   const Stars = [];
 
   for (let i = 1; i <= fullStars; i++) {
-    Stars.push(<IoStar className="text-black" key={i} />);
+    Stars.push(<IoStar className="text-black" />);
   }
   halfStar &&
     Stars.push(<IoStarHalfOutline className="text-black text-secondary" />);
 
   if (emptyStar) {
     for (let i = 1; i <= emptyStar; i++) {
-      Stars.push(<IoStarOutline key={i} />);
+      Stars.push(<IoStarOutline />);
     }
   }
   return (
     <div className="d-flex align-items-center" style={{ maxHeight: "40px" }}>
       <div className="d-flex align-items-center">
-        {Stars.map((item) => item)}
+        {Stars.map((item, index) => item)}
       </div>
     </div>
   );

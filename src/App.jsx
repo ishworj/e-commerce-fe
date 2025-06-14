@@ -8,6 +8,7 @@ import { fetchCartAction } from "./features/cart/cartAction.js";
 import { autoLogin } from "./features/user/userAction.js";
 import { getOrderAction } from "./features/orders/orderActions.js";
 import { getWishlistAction } from "./features/wishlist/wishlistAction.js";
+import { getPubReviewAction } from "./features/reviews/reviewAction.js";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const App = () => {
     dispatch(autoLogin());
     dispatch(getOrderAction());
     dispatch(getWishlistAction());
+    dispatch(getPubReviewAction());
   }, []);
 
   return (
