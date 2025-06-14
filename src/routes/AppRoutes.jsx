@@ -30,6 +30,8 @@ import AddressUpdate from "../components/shippingAddress/AddressUpdate.jsx";
 import Logout from "../pages/auth/Logout.jsx";
 import Shop from "../pages/shop/Shop.jsx";
 import WishList from "../pages/wishList/WishList.jsx";
+import Review from "../pages/review/Review.jsx";
+import AdminReview from "../pages/review/AdminReview.jsx";
 
 // import Wishlist from "../pages/WishList.jsx";
 
@@ -76,6 +78,7 @@ const AppRoutes = () => {
         <Route path="edit-category/:_id" element={<EditCategory />} />
         <Route path="/admin/add-category" element={<AddCategory />} />
         <Route path="orders" element={<AdminOrders />} />
+        <Route path="reviews" element={<AdminReview />} />
       </Route>
     </Routes>
   );

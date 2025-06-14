@@ -5,6 +5,7 @@ import { makePaymentAction } from "../../features/payment/PaymentActions";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCartAction } from "../../features/cart/cartAction";
+import PlaceOrder from "./PlaceOrder";
 
 const PaymentResult = () => {
   const [searchParams] = useSearchParams();
@@ -15,6 +16,8 @@ const PaymentResult = () => {
 
   const [isVerified, setIsVerified] = useState(null);
   const [status, setStatus] = useState("");
+  const [placedOrder, setPlacedOrder] = useState({});
+  console.log(placedOrder, 999);
 
   const { user } = useSelector((state) => state.userInfo);
   const { cart } = useSelector((state) => state.cartInfo);
@@ -44,11 +47,11 @@ const PaymentResult = () => {
         userId: user._id,
       });
 
+      setPlacedOrder(data.order);
       setIsVerified(data.verified);
       setStatus(data.status);
 
       if (data.verified) {
-        console.log(cart);
         dispatch(deleteCartAction(cart._id));
       }
     };
@@ -68,6 +71,11 @@ const PaymentResult = () => {
           🎉 Thank you for your purchase!
         </h2>
         <p className="mt-4 text-gray-600">Your payment was successful.</p>
+
+        {/* placed order detail */}
+
+        <PlaceOrder item={placedOrder} />
+
         <button
           className="mt-6 px-4 py-2 bg-black text-white rounded col-2"
           onClick={() => navigate("/")}
