@@ -41,7 +41,6 @@ export const updateCartItemAction = ({ quantity, _id, totalPrice }) => async (di
     _id,
     totalPrice,
   });
-  // dispatch(fetchCartAction())
 };
 
 export const deleteCartAction = () => async (dispatch) => {

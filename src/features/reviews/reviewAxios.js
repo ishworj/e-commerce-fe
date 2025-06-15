@@ -22,3 +22,19 @@ export const getPubReviewApi = () => {
         url: URL
     })
 }
+export const updateStatusOfReviewApi = (obj) => {
+    return apiProcessor({
+        method: "put",
+        url: URL,
+        isPrivate: true,
+        data: obj
+    })
+}
+export const deleteReviewApi = (id) => {
+    return apiProcessor({
+        method: "delete",
+        url: URL,
+        isPrivate: true,
+        data: { id }
+    })
+}

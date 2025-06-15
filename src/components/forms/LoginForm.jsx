@@ -37,7 +37,9 @@ const LoginForm = () => {
             <CustomInput key={item.name} {...item} onChange={handleOnChange} />
           );
         })}
-        <Button type="submit">Login</Button>
+        <Button type="submit" className="d-grid w-100">
+          Login
+        </Button>
       </Form>
     </div>
   );
