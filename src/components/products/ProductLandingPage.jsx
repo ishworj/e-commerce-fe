@@ -54,7 +54,10 @@ const ProductLandingPage = () => {
     avgRatings();
   }, [selectedProduct]);
   return (
-    <div className="w-100 d-flex justify-content-center py-2 position-relative">
+    <div
+      className="w-100 d-flex justify-content-center py-2 position-relative"
+      style={{ minHeight: "75dvh" }}
+    >
       {/* mainpage */}
       <div className="d-flex align-items-center w-100 flex-column">
         {/* image and product details */}

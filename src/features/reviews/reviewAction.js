@@ -1,5 +1,5 @@
 import { toast } from "react-toastify"
-import { createReviewApi, getAllReviewApi, getPubReviewApi } from "./reviewAxios"
+import { createReviewApi, deleteReviewApi, getAllReviewApi, getPubReviewApi, updateStatusOfReviewApi } from "./reviewAxios"
 import { setAllReview, setPubReviews } from "./reviewSlice"
 
 export const createReviewAction = (obj) => async (dispatch) => {
@@ -28,4 +28,26 @@ export const getPubReviewAction = () => async (dispatch) => {
     if (status === "success") {
         dispatch(setPubReviews(reviews))
     }
+}
+
+export const updateStatusOfReviewAction = (obj) => async (dispatch) => {
+    console.log(obj)
+    const { status, message } = await updateStatusOfReviewApi(obj)
+    if (status === "success") {
+        dispatch(getAllReviewAction())
+    }
+    toast[status](message)
+}
+
+export const deleteReviewAction = (id) => async (dispatch) => {
+    const pending = deleteReviewApi(id)
+
+    toast.promise(pending, {
+        pending: "Deleting ..."
+    })
+    const { status, message } = await pending
+    if (status === "success") {
+        dispatch(getAllReviewAction())
+    }
+    toast[status](message)
 }

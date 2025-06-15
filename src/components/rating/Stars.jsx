@@ -13,10 +13,10 @@ const Stars = ({ avgRating }) => {
   const Stars = [];
 
   for (let i = 1; i <= fullStars; i++) {
-    Stars.push(<IoStar className="text-black" />);
+    Stars.push(<IoStar className="text-warning" />);
   }
   halfStar &&
-    Stars.push(<IoStarHalfOutline className="text-black text-secondary" />);
+    Stars.push(<IoStarHalfOutline className="text-warning text-secondary" />);
 
   if (emptyStar) {
     for (let i = 1; i <= emptyStar; i++) {

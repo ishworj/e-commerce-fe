@@ -15,9 +15,12 @@ const Login = () => {
       >
         <Card.Title className="mb-3">Welcome Back!</Card.Title>
         <LoginForm />
-        <div className="text-center my-3">
+        <div className="text-center mt-3">
           Forget Password? <Link to="/forgetpassword">Reset Now</Link>
         </div>
+        <p className="m-0">
+          New with us? <Link to="/register">Register</Link>
+        </p>
       </Card>
     </Container>
   );
