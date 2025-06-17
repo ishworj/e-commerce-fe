@@ -17,11 +17,16 @@ const AccordionHeaderImageSection = ({ item, isOpen, toggleAccordion }) => {
           );
         })}
       </div>
-      <BsChevronDown
-        className={`fs-4 ${isOpen ? "rotate-180" : ""}`}
-        onClick={() => toggleAccordion(item._id.toString())}
-        style={{ cursor: "pointer" }}
-      />
+      <div className="d-flex gap-2 align-items-center">
+        <div className="border p-3">
+          <b>Updated At:</b> {item.updatedAt.split("T")[0]}
+        </div>
+        <BsChevronDown
+          className={`fs-4 ${isOpen ? "rotate-180" : ""}`}
+          onClick={() => toggleAccordion(item._id.toString())}
+          style={{ cursor: "pointer" }}
+        />
+      </div>
     </div>
   );
 };

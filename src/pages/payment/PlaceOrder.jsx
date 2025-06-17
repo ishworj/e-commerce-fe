@@ -4,7 +4,7 @@ import Review from "../review/Review";
 
 const PlaceOrder = ({ item }) => {
   const { products } = item;
-
+  console.log(products);
   const [isReviewing, setIsReviewing] = useState(null);
 
   const handleToggleReview = (id) => {
