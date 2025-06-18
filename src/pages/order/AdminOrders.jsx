@@ -14,28 +14,24 @@ const AdminOrders = () => {
   useEffect(() => {
     dispatch(setMenu("Orders List"), []);
   });
-  const { orders } = useSelector((state) => state.orderInfo);
+  const { orders, orderAdminPage } = useSelector((state) => state.orderInfo);
   const { user } = useSelector((state) => state.userInfo);
-
-  const [page, setpage] = useState(1);
 
   useEffect(() => {
     const fetchOrders = async () => {
-      user.role === "admin"
-        ? await dispatch(getAdminOrderAction(page))
-        : await dispatch(getOrderAction(page));
+      await dispatch(getAdminOrderAction());
     };
     fetchOrders();
-  }, [dispatch, user.role, page]);
+  }, [dispatch, orderAdminPage]);
   return (
     <UserLayout pageTitle="Orders List">
       <AdminOrdersCard orders={orders} user={user} />
       <div className="mt-2 d-flex justify-content-center w-100">
         <PaginationRounded
           totalPages={orders.totalPages}
-          setpage={setpage}
-          page={page}
+          page={orderAdminPage}
           mode="order"
+          client="admin"
         />
       </div>
     </UserLayout>

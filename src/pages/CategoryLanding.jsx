@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../features/category/categorySlice";
 import { getAllCategoriesAction } from "../features/category/CategoryActions";
 import { getPublicProductAction } from "../features/products/productActions";
+import { setProductCustomerPage } from "../features/products/productSlice";
 
 const CategoryLanding = () => {
   const dispatch = useDispatch();
@@ -21,13 +22,14 @@ const CategoryLanding = () => {
   );
 
   const [sortOrder, setSortOrder] = useState(""); // "" | "asc" | "desc"
-
+  const page = 1;
+  dispatch(setProductCustomerPage(page));
   useEffect(() => {
     if (Categories.length === 0) {
       dispatch(getAllCategoriesAction());
     }
 
-    if (publicProducts.length === 0) {
+    if (publicProducts?.docs?.length === 0) {
       dispatch(getPublicProductAction());
     }
 
@@ -44,15 +46,15 @@ const CategoryLanding = () => {
     Categories,
     categoryName,
     selectedCategory.categoryName,
-    publicProducts.length,
+    publicProducts?.docs?.length,
   ]);
+  console.log(publicProducts, "products");
+  let productsByCategory = publicProducts?.docs?.filter((product) => {
+    // Filtered and Sorted Products
+    return product.category === selectedCategory._id;
+  });
 
-  const productsByCategory = publicProducts?.docs?.filter((product) => {
-  // Filtered and Sorted Products
-  let productsByCategory = publicProducts.filter(
-    (product) => product.category === selectedCategory._id
-  );
-
+  console.log(productsByCategory);
   if (sortOrder === "asc") {
     productsByCategory = [...productsByCategory].sort(
       (a, b) => a.price - b.price
@@ -103,7 +105,7 @@ const CategoryLanding = () => {
       {/* Filter Section */}
       <Row className="mt-4">
         <Col xs={6}>
-          <h5>{productsByCategory.length} results found</h5>
+          <h5>{productsByCategory?.length} results found</h5>
         </Col>
         <Col xs={6} className="d-flex justify-content-end align-items-start">
           <div className="d-flex flex-column flex-sm-row gap-2">

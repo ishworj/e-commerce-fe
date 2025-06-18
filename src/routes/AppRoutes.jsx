@@ -33,6 +33,10 @@ import WishList from "../pages/wishList/WishList.jsx";
 import AdminReview from "../pages/review/AdminReview.jsx";
 
 const AppRoutes = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPublicProductAction());
+  }, []);
   return (
     <Routes>
       {/* public routes */}

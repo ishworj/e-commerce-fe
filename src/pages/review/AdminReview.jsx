@@ -7,10 +7,13 @@ import { getAllReviewAction } from "../../features/reviews/reviewAction";
 import useForm from "../../hooks/useForm";
 import ControlBarReview from "./ControlBarReview";
 import { filterFunctionReviews } from "../../utils/filterProducts";
+import PaginationRounded from "../../components/pagination/PaginationRounded";
 
 const AdminReview = () => {
   const dispatch = useDispatch();
-  const { allReviews } = useSelector((state) => state.reviewInfo);
+  const { allReviews, reviewAdminPage } = useSelector(
+    (state) => state.reviewInfo
+  );
   const { form, handleOnChange } = useForm({
     searchQuery: "",
     status: "all",
@@ -18,14 +21,21 @@ const AdminReview = () => {
   });
 
   const [displayReviews, setDisplayReviews] = useState([]);
-  console.log(displayReviews, allReviews);
+
   useEffect(() => {
     dispatch(setMenu("Reviews"));
-    dispatch(getAllReviewAction());
   }, []);
 
   useEffect(() => {
-    setDisplayReviews(filterFunctionReviews(form, allReviews));
+    const fetchAdminReviews = async () => {
+      await dispatch(getAllReviewAction());
+    };
+    fetchAdminReviews();
+  }, [reviewAdminPage]);
+
+  useEffect(() => {
+    const data = allReviews?.docs || [];
+    setDisplayReviews(filterFunctionReviews(form, data));
   }, [form, allReviews]);
 
   return (
@@ -43,6 +53,14 @@ const AdminReview = () => {
         </p>
       )}
       <ReviewsTable allReviews={displayReviews} />
+      <div className="mt-2 d-flex justify-content-center w-100">
+        <PaginationRounded
+          totalPages={allReviews.totalPages}
+          page={reviewAdminPage}
+          mode="review"
+          client="admin"
+        />
+      </div>
     </UserLayout>
   );
 };

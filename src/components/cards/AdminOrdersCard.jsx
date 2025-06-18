@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import useForm from "../../hooks/useForm";
-import { useDispatch, useSelector } from "react-redux";
 import { filterFunctionOrders } from "../../utils/filterProducts";
-import {
-  getAdminOrderAction,
-  getOrderAction,
-} from "../../features/orders/orderActions";
 import AccordionHeaderTopPart from "../ordersComponent/AccordionHeaderTopPart";
 import AccordionHeaderImageSection from "../ordersComponent/AccordionHeaderImageSection";
 import AccordionActions from "../ordersComponent/AccordionActions";
@@ -17,7 +12,6 @@ import ControlBar from "../ordersComponent/ControlBar";
 const AdminOrdersCard = ({ orders, user }) => {
   const [activeKey, setActiveKey] = useState(null);
   const [displayOrders, setDisplayOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isReviewing, setIsReviewing] = useState(null);
   const { form, handleOnChange } = useForm({
     searchQuery: "",

@@ -36,7 +36,6 @@ const ProductsDetails = ({
   const isInWishList = wishlist.some(
     (item) => selectedProduct._id === item.productId
   );
-  console.log(isInWishList);
   return (
     // selectedProduct detail
     <div className="col-sm-12 col-md-8 rounded p-3" style={{ height: "auto" }}>

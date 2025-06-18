@@ -9,17 +9,17 @@ export const createReviewApi = (obj) => {
         data: obj
     })
 }
-export const getAllReviewApi = () => {
+export const getAllReviewApi = (page) => {
     return apiProcessor({
         method: "get",
-        url: URL + "/admin",
+        url: `${URL}/admin?page=${page}`,
         isPrivate: true
     })
 }
-export const getPubReviewApi = () => {
+export const getPubReviewApi = (page) => {
     return apiProcessor({
         method: "get",
-        url: URL
+        url: `${URL}?page=${page}`
     })
 }
 export const updateStatusOfReviewApi = (obj) => {

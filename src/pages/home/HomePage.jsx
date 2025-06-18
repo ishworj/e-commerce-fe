@@ -5,21 +5,41 @@ import CarouselHomePage from "../../components/carousel/CarouselHomePage";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserHistoryAction } from "../../features/userHistory/userHistoryAction";
 import PaginationRounded from "../../components/pagination/PaginationRounded";
-import { getPublicProductAction } from "../../features/products/productActions";
+import {
+  getPublicProductAction,
+  getSingleProductAction,
+} from "../../features/products/productActions";
+import { getPubReviewAction } from "../../features/reviews/reviewAction";
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { publicProducts } = useSelector((state) => state.productInfo);
+  const { publicProducts, productCustomerPage } = useSelector(
+    (state) => state.productInfo
+  );
   const { user } = useSelector((state) => state.userInfo);
 
-  const [page, setpage] = useState(1);
   useEffect(() => {
     const fetchPubProducts = async () => {
-      await dispatch(getPublicProductAction(page));
+      await dispatch(getPublicProductAction());
     };
     fetchPubProducts();
-  }, [dispatch, page]);
+  }, [dispatch, productCustomerPage]);
 
+  const handleOnClickProduct = async () => {
+    console.log("on the way");
+    await createUserHistoryAction({
+      userId: user._id || null,
+      productId: item._id,
+      categoryId: item.category,
+      action: "click",
+    });
+    dispatch(getSingleProductAction(item._id));
+    const fetchReviews = async () => {
+      await dispatch(getPubReviewAction());
+    };
+    fetchReviews();
+    window.location.href = `/${item._id}`;
+  };
   return (
     <div className="mx-2">
       <div style={{ height: "40vh", background: "white" }}>
@@ -35,17 +55,7 @@ const HomePage = () => {
                 className="col"
                 style={{ cursor: "pointer" }}
                 key={index}
-                onClick={async () => {
-                  // e.preventDefault();
-                  console.log("on the way");
-                  await createUserHistoryAction({
-                    userId: user._id || null,
-                    productId: item._id,
-                    categoryId: item.category,
-                    action: "click",
-                  });
-                  window.location.href = `/${item._id}`;
-                }}
+                onClick={handleOnClickProduct}
               >
                 <ProductCard item={item} />
               </div>
@@ -54,9 +64,9 @@ const HomePage = () => {
           <div className="mt-2 d-flex justify-content-center w-100">
             <PaginationRounded
               totalPages={publicProducts.totalPages}
-              setpage={setpage}
-              page={page}
+              page={productCustomerPage}
               mode="product"
+              client="customer"
             />
           </div>
         </div>

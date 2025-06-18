@@ -14,12 +14,13 @@ import {
 } from "./productSlice";
 
 export const getAdminProductAction = () => async (dispatch, getState) => {
-  const page = getState().productInfo.currentPage
+  const page = getState().productInfo.productAdminPage
   const pending = getAdminProductApi(page);
 
   const { status, message, products } = await pending;
   dispatch(setProducts(products));
 };
+
 export const createProductAction = (productObj) => async (dispatch) => {
   const pending = createProductApi(productObj);
   const { status, message } = await pending;
@@ -29,8 +30,9 @@ export const createProductAction = (productObj) => async (dispatch) => {
   toast[status](message);
   return true;
 };
+
 export const getPublicProductAction = () => async (dispatch, getState) => {
-  const page = getState().productInfo.currentPage
+  const page = getState().productInfo.productCustomerPage
 
   const pending = getPublicProductApi(page);
   const { status, message, products } = await pending;
@@ -38,10 +40,22 @@ export const getPublicProductAction = () => async (dispatch, getState) => {
     dispatch(setPublicProducts(products));
   }
 };
+
 export const getSingleProductAction = (id) => async (dispatch) => {
-  const { product } = await getSingleProductApi(id);
-  dispatch(setSelectedProduct(product));
-};
+  try {
+    console.log("I am here")
+    const { status, product } = await getSingleProductApi(id);
+    console.log(product, "actions")
+    if (status === "success") {
+      dispatch(setSelectedProduct(product));
+    }
+
+  } catch (error) {
+    console.log(error?.message)
+
+  };
+}
+
 export const deleteProductAction = (_id) => async (dispatch) => {
   const { status, message } = await deleteProductApi(_id);
   if (status === "success") {

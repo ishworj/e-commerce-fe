@@ -16,15 +16,17 @@ export const createReviewAction = (obj) => async (dispatch) => {
     }
 }
 
-export const getAllReviewAction = () => async (dispatch) => {
-    const { status, reviews } = await getAllReviewApi()
+export const getAllReviewAction = () => async (dispatch, getState) => {
+    const page = getState().reviewInfo.reviewAdminPage
+    const { status, reviews } = await getAllReviewApi(page)
     if (status === "success") {
         dispatch(setAllReview(reviews))
     }
 }
 
-export const getPubReviewAction = () => async (dispatch) => {
-    const { status, reviews } = await getPubReviewApi()
+export const getPubReviewAction = () => async (dispatch, getState) => {
+    const page = getState().reviewInfo.reviewCustomerPage
+    const { status, reviews } = await getPubReviewApi(page)
     if (status === "success") {
         dispatch(setPubReviews(reviews))
     }

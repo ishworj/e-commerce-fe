@@ -25,7 +25,9 @@ import PaginationRounded from "../../components/pagination/PaginationRounded.jsx
 export const ProductTable = () => {
   const { selectedCategory } = useSelector((state) => state.categoryInfo);
 
-  const { products } = useSelector((state) => state.productInfo);
+  const { products, productAdminPage } = useSelector(
+    (state) => state.productInfo
+  );
   const { Categories } = useSelector((state) => state.categoryInfo);
 
   const dispatch = useDispatch();
@@ -39,14 +41,12 @@ export const ProductTable = () => {
 
   const [displayProducts, setDisplayProducts] = useState([]);
 
-  const [page, setpage] = useState(1);
-  console.log(page, 8888);
   useEffect(() => {
     const fetchAdminProducts = async () => {
       await dispatch(getAdminProductAction());
     };
     fetchAdminProducts();
-  }, [page]);
+  }, [productAdminPage]);
 
   useEffect(() => {
     if (selectedCategory?._id) {
@@ -57,7 +57,7 @@ export const ProductTable = () => {
   useEffect(() => {
     const data = products?.docs || [];
     setDisplayProducts(filterFunction(form, data));
-  }, [form, products, page]);
+  }, [form, products, productAdminPage]);
 
   const getCategoryNameById = (categoryId) => {
     const category = Categories.find((item) => item._id === categoryId);
@@ -198,9 +198,9 @@ export const ProductTable = () => {
       <div className="mt-2 d-flex justify-content-center w-100">
         <PaginationRounded
           totalPages={products.totalPages}
-          setpage={setpage}
-          page={page}
+          page={productAdminPage}
           mode="product"
+          client="admin"
         />
       </div>
     </>

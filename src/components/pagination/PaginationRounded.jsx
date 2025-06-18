@@ -1,17 +1,43 @@
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { setOrderPage } from "../../features/orders/orderSlice";
+import {
+  setOrderAdminPage,
+  setOrderCustomerPage,
+} from "../../features/orders/orderSlice";
 import { useDispatch } from "react-redux";
-import { setProductPage } from "../../features/products/productSlice";
+import {
+  setProductAdminPage,
+  setProductCustomerPage,
+} from "../../features/products/productSlice";
+import {
+  setReviewAdminPage,
+  setReviewCustomerPage,
+} from "../../features/reviews/reviewSlice";
 
-export default function PaginationRounded({ totalPages, setpage, page, mode }) {
+export default function PaginationRounded({ totalPages, page, mode, client }) {
   const dispatch = useDispatch();
   const handleOnChange = (event, value) => {
-    setpage(value);
-    if (mode === "order") {
-      dispatch(setOrderPage(value));
-    } else if (mode === "product") {
-      dispatch(setProductPage(value));
+    const key = `${mode}_${client}`;
+
+    switch (key) {
+      case "order_customer":
+        dispatch(setOrderCustomerPage(value));
+        break;
+      case "order_admin":
+        dispatch(setOrderAdminPage(value));
+        break;
+      case "product_customer":
+        dispatch(setProductCustomerPage(value));
+        break;
+      case "product_admin":
+        dispatch(setProductAdminPage(value));
+        break;
+      case "review_customer":
+        dispatch(setReviewCustomerPage(value));
+        break;
+      case "review_admin":
+        dispatch(setReviewAdminPage(value));
+        break;
     }
   };
   return (

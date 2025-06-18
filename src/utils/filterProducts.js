@@ -38,8 +38,8 @@ export const filterFunction = ({ category, searchQuery, others }, product) => {
   return filtered;
 };
 
-export const filterFunctionReviews = ({ status, searchQuery, others }, allReviews) => {
-  let filtered = [...allReviews];
+export const filterFunctionReviews = ({ status, searchQuery, others }, reviews) => {
+  let filtered = [...reviews];
 
   // Filter by category
   if (status !== "all") {

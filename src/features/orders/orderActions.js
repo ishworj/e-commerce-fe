@@ -3,15 +3,16 @@ import { deleteOrderApi, deleteOrderItemApi, getAllOrders, getOrder, updateOrder
 import { setOrders } from "./orderSlice";
 
 
-export const getOrderAction = () => async (dispatch) => {
-    const pending = getOrder();
+export const getOrderAction = () => async (dispatch, getState) => {
+    const page = getState().orderInfo.orderCustomerPage
+    const pending = getOrder(page);
 
     const { status, message, orders } = await pending;
-    if (status === "success") { dispatch(setOrders(orders.docs)) };
+    if (status === "success") { dispatch(setOrders(orders)) };
 }
 
 export const getAdminOrderAction = () => async (dispatch, getState) => {
-    const page = getState().orderInfo.currentPage
+    const page = getState().orderInfo.orderAdminPage
     const pending = getAllOrders(page);
     const { status, message, orders } = await pending;
 
