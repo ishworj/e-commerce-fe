@@ -13,8 +13,10 @@ import {
   setSelectedProduct,
 } from "./productSlice";
 
-export const getAdminProductAction = () => async (dispatch) => {
-  const pending = getAdminProductApi();
+export const getAdminProductAction = () => async (dispatch, getState) => {
+  const page = getState().productInfo.currentPage
+  const pending = getAdminProductApi(page);
+
   const { status, message, products } = await pending;
   dispatch(setProducts(products));
 };
@@ -27,8 +29,10 @@ export const createProductAction = (productObj) => async (dispatch) => {
   toast[status](message);
   return true;
 };
-export const getPublicProductAction = () => async (dispatch) => {
-  const pending = getPublicProductApi();
+export const getPublicProductAction = () => async (dispatch, getState) => {
+  const page = getState().productInfo.currentPage
+
+  const pending = getPublicProductApi(page);
   const { status, message, products } = await pending;
   if (status === "success") {
     dispatch(setPublicProducts(products));

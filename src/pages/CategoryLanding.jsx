@@ -48,7 +48,7 @@ const CategoryLanding = () => {
     publicProducts.length,
   ]);
 
-  const productsByCategory = publicProducts.filter((product) => {
+  const productsByCategory = publicProducts?.docs?.filter((product) => {
     console.log(
       "product.category:",
       product.category,

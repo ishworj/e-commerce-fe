@@ -14,11 +14,7 @@ import ActionsForItems from "../ordersComponent/ActionsForItems";
 import ItemPriceQuantity from "../ordersComponent/ItemPriceQuantity";
 import ControlBar from "../ordersComponent/ControlBar";
 
-const AdminOrdersCard = () => {
-  const dispatch = useDispatch();
-  const { orders } = useSelector((state) => state.orderInfo);
-  const { user } = useSelector((state) => state.userInfo);
-
+const AdminOrdersCard = ({ orders, user }) => {
   const [activeKey, setActiveKey] = useState(null);
   const [displayOrders, setDisplayOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,20 +33,10 @@ const AdminOrdersCard = () => {
   };
 
   useEffect(() => {
-    const data = filterFunctionOrders(form, orders);
-    setDisplayOrders(data);
+    const data = orders?.docs || [];
+    const response = filterFunctionOrders(form, data);
+    setDisplayOrders(response);
   }, [form, orders]);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      setIsLoading(true);
-      user.role === "admin"
-        ? dispatch(getAdminOrderAction())
-        : dispatch(getOrderAction());
-      setIsLoading(false);
-    };
-    fetchOrders();
-  }, []);
 
   return (
     <div className="w-100 d-flex flex-column gap-2">

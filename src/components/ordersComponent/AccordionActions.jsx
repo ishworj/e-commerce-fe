@@ -13,7 +13,6 @@ const AccordionActions = ({ item, user }) => {
     dispatch(deleteOrderAction(_id));
   };
 
-  console.log(item);
   // invoice
   const handleOnInvoice = async (id) => {
     try {

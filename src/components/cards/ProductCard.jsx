@@ -9,7 +9,6 @@ import { createCartAction } from "../../features/cart/cartAction";
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
   const { _id, name, description, price, images, ratings } = item;
-  console.log(item);
 
   const [avgRating, setAvgRating] = useState(0);
   const [ttlRatings, setTtlRatings] = useState(0);

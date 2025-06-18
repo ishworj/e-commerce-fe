@@ -21,7 +21,7 @@ const Categories = () => {
   }, []);
   // Calculate product count per category
   const getProductCount = (categoryId) => {
-    return products?.filter((p) => p.category === categoryId).length || 0;
+    return products?.docs?.filter((p) => p.category === categoryId).length || 0;
   };
 
   const filteredCategories = Categories?.filter((cat) =>
