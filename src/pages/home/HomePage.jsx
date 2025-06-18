@@ -1,13 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CategoryList from "../../components/layouts/CategoryList";
 import ProductCard from "../../components/cards/ProductCard";
 import CarouselHomePage from "../../components/carousel/CarouselHomePage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUserHistoryAction } from "../../features/userHistory/userHistoryAction";
+import PaginationRounded from "../../components/pagination/PaginationRounded";
+import { getPublicProductAction } from "../../features/products/productActions";
 
 const HomePage = () => {
+  const dispatch = useDispatch();
   const { publicProducts } = useSelector((state) => state.productInfo);
   const { user } = useSelector((state) => state.userInfo);
+
+  const [page, setpage] = useState(1);
+  useEffect(() => {
+    const fetchPubProducts = async () => {
+      await dispatch(getPublicProductAction(page));
+    };
+    fetchPubProducts();
+  }, [dispatch, page]);
+
   return (
     <div className="mx-2">
       <div style={{ height: "40vh", background: "white" }}>
@@ -17,7 +29,7 @@ const HomePage = () => {
       <CategoryList />
       <div className="py-5 w-100 d-flex justify-content-center">
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-5 w-100">
-          {publicProducts.map((item, index) => {
+          {publicProducts?.docs?.map((item, index) => {
             return (
               <div
                 className="col"
@@ -39,6 +51,14 @@ const HomePage = () => {
               </div>
             );
           })}
+          <div className="mt-2 d-flex justify-content-center w-100">
+            <PaginationRounded
+              totalPages={publicProducts.totalPages}
+              setpage={setpage}
+              page={page}
+              mode="product"
+            />
+          </div>
         </div>
       </div>
     </div>

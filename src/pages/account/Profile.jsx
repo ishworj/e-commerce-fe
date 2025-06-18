@@ -2,14 +2,21 @@ import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserLayout } from "../../components/layouts/UserLayout";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { setMenu } from "../../features/user/userSlice";
 import LoginSecurityCard from "./LoginSecurityCard";
+import { Link } from "react-router-dom";
+import { resendVerificationLinkApi } from "../../features/user/userApi";
+import { MdOutlineCancel } from "react-icons/md";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+
+  const [isResending, setIsResending] = useState(false);
+
   const profileInputs = [
     {
       label: "Name",
@@ -37,9 +44,17 @@ const Profile = () => {
     },
   ];
 
+  const handleResendVerificationLink = (email) => {
+    const isEmailSent = dispatch(resendVerificationLinkApi(email));
+    if (isEmailSent) {
+      setEmail("");
+      setIsResending(false);
+    }
+  };
   useEffect(() => {
     dispatch(setMenu("Login & Security"), []);
   });
+
   if (!user._id) {
     return (
       <div>
@@ -68,6 +83,55 @@ const Profile = () => {
               Sign Up
             </Button>
           </div>
+          <p className="py-2 m-0">Or</p>
+          {isResending ? (
+            <div className="">
+              <Form
+                className="d-flex align-items-center justify-content-center"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleResendVerificationLink(email);
+                }}
+              >
+                <div
+                  className="position-relative"
+                  style={{ width: "100%", maxWidth: "300px" }}
+                >
+                  <input
+                    type="email"
+                    name="Email"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="form-control" // space for button inside input
+                    style={{ paddingRight: "80px" }}
+                    placeholder="Your registered Email"
+                  />
+
+                  <Button
+                    variant="outline"
+                    className="position-absolute top-50 translate-middle-y border-start"
+                    style={{ right: "5px" }}
+                    type="submit"
+                  >
+                    Resend
+                  </Button>
+                </div>
+              </Form>
+              <div className="d-flex justify-content-center">
+                <Button
+                  onClick={() => setIsResending(!isResending)}
+                  variant="light"
+                  className="mt-2 border"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Button variant="link" onClick={() => setIsResending(!isResending)}>
+              Resend Verification link
+            </Button>
+          )}
         </Container>
       </div>
     );

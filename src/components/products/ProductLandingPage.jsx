@@ -7,14 +7,16 @@ import ProductsImages from "./ProductsImages";
 import ProductsDetails from "./ProductsDetails";
 import ProductReviews from "./ProductReviews";
 import ShareProduct from "./ShareProduct";
-import { createWishlistAction } from "../../features/wishlist/wishlistAction";
+import {
+  createWishlistAction,
+  deleteWishlistItemAction,
+} from "../../features/wishlist/wishlistAction";
 const ProductLandingPage = () => {
   const [favourite, setFavourite] = useState(false);
   const [avgRating, setAvgRating] = useState(0);
   const [ttlRatings, setTtlRatings] = useState(0);
   const dispatch = useDispatch();
   const { selectedProduct } = useSelector((state) => state.productInfo);
-  console.log(selectedProduct);
   const { id } = useParams();
 
   const handleFavourite = () => {
@@ -31,6 +33,7 @@ const ProductLandingPage = () => {
 
   const handleDeleteWishlist = () => {
     setFavourite(!favourite);
+    dispatch(deleteWishlistItemAction(selectedProduct._id));
   };
   useEffect(() => {
     if (!selectedProduct._id) {
@@ -51,12 +54,15 @@ const ProductLandingPage = () => {
     avgRatings();
   }, [selectedProduct]);
   return (
-    <div className="w-100 d-flex justify-content-center py-2 position-relative">
+    <div
+      className="w-100 d-flex justify-content-center py-2 position-relative"
+      style={{ minHeight: "75dvh" }}
+    >
       {/* mainpage */}
       <div className="d-flex align-items-center w-100 flex-column">
         {/* image and product details */}
         <div
-          className="d-flex flex-column flex-md-row justify-content-around col-11 col-lg-8 col-md-12"
+          className="d-flex flex-column flex-md-row justify-content-around container col-11 col-lg-8 col-md-12"
           style={{ background: "#eee" }}
         >
           {/* image */}
@@ -72,7 +78,7 @@ const ProductLandingPage = () => {
           />
         </div>
         {/* latest reviews  */}
-        <div className="d-flex align-items-center w-100 flex-column">
+        <div className="d-flex flex-column flex-md-row justify-content-around col-11 col-lg-8 col-md-12">
           <ProductReviews selectedProduct={selectedProduct} />
         </div>
       </div>

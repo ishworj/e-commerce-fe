@@ -106,3 +106,11 @@ export const updateUserApi = (obj) => {
     isPrivate: true
   });
 };
+// resending the verification link 
+export const resendVerificationLinkApi = (email) => {
+  return apiProcessor({
+    method: "post",
+    url: authUrl + '/verification-email',
+    data: { email }
+  });
+}

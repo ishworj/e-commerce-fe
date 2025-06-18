@@ -10,19 +10,19 @@ export const updateOrder = (obj) => {
     })
 }
 
-export const getOrder = () => {
+export const getOrder = (page) => {
     return apiProcessor({
         method: "get",
-        url: orderUrl,
+        url: `${orderUrl}?page=${page}`,
         isPrivate: true,
     })
 }
 
 // get all orders for the admin
-export const getAllOrders = () => {
+export const getAllOrders = (page) => {
     return apiProcessor({
         method: "get",
-        url: orderUrl + "/admin",
+        url: `${orderUrl}/admin?page=${page}`,
         isPrivate: true,
     })
 }

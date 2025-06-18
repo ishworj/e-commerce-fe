@@ -34,15 +34,15 @@ const AccordionActions = ({ item, user }) => {
       <p className="d-flex flex-column w-75" style={{ height: "auto" }}>
         $ {item.totalAmount}
         {/* shipping address and its editing*/}
-        {user.role === "admin" && (
-          <span className="mb-0 ">
-            <b>Shipping to: </b>
-            {item.shippingAddress} &nbsp;
-            <a href="" onClick={() => navigate(`/user/address/${item._id}`)}>
-              Change
-            </a>
-          </span>
-        )}
+        {/* {user.role === "admin" && ( */}
+        <span className="mb-0 ">
+          <b>Shipping to: </b>
+          {item.shippingAddress} &nbsp;
+          <a href="" onClick={() => navigate(`/user/address/${item._id}`)}>
+            Change
+          </a>
+        </span>
+        {/* )} */}
       </p>
       {/* buttons in accordion header */}
       <div className="d-flex gap-2 text-decoration-underline">

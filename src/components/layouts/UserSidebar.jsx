@@ -30,7 +30,7 @@ const sidebarLinks = [
   {
     icon: <FaCheck />,
     title: "Orders List",
-    to: "/admin/orders",
+    to: "/admin/orders?page=1",
     isAdminOnly: true,
   },
   {

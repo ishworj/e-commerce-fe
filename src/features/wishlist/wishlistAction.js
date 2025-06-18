@@ -19,7 +19,6 @@ export const getWishlistAction = () => async (dispatch) => {
     const { status, message, data } = await pending;
     if (status === "success") { console.log("kljsdhkj") }
     dispatch(setWishlist(data))
-    toast[status](message)
 }
 
 export const deleteWishlistAction = () => async (dispatch) => {
@@ -39,4 +38,5 @@ export const deleteWishlistItemAction = (_id) => async (dispatch) => {
     const { status, message, data } = await pending;
     if (status === "success") { dispatch(getWishlistAction()) }
     toast[status](message)
+    dispatch(getWishlistAction())
 }

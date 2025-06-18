@@ -3,7 +3,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { GoHeartFill } from "react-icons/go";
 import Stars from "../rating/Stars";
 import { Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createCartAction } from "../../features/cart/cartAction";
 import Description from "./Description";
 
@@ -32,6 +32,11 @@ const ProductsDetails = ({
     dispatch(createCartAction(_id, quantity));
   };
 
+  const { wishlist } = useSelector((state) => state.wishlistSliceInfo);
+  const isInWishList = wishlist.some(
+    (item) => selectedProduct._id === item.productId
+  );
+  console.log(isInWishList);
   return (
     // selectedProduct detail
     <div className="col-sm-12 col-md-8 rounded p-3" style={{ height: "auto" }}>
@@ -46,7 +51,7 @@ const ProductsDetails = ({
             <strong>{selectedProduct.price}</strong>
           </span>
 
-          {favourite ? (
+          {isInWishList ? (
             <button className="border-0 pe-4" onClick={handleDeleteWishlist}>
               <GoHeartFill className="fs-4" />
             </button>

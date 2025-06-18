@@ -4,6 +4,7 @@ import {
   logoutApi,
   refreshTokenApi,
   registerApi,
+  resendVerificationLinkApi,
   updatePwApi,
   updateUserApi,
   verifyEmailAndSendOTPApi,
@@ -28,6 +29,7 @@ export const loginAction = (form, navigate) => async (dispatch) => {
     localStorage.setItem("refreshJWT", refreshToken);
     //update the store
     dispatch(setUser(user));
+    dispatch(fetchUserAction())
     setTimeout(() => {
       navigate("/");
     }, 0);
@@ -38,25 +40,22 @@ export const loginAction = (form, navigate) => async (dispatch) => {
 export const registerUserAction = (registerObj) => async (dispatch) => {
   const pending = registerApi(registerObj);
   toast.promise(pending, {
-    pending: "Registering ... ",
+    pending: "Registering ... "
   });
-
-  // const data = await pending
-  // console.log(data, "data")
   const { status, message, user } = await pending;
   toast[status](message);
 };
 
 //verify user Action
 export const verifyUserAction = ({ sessionId, token }) =>
-  async (dispatch, navigate) => {
+  async () => {
     const pending = verifyUserApi({ sessionId, token });
+    console.log(sessionId, token)
     toast.promise(pending, {
       pending: "Verifying...",
     });
     const { status, message } = await pending;
     toast[status](message);
-    console.log(message);
   };
 
 // verify email action
@@ -173,4 +172,17 @@ export const updateUserAction = (obj) => async (dispatch) => {
     dispatch(fetchUserAction())
   }
   toast[status](message)
+}
+
+// resending the verification link 
+export const resendVerificationLinkAction = (email) => async (dispatch) => {
+  const pending = resendVerificationLinkApi(email)
+  toast.promise(pending, {
+    pending: "Sending..."
+  })
+  const { status, message, user } = await pending
+  toast[status](message)
+  if (status === "success") {
+    return true
+  }
 }
