@@ -10,7 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/roboto": "^5.2.6",
+    "@mui/icons-material": "^7.1.1",
+    "@mui/material": "^7.1.1",
+    "@react-pdf/renderer": "^4.3.0",
     "@reduxjs/toolkit": "^2.6.1",
+    "antd": "^5.26.1",
+    "aos": "^2.3.4",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.5",
     "react": "^19.0.0",
@@ -22,8 +30,11 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.5.0",
     "react-router-hash-link": "^2.4.3",
+    "react-share": "^5.2.2",
     "react-toastify": "^11.0.5",
-    "swiper": "^11.2.6"
+    "recharts": "^2.15.3",
+    "swiper": "^11.2.6",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

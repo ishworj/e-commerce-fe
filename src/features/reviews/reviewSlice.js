@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   pubReviews: [],
   allReviews: [],
+  reviewCustomerPage: 1,
+  reviewAdminPage: 1
 };
 
 const reviewslice = createSlice({
@@ -24,10 +26,16 @@ const reviewslice = createSlice({
         return item;
       });
     },
+    setReviewCustomerPage: (state, { payload }) => {
+      state.reviewCustomerPage = payload
+    },
+    setReviewAdminPage: (state, { payload }) => {
+      state.reviewAdminPage = payload
+    }
   },
 });
 
 const { reducer, actions } = reviewslice;
 
-export const { setPubReviews, setAllReview, updateReviewStatus } = actions;
+export const { setPubReviews, setAllReview, updateReviewStatus, setReviewCustomerPage, setReviewAdminPage } = actions;
 export default reducer;

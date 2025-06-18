@@ -40,7 +40,7 @@ const CategoryList = ({ isModalView = false }) => {
           >
             <div className="text-center category-item pt-3">
               <img
-                src="https://www.suzuki.com.au/wp-content/uploads/2023/07/Frame-7-808x455.webp"
+                src={category.categoryImage}
                 alt={category.categoryName}
                 style={{
                   width: "60px",
