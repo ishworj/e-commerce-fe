@@ -3,8 +3,9 @@ import { Form, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { UserLayout } from "../../../components/layouts/UserLayout";
 import { MdDelete } from "react-icons/md";
-import { createCategoryAction } from "../../../features/category/categoryActions";
 import { useNavigate } from "react-router-dom";
+import { createCategoryAction } from "../../../features/category/CategoryActions";
+import BreadCrumbsAdmin from "../../../components/breadCrumbs/BreadCrumbsAdmin";
 
 const AddCategory = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ const AddCategory = () => {
 
   return (
     <UserLayout pageTitle="Add Category">
+      <BreadCrumbsAdmin />
       <div className="mt-5">
         <h4 className="py-4">Create New Category</h4>
         <Form onSubmit={handleSubmit}>

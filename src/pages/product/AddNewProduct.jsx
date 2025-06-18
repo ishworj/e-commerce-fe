@@ -12,13 +12,16 @@ import {
   getPublicProductAction,
 } from "../../features/products/productActions";
 import { MdDelete } from "react-icons/md";
+import BreadCrumbsAdmin from "../../components/breadCrumbs/BreadCrumbsAdmin";
 const initialState = {};
 
-const AddNewProduct = () => {  
+const AddNewProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { form, handleOnChange } = useForm(initialState);
-  const { Categories,selectedCategory } = useSelector((state) => state.categoryInfo);
+  const { Categories, selectedCategory } = useSelector(
+    (state) => state.categoryInfo
+  );
 
   const [images, setImages] = useState([]);
   const [previews, setPreviews] = useState([]);
@@ -34,7 +37,6 @@ const AddNewProduct = () => {
       });
     }
   }, [selectedCategory]);
-  
 
   const handleImageChange = (e) => {
     const newFiles = Array.from(e.target.files);
@@ -75,7 +77,14 @@ const AddNewProduct = () => {
     }
   };
   return (
-    <UserLayout pageTitle={selectedCategory?.categoryName?  `${selectedCategory?.categoryName}`: "Add New Product"}>
+    <UserLayout
+      pageTitle={
+        selectedCategory?.categoryName
+          ? `${selectedCategory?.categoryName}`
+          : "Add New Product"
+      }
+    >
+      <BreadCrumbsAdmin />
       <div className="mb-3">
         <Link
           to={selectedCategory?._id ? "/admin/categories" : "/admin/products"}

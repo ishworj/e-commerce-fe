@@ -8,6 +8,7 @@ import {
   getAdminOrderAction,
   getOrderAction,
 } from "../../features/orders/orderActions";
+import BreadCrumbsAdmin from "../../components/breadCrumbs/BreadCrumbsAdmin";
 
 const AdminOrders = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const AdminOrders = () => {
   }, [dispatch, orderAdminPage]);
   return (
     <UserLayout pageTitle="Orders List">
+      <BreadCrumbsAdmin />
       <AdminOrdersCard orders={orders} user={user} />
       <div className="mt-2 d-flex justify-content-center w-100">
         <PaginationRounded
