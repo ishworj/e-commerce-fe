@@ -1,5 +1,5 @@
-export const filterFunction = ({ category, searchQuery, others }, products) => {
-  let filtered = [...products];
+export const filterFunction = ({ category, searchQuery, others }, product) => {
+  let filtered = [...product];
 
   // Filter by category
   if (category !== "all") {
@@ -82,9 +82,9 @@ export const filterFunctionReviews = ({ status, searchQuery, others }, allReview
 };
 
 
-export const filterFunctionOrders = ({ date, searchQuery, status }, orders) => {
-  let filtered = [...orders];
+export const filterFunctionOrders = ({ date, searchQuery, status }, data) => {
 
+  let filtered = [...data];
   // Filter by Orders' status
   if (status !== "all") {
     filtered = filtered.filter(item => item.status === status)

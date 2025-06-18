@@ -14,3 +14,10 @@ export const makePaymentAction = async () => {
   }
   toast[data.status](data.message);
 };
+
+
+
+//  these are in the BE
+// 1. I need to add the email servers in each of these actions.
+//  - after payment successful
+//  - in verification of the order after verifying while creating the order 

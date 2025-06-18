@@ -47,6 +47,7 @@ const CategoryLanding = () => {
     publicProducts.length,
   ]);
 
+  const productsByCategory = publicProducts?.docs?.filter((product) => {
   // Filtered and Sorted Products
   let productsByCategory = publicProducts.filter(
     (product) => product.category === selectedCategory._id

@@ -10,17 +10,17 @@ export const createProductApi = (productObj) => {
     contentType: "multipart/form-data",
   });
 };
-export const getAdminProductApi = () => {
+export const getAdminProductApi = (page) => {
   return apiProcessor({
     method: "get",
-    url: productEp + "/",
+    url: `${productEp}?page=${page}`,
     isPrivate: true,
   });
 };
-export const getPublicProductApi = () => {
+export const getPublicProductApi = (page) => {
   return apiProcessor({
     method: "get",
-    url: productEp + "/active",
+    url: `${productEp}/active?page=${page}`,
   });
 };
 export const getSingleProductApi = (id) => {

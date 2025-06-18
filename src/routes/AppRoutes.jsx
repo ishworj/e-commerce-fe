@@ -30,16 +30,9 @@ import AddressUpdate from "../components/shippingAddress/AddressUpdate.jsx";
 import Logout from "../pages/auth/Logout.jsx";
 import Shop from "../pages/shop/Shop.jsx";
 import WishList from "../pages/wishList/WishList.jsx";
-import Review from "../pages/review/Review.jsx";
 import AdminReview from "../pages/review/AdminReview.jsx";
 
-// import Wishlist from "../pages/WishList.jsx";
-
 const AppRoutes = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getPublicProductAction());
-  }, []);
   return (
     <Routes>
       {/* public routes */}

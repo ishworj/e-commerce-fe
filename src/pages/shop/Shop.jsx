@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { createUserHistoryAction } from "../../features/userHistory/userHistoryAction";
 import ProductCard from "../../components/cards/ProductCard";
+import PaginationRounded from "../../components/pagination/PaginationRounded";
 
 const Shop = () => {
   const { publicProducts } = useSelector((state) => state.productInfo);
@@ -34,6 +35,9 @@ const Shop = () => {
               </div>
             );
           })}
+          <div className="mt-2 d-flex justify-content-center w-100">
+            <PaginationRounded />
+          </div>
         </div>
       </div>
     </div>

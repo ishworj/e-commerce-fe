@@ -52,7 +52,7 @@ const AccordionHeaderTopPart = ({ item, user }) => {
 
       {/* status of the order*/}
       <div style={{ height: "auto" }}>
-        {item.createdAt.slice(0, 10)} | &nbsp;
+        <b>Placed At:</b> {item.createdAt.split("T")[0]} | &nbsp;
         {user.role === "admin" ? (
           <select
             className={

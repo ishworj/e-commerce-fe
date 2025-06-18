@@ -15,17 +15,23 @@ import useForm from "../../hooks/useForm";
 import { filterFunction } from "../../utils/filterProducts.js";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { deleteProductAction } from "../../features/products/productActions.js";
+import {
+  deleteProductAction,
+  getAdminProductAction,
+} from "../../features/products/productActions.js";
 import { setSelectedCategory } from "../../features/category/categorySlice.js";
+import PaginationRounded from "../../components/pagination/PaginationRounded.jsx";
 
 export const ProductTable = () => {
   const { selectedCategory } = useSelector((state) => state.categoryInfo);
 
   const { products } = useSelector((state) => state.productInfo);
   const { Categories } = useSelector((state) => state.categoryInfo);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { form, handleOnChange,setForm } = useForm({
+
+  const { form, handleOnChange, setForm } = useForm({
     searchQuery: "",
     category: selectedCategory?._id || "all",
     others: "newest",
@@ -33,15 +39,25 @@ export const ProductTable = () => {
 
   const [displayProducts, setDisplayProducts] = useState([]);
 
+  const [page, setpage] = useState(1);
+  console.log(page, 8888);
+  useEffect(() => {
+    const fetchAdminProducts = async () => {
+      await dispatch(getAdminProductAction());
+    };
+    fetchAdminProducts();
+  }, [page]);
+
   useEffect(() => {
     if (selectedCategory?._id) {
       setForm((prev) => ({ ...prev, category: selectedCategory._id }));
     }
   }, [selectedCategory]);
-  
+
   useEffect(() => {
-    setDisplayProducts(filterFunction(form, products));
-  }, [form,products]);
+    const data = products?.docs || [];
+    setDisplayProducts(filterFunction(form, data));
+  }, [form, products, page]);
 
   const getCategoryNameById = (categoryId) => {
     const category = Categories.find((item) => item._id === categoryId);
@@ -54,12 +70,10 @@ export const ProductTable = () => {
     }
   };
 
-
   const handleGoBack = () => {
     dispatch(setSelectedCategory(null));
     navigate("/admin/categories");
   };
-  
 
   return (
     <>
@@ -139,7 +153,7 @@ export const ProductTable = () => {
           </tr>
         </thead>
         <tbody>
-          {displayProducts.map((product, i) => (
+          {displayProducts?.map((product, i) => (
             <tr key={product._id}>
               <td style={{ maxWidth: "50px" }} className="py-3">
                 <img
@@ -181,6 +195,14 @@ export const ProductTable = () => {
           ))}
         </tbody>
       </Table>
+      <div className="mt-2 d-flex justify-content-center w-100">
+        <PaginationRounded
+          totalPages={products.totalPages}
+          setpage={setpage}
+          page={page}
+          mode="product"
+        />
+      </div>
     </>
   );
 };

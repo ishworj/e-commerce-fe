@@ -17,7 +17,6 @@ const PaymentResult = () => {
   const [isVerified, setIsVerified] = useState(null);
   const [status, setStatus] = useState("");
   const [placedOrder, setPlacedOrder] = useState({});
-  console.log(placedOrder, 999);
 
   const { user } = useSelector((state) => state.userInfo);
   const { cart } = useSelector((state) => state.cartInfo);
@@ -59,7 +58,11 @@ const PaymentResult = () => {
   }, [sessionId, user]);
 
   if (isVerified === null)
-    return <p className="text-center mt-20">Verifying payment...</p>;
+    return (
+      <p className="text-center mt-5" style={{ minHeight: "60vh" }}>
+        Verifying payment...
+      </p>
+    );
 
   if (isVerified && isSuccessParam === "true") {
     return (
@@ -85,7 +88,6 @@ const PaymentResult = () => {
       </div>
     );
   }
-
   return (
     <div
       className="text-center mt-20 d-flex flex-column justify-content-center align-items-center"
