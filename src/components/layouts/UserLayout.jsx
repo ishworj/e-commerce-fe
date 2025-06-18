@@ -30,28 +30,13 @@ export const UserLayout = ({ pageTitle = "default", children }) => {
               className="bg-light"
               style={{ minHeight: "100vh" }}
             >
-              <div className="p-2">
+              <div className="p-1">
                 <h1>
                   <b>{pageTitle}</b>
                 </h1>
               </div>
               <hr />
-              <main className="main mb-3 position-relative">
-                <nav aria-label="breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <a href="#">Home</a>
-                    </li>
-                    <li className="breadcrumb-item">
-                      <a href="#">Library</a>
-                    </li>
-                    <li className="breadcrumb-item active" aria-current="page">
-                      Data
-                    </li>
-                  </ol>
-                </nav>
-                {children}
-              </main>
+              <main className="main mb-3 position-relative">{children}</main>
             </Col>
           </Row>
         </Container>

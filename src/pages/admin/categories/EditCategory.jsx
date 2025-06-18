@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { MdDelete } from "react-icons/md";
 import { UserLayout } from "../../../components/layouts/UserLayout";
-import { updateCategoryAction } from "../../../features/category/categoryActions";
+import BreadCrumbsAdmin from "../../../components/breadCrumbs/BreadCrumbsAdmin";
+import { updateCategoryAction } from "../../../features/category/CategoryActions";
 
 const EditCategory = () => {
   const { selectedCategory } = useSelector((state) => state.categoryInfo);
@@ -94,6 +95,7 @@ const EditCategory = () => {
 
   return (
     <UserLayout pageTitle={`Edit ${selectedCategory?.categoryName} Category`}>
+      <BreadCrumbsAdmin />
       <div className="mt-5">
         <h4 className="py-4">Edit Category</h4>
         <Form onSubmit={handleSubmit}>

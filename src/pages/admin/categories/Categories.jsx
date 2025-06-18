@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CategoryCard from "./CategoryCard";
 import { Link } from "react-router-dom";
 import { getAdminProductAction } from "../../../features/products/productActions";
+import BreadCrumbsAdmin from "../../../components/breadCrumbs/BreadCrumbsAdmin";
 
 const Categories = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,6 +30,7 @@ const Categories = () => {
   );
   return (
     <UserLayout pageTitle="Categories">
+      <BreadCrumbsAdmin />
       <div className="d-flex justify-content-between align-items-center gap-2">
         <input
           type="text"

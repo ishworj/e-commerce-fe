@@ -8,6 +8,7 @@ import useForm from "../../hooks/useForm";
 import ControlBarReview from "./ControlBarReview";
 import { filterFunctionReviews } from "../../utils/filterProducts";
 import PaginationRounded from "../../components/pagination/PaginationRounded";
+import BreadCrumbsAdmin from "../../components/breadCrumbs/BreadCrumbsAdmin";
 
 const AdminReview = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const AdminReview = () => {
 
   return (
     <UserLayout pageTitle="Reviews">
+      <BreadCrumbsAdmin />
       {/* controls */}
       <ControlBarReview
         form={form}
