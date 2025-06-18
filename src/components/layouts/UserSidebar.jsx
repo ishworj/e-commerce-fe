@@ -48,7 +48,7 @@ const sidebarLinks = [
   {
     icon: <FaCheck />,
     title: "My Orders",
-    to: "/user/orders",
+    to: "/user/orders?page=1",
     isAdminOnly: false,
   },
 

@@ -53,7 +53,11 @@ const Header = ({ handleCart, setNavHeight }) => {
         </Navbar.Collapse>
 
         {/* Brand (Centered) */}
-        <Navbar.Brand as={Link} to={"/"} className=" fs-1 fw-bold order-0">
+        <Navbar.Brand
+          onClick={() => (window.location.href = "/")}
+          className=" fs-1 fw-bold order-0"
+          style={{ cursor: "pointer" }}
+        >
           BRAND
         </Navbar.Brand>
 

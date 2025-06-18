@@ -1,19 +1,31 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { createUserHistoryAction } from "../../features/userHistory/userHistoryAction";
 import ProductCard from "../../components/cards/ProductCard";
 import PaginationRounded from "../../components/pagination/PaginationRounded";
+import { getPublicProductAction } from "../../features/products/productActions";
 
 const Shop = () => {
-  const { publicProducts } = useSelector((state) => state.productInfo);
+  const { publicProducts, productCustomerPage } = useSelector(
+    (state) => state.productInfo
+  );
+
+  const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.userInfo);
+  useEffect(() => {
+    const fetchPubProducts = async () => {
+      await dispatch(getPublicProductAction());
+    };
+    fetchPubProducts();
+  }, [productCustomerPage]);
   return (
     <div>
       {/* controls and actions like searching, sorting and filtering */}
       <div></div>
       <div className="py-5 w-100 d-flex justify-content-center">
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-5 w-100">
-          {publicProducts.map((item, index) => {
+          {publicProducts?.docs?.map((item, index) => {
             return (
               <div
                 className="col"
@@ -36,7 +48,12 @@ const Shop = () => {
             );
           })}
           <div className="mt-2 d-flex justify-content-center w-100">
-            <PaginationRounded />
+            <PaginationRounded
+              totalPages={publicProducts?.totalPages}
+              page={productCustomerPage}
+              mode="product"
+              client="customer"
+            />
           </div>
         </div>
       </div>

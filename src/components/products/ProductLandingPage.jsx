@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { FiShare2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSingleProductAction } from "../../features/products/productActions";
@@ -15,9 +14,13 @@ const ProductLandingPage = () => {
   const [favourite, setFavourite] = useState(false);
   const [avgRating, setAvgRating] = useState(0);
   const [ttlRatings, setTtlRatings] = useState(0);
-  const dispatch = useDispatch();
   const { selectedProduct } = useSelector((state) => state.productInfo);
+
+  const dispatch = useDispatch();
+
   const { id } = useParams();
+
+  console.log(selectedProduct, "selectedProduct");
 
   const handleFavourite = () => {
     const obj = {
@@ -35,24 +38,34 @@ const ProductLandingPage = () => {
     setFavourite(!favourite);
     dispatch(deleteWishlistItemAction(selectedProduct._id));
   };
+
   useEffect(() => {
-    if (!selectedProduct._id) {
-      dispatch(getSingleProductAction(id));
-    }
+    console.log("i am here fidrs");
+    const fetchSingleProduct = async () => {
+      await dispatch(getSingleProductAction(id));
+    };
+    fetchSingleProduct();
   }, [dispatch, id]);
 
   useEffect(() => {
+    console.log("I was here");
+    if (!selectedProduct || !selectedProduct.ratings) return;
     const avgRatings = async () => {
-      const sum = await selectedProduct.ratings.reduce(
+      const sum = await selectedProduct?.ratings.reduce(
         (acc, curr) => acc + curr,
         0
       );
-      setTtlRatings(selectedProduct.ratings.length);
-      setAvgRating(sum / selectedProduct.ratings.length);
-      return sum / selectedProduct.ratings.length;
+      setTtlRatings(selectedProduct?.ratings.length);
+      setAvgRating(sum / selectedProduct?.ratings.length);
+      return sum / selectedProduct?.ratings.length;
     };
     avgRatings();
   }, [selectedProduct]);
+
+  if (selectedProduct == null) {
+    return <div>Loading.....</div>;
+  }
+
   return (
     <div
       className="w-100 d-flex justify-content-center py-2 position-relative"

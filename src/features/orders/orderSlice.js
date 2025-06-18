@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   orders: {},
   shippingAddress: "",
-  currentPage: 1
+  orderCustomerPage: 1,
+  orderAdminPage: 1
 };
 const orderSlice = createSlice({
   name: "order",
@@ -15,13 +16,16 @@ const orderSlice = createSlice({
     setShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
     },
-    setOrderPage: (state, { payload }) => {
-      state.currentPage = payload
+    setOrderAdminPage: (state, { payload }) => {
+      state.orderAdminPage = payload
+    },
+    setOrderCustomerPage: (state, { payload }) => {
+      state.orderCustomerPage = payload
     }
   },
 });
 
 const { reducer, actions } = orderSlice;
 
-export const { setOrders, setShippingAddress, setOrderPage } = actions;
+export const { setOrders, setShippingAddress, setOrderAdminPage, setOrderCustomerPage } = actions;
 export default reducer;
