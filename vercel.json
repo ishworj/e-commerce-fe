@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/v1/:path*", "destination": "https://e-commerce-be-2qxw.onrender.com/api/v1/:path*" }
+    { "source": "/api/v1/:path*", "destination": "https://e-commerce-be-2qxw.onrender.com/api/v1/:path*" },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
