@@ -3,10 +3,27 @@ import { validator } from "../utils/validatePassword";
 
 const handleOnChange = ({ e, form, setForm }) => {
   const { name, value } = e.target;
-  setForm({
-    ...form,
-    [name]: value,
-  });
+
+  if (name === "fullName") {
+    console.log(name, value, 2000)
+    let fName = value.split(" ")[0];
+    let lName = value.split(" ")[1] ?? "";
+
+    console.log(fName, lName)
+    setForm({
+      ...form,
+      fName,
+      lName,
+      [name]: value
+    })
+  }
+  else {
+    setForm({
+      ...form,
+      [name]: value,
+    });
+
+  }
 };
 
 const useForm = (initialState) => {

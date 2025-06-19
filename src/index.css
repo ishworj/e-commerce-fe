@@ -25,22 +25,16 @@ input::-webkit-inner-spin-button {
 .category-item {
   cursor: pointer;
 }
-
-
-
 /* carousel home page */
 
 #app {
   height: 100%;
 }
 html,
-body {
+body,#root {
   position: relative;
   height: 100%;
-}
-
-body {
-  background: #eee;
+  background: white;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #000;
@@ -76,19 +70,145 @@ body {
   margin-right: auto;
 }
 
-
 /* carousel home page end  */
+
+/* cart */
+.cart-animation-open {
+  animation: slideIn 0.5s ease forwards;
+}
+
+.cart-animation-close {
+  animation: slideOut 0.5s ease forwards;
+}
+
+/* update box glassmophormism */
+.updateBox {
+  margin: 0 auto;
+  width: 16rem;
+  height: 20rem;
+  background: rgba(255, 255, 255, 0954);
+  border: 1px solid black;
+  backdrop-filter: blur(8px);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
 
 /* sticky class for the product landing page */
 
 @media (min-width : 768px){
   .sticky-element{
   position: sticky;
-  top: 20px;
+  top: 80px;
   }
 }
 @media (max-width : 767px){
   .sticky-element{
   position: static;
   }
+   .heightForSmallScreen{
+  min-height: 100px !important;
+  }
+  .shareButton{
+    top: 0% !important;
+    } 
 }
+
+
+/* sharing social links */
+.social-icon{
+  background: transparent !important;
+  margin: 2px 5px;
+}
+
+/* about page */
+
+
+/* Section Styling */
+section.about-section {
+  background-color: #f8f9fa;
+  padding: 4rem 0;
+  color: #212529;
+}
+
+/* Headings */
+.about-section h1,
+.about-section h2,
+.about-section h3,
+.about-section h5 {
+  font-weight: 700;
+  color: #111;
+}
+
+/* Paragraphs */
+.about-section p {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.about-section .btn-dark {
+  background-color: #000;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.about-section .btn-dark:hover {
+  background-color: #333;
+}
+
+/* Team Image Styling */
+.about-team img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 4px solid #ddd;
+  transition: transform 0.3s ease;
+}
+
+.about-team img:hover {
+  transform: scale(1.05);
+}
+
+/* Values Cards */
+.about-values h5 {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.about-values p {
+  font-size: 0.9rem;
+}
+
+/* Responsive Spacing */
+@media (max-width: 768px) {
+  .about-section {
+    padding: 2rem 1rem;
+  }
+
+  .about-values .col-md-3,
+  .about-team .col-md-4 {
+    margin-bottom: 1.5rem;
+  }
+}
+

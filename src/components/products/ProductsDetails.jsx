@@ -1,43 +1,101 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { GoHeartFill } from "react-icons/go";
 import Stars from "../rating/Stars";
 import { Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { createCartAction } from "../../features/cart/cartAction";
+import Description from "./Description";
 
-const ProductsDetails = ({ handleFavourite, favourite, selectedProduct }) => {
-  const avgRating = 3.5;
-  const ttlRatings = 10;
+const ProductsDetails = ({
+  handleFavourite,
+  handleDeleteWishlist,
+  favourite,
+  selectedProduct,
+  avgRating,
+}) => {
+  const dispatch = useDispatch();
+
+  const [quantity, setQuantity] = useState(1);
+  const handleOnAdd = () => {
+    setQuantity((prev) => (prev += 1));
+  };
+
+  const handleOnSubtract = () => {
+    if (quantity <= 1) {
+      setQuantity(1);
+    } else {
+      setQuantity((prev) => (prev -= 1));
+    }
+  };
+  const handleOnAddCart = (_id, quantity) => {
+    dispatch(createCartAction(_id, quantity));
+  };
+
+  const { wishlist } = useSelector((state) => state.wishlistSliceInfo);
+  const isInWishList = wishlist.some(
+    (item) => selectedProduct._id === item.productId
+  );
   return (
     // selectedProduct detail
-    <div className="col-sm-12 col-md-6 rounded" style={{ height: "auto" }}>
-      <h2 className="fs-5">{selectedProduct.name}</h2>
-      <div className="fs-3 w-100 d-flex align-items-center w-100 justify-content-between">
-        <span className="d-flex align-items-start">
-          <span className="fs-5">$</span>
-          <strong>{selectedProduct.price}</strong>
-        </span>
+    <div className="col-sm-12 col-md-8 rounded p-3" style={{ height: "auto" }}>
+      <h2 className="fs-5" style={{ width: "90%" }}>
+        {selectedProduct.name}
+      </h2>
+      <div className="fs-3 w-100 d-flex flex-column align-items-start w-100 justify-content-center py-3">
+        <div className="fs-5 border text-primary">tag</div>
+        <div className="d-flex justify-content-between w-100">
+          <span className="d-flex align-items-start">
+            <span className="fs-5">$</span>
+            <strong>{selectedProduct.price}</strong>
+          </span>
 
-        <button className="border-0 pe-4" onClick={handleFavourite}>
-          {favourite ? (
-            <GoHeartFill className="fs-4" />
+          {isInWishList ? (
+            <button className="border-0 pe-4" onClick={handleDeleteWishlist}>
+              <GoHeartFill className="fs-4" />
+            </button>
           ) : (
-            <FaRegHeart className="fs-4" />
+            <button className="border-0 pe-4" onClick={handleFavourite}>
+              <FaRegHeart className="fs-4" />
+            </button>
           )}
-        </button>
+        </div>
       </div>
       {/* latest reviews */}
       <div className="my-2 fs-1 d-flex align-items-center">
         <div className="fs-3">
-          <Stars />
-        </div>
-        <div className="fs-3">
-          <span>({avgRating}</span>
-          <span>/</span>
-          <span>{ttlRatings})</span>
+          <Stars avgRating={avgRating} />
         </div>
       </div>
+      {/* quantity */}
+      <div className="d-flex align-items-center">
+        <p className="px-2 my-2">Quantity:</p>
+        <button
+          className="border border-black px-2 py-0 fs-5"
+          onClick={handleOnSubtract}
+        >
+          -
+        </button>
+
+        <span className="px-3" style={{ width: "10px" }}>
+          {quantity}
+        </span>
+
+        <button
+          className="border border-black px-2 py-0 fs-5"
+          onClick={handleOnAdd}
+        >
+          +
+        </button>
+      </div>
       {/* add cart button */}
-      <Button className="bg-black w-100 rounded my-3 py-2">Add to cart</Button>
+      <Button
+        className="bg-black w-100 rounded my-3 py-2"
+        onClick={() => handleOnAddCart(selectedProduct._id, quantity)}
+      >
+        Add to cart
+      </Button>
+      <Description description={selectedProduct.description} />
     </div>
   );
 };
