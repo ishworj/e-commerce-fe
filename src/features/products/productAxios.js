@@ -46,3 +46,13 @@ export const updateProductApi = (id, updateObj) => {
     contentType: "multipart/form-data",
   });
 };
+
+// update product individually apart images 
+export const updateProductApiIndividually = (id, updateObj) => {
+  return apiProcessor({
+    method: "put",
+    url: productEp + `/rating/${id}`,
+    data: updateObj,
+    isPrivate: true,
+  });
+};

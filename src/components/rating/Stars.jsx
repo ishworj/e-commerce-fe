@@ -20,7 +20,7 @@ const Stars = ({ avgRating }) => {
 
   if (emptyStar) {
     for (let i = 1; i <= emptyStar; i++) {
-      Stars.push(<IoStarOutline />);
+      Stars.push(<IoStarOutline className="text-warning" />);
     }
   }
   return (

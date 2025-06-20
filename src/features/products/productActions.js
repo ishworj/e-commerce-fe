@@ -6,6 +6,7 @@ import {
   getPublicProductApi,
   getSingleProductApi,
   updateProductApi,
+  updateProductApiIndividually,
 } from "./productAxios";
 import {
   setProducts,
@@ -67,6 +68,19 @@ export const deleteProductAction = (_id) => async (dispatch) => {
 
 export const updateProductAction = (id, updateObj) => async (dispatch) => {
   const pending = updateProductApi(id, updateObj);
+  const { status, message } = await pending;
+  if (status === "success") {
+    dispatch(getAdminProductAction());
+    dispatch(getPublicProductAction());
+  }
+  toast[status](message);
+  return "success";
+};
+
+// individual update apart images
+export const updateProductActionIndividually = (id, updateObj) => async (dispatch) => {
+  const pending = updateProductApiIndividually(id, updateObj);
+  console.log("I am here")
   const { status, message } = await pending;
   if (status === "success") {
     dispatch(getAdminProductAction());
