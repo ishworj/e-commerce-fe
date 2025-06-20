@@ -33,6 +33,7 @@ const ProductsDetails = ({
   };
 
   const { wishlist } = useSelector((state) => state.wishlistSliceInfo);
+  console.log(wishlist, selectedProduct);
   const isInWishList = wishlist.some(
     (item) => selectedProduct._id === item.productId
   );

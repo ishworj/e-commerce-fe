@@ -17,8 +17,12 @@ export const getWishlistAction = () => async (dispatch) => {
         pending: "Processing..."
     })
     const { status, message, data } = await pending;
-    if (status === "success") { console.log("kljsdhkj") }
-    dispatch(setWishlist(data))
+    if (status === "success") {
+        dispatch(setWishlist(data))
+    }
+    else {
+        dispatch(setWishlist([]))
+    }
 }
 
 export const deleteWishlistAction = () => async (dispatch) => {

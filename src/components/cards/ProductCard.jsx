@@ -1,37 +1,70 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { getSingleProductAction } from "../../features/products/productActions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getSingleProductAction,
+  updateProductActionIndividually,
+} from "../../features/products/productActions";
 import Stars from "../rating/Stars";
 import { BiSolidCartAdd } from "react-icons/bi";
 import { createCartAction } from "../../features/cart/cartAction";
+import { useNavigate } from "react-router-dom";
+import { getPubReviewAction } from "../../features/reviews/reviewAction";
 
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
-  const { _id, name, description, price, images, ratings } = item;
+  const navigate = useNavigate();
+  const { _id, name, description, price, images, reviews } = item;
+  const { user } = useSelector((state) => state.userInfo);
+  const { pubReviews } = useSelector((state) => state.reviewInfo);
 
-  const [avgRating, setAvgRating] = useState(0);
+  const [avgRating, setAvgRating] = useState(1);
   const [ttlRatings, setTtlRatings] = useState(0);
+  const [itemReviews, setItemReviews] = useState([]);
 
-  const handleOnProductClick = (_id) => {
+  const handleOnProductClick = async (_id) => {
     dispatch(getSingleProductAction(_id));
   };
 
   const handleAddToCart = (_id) => {
     console.log("clcicked");
     const quantity = 1;
-    dispatch(createCartAction(_id, quantity));
+    user._id ? dispatch(createCartAction(_id, quantity)) : navigate("/login");
   };
 
   useEffect(() => {
     const avgRatings = async () => {
+      const ratings = await itemReviews.map((item) => item.rating);
       const sum = await ratings.reduce((acc, curr) => acc + curr, 0);
       setTtlRatings(ratings.length);
       setAvgRating(sum / ratings.length);
-      return sum / ratings.length;
+      if (ratings.length === 0) {
+        setAvgRating(1);
+      }
+
+      await updateProductActionIndividually(_id, { ratings: avgRating });
     };
     avgRatings();
-  }, []);
+  }, [itemReviews]);
+
+  const fetchSelectedReview = async () => {
+    await dispatch(getPubReviewAction());
+  };
+  const setReview = async () => {
+    const selectedReviews = await pubReviews?.docs.filter(
+      (item) => item?.productId === _id
+    );
+    setItemReviews(selectedReviews);
+  };
+
+  useEffect(() => {
+    fetchSelectedReview();
+  }, [dispatch]);
+
+  useEffect(() => {
+    setReview();
+  }, [_id, pubReviews]);
+
   return (
     <Card
       // width: "18em",

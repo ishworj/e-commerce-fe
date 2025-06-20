@@ -25,7 +25,7 @@ const HomePage = () => {
     fetchPubProducts();
   }, [dispatch, productCustomerPage]);
 
-  const handleOnClickProduct = async () => {
+  const handleOnClickProduct = async (item) => {
     console.log("on the way");
     await createUserHistoryAction({
       userId: user._id || null,
@@ -33,13 +33,11 @@ const HomePage = () => {
       categoryId: item.category,
       action: "click",
     });
-    dispatch(getSingleProductAction(item._id));
-    const fetchReviews = async () => {
-      await dispatch(getPubReviewAction());
-    };
-    fetchReviews();
+    await dispatch(getSingleProductAction(item._id));
+    await dispatch(getPubReviewAction());
     window.location.href = `/${item._id}`;
   };
+
   return (
     <div className="mx-2">
       <div style={{ height: "40vh", background: "white" }}>
@@ -55,7 +53,7 @@ const HomePage = () => {
                 className="col"
                 style={{ cursor: "pointer" }}
                 key={index}
-                onClick={handleOnClickProduct}
+                onClick={() => handleOnClickProduct(item)}
               >
                 <ProductCard item={item} />
               </div>
@@ -63,7 +61,7 @@ const HomePage = () => {
           })}
           <div className="mt-2 d-flex justify-content-center w-100">
             <PaginationRounded
-              totalPages={publicProducts.totalPages}
+              totalPages={publicProducts?.totalPages}
               page={productCustomerPage}
               mode="product"
               client="customer"

@@ -24,11 +24,11 @@ const ProductLandingPage = () => {
 
   const handleFavourite = () => {
     const obj = {
-      productId: selectedProduct._id,
-      name: selectedProduct.name,
-      unitPrice: selectedProduct.price,
-      stockStatus: selectedProduct.stock,
-      image: selectedProduct.images[0],
+      productId: selectedProduct?._id,
+      name: selectedProduct?.name,
+      unitPrice: selectedProduct?.price,
+      stockStatus: selectedProduct?.stock,
+      image: selectedProduct?.images[0],
     };
     setFavourite(!favourite);
     dispatch(createWishlistAction(obj));
