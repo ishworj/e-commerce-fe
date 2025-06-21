@@ -10,7 +10,6 @@ const ProductReviews = ({ selectedProduct }) => {
   const { pubReviews, reviewCustomerPage } = useSelector(
     (state) => state.reviewInfo
   );
-  console.log(pubReviews, reviewCustomerPage);
   const selectedReview = pubReviews?.docs?.filter(
     (item) => item.productId === selectedProduct._id
   );

@@ -12,9 +12,11 @@ import {
 } from "../../features/wishlist/wishlistAction";
 const ProductLandingPage = () => {
   const [favourite, setFavourite] = useState(false);
-  const [avgRating, setAvgRating] = useState(0);
-  const [ttlRatings, setTtlRatings] = useState(0);
+  const [avgRating, setAvgRating] = useState(1);
+  const [itemReviews, setItemReviews] = useState([]);
+
   const { selectedProduct } = useSelector((state) => state.productInfo);
+  const { pubReviews } = useSelector((state) => state.reviewInfo);
 
   const dispatch = useDispatch();
 
@@ -40,7 +42,6 @@ const ProductLandingPage = () => {
   };
 
   useEffect(() => {
-    console.log("i am here fidrs");
     const fetchSingleProduct = async () => {
       await dispatch(getSingleProductAction(id));
     };
@@ -48,19 +49,37 @@ const ProductLandingPage = () => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    console.log("I was here");
-    if (!selectedProduct || !selectedProduct.ratings) return;
     const avgRatings = async () => {
-      const sum = await selectedProduct?.ratings.reduce(
-        (acc, curr) => acc + curr,
-        0
-      );
-      setTtlRatings(selectedProduct?.ratings.length);
-      setAvgRating(sum / selectedProduct?.ratings.length);
-      return sum / selectedProduct?.ratings.length;
+      const ratings = await itemReviews.map((item) => item.rating);
+      const sum = await ratings.reduce((acc, curr) => acc + curr, 0);
+      // setTtlRatings(ratings.length);
+      setAvgRating(sum / ratings.length);
+      if (ratings.length === 0) {
+        setAvgRating(1);
+      }
+
+      await updateProductActionIndividually(id, { ratings: avgRating });
     };
     avgRatings();
-  }, [selectedProduct]);
+  }, [itemReviews]);
+
+  const fetchSelectedReview = async () => {
+    await dispatch(getPubReviewAction());
+  };
+  const setReview = async () => {
+    const selectedReviews = await pubReviews?.docs.filter(
+      (item) => item?.productId === id
+    );
+    setItemReviews(selectedReviews);
+  };
+
+  useEffect(() => {
+    fetchSelectedReview();
+  }, [dispatch]);
+
+  useEffect(() => {
+    setReview();
+  }, [id, pubReviews]);
 
   if (selectedProduct == null) {
     return <div>Loading.....</div>;
@@ -85,9 +104,8 @@ const ProductLandingPage = () => {
             handleFavourite={handleFavourite}
             handleDeleteWishlist={handleDeleteWishlist}
             favourite={favourite}
-            selectedProduct={selectedProduct}
             avgRating={avgRating}
-            ttlRatings={ttlRatings}
+            selectedProduct={selectedProduct}
           />
         </div>
         {/* latest reviews  */}
