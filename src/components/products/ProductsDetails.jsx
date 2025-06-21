@@ -10,7 +10,6 @@ import Description from "./Description";
 const ProductsDetails = ({
   handleFavourite,
   handleDeleteWishlist,
-  favourite,
   selectedProduct,
   avgRating,
 }) => {
@@ -20,7 +19,7 @@ const ProductsDetails = ({
   const handleOnAdd = () => {
     setQuantity((prev) => (prev += 1));
   };
-
+  console.log(selectedProduct, "sdfg");
   const handleOnSubtract = () => {
     if (quantity <= 1) {
       setQuantity(1);
@@ -33,6 +32,7 @@ const ProductsDetails = ({
   };
 
   const { wishlist } = useSelector((state) => state.wishlistSliceInfo);
+
   const isInWishList = wishlist.some(
     (item) => selectedProduct._id === item.productId
   );

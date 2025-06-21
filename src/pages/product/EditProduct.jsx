@@ -19,7 +19,7 @@ const EditProduct = () => {
   const { products } = useSelector((state) => state.productInfo);
   const { Categories } = useSelector((state) => state.categoryInfo);
 
-  const selectedProduct = products.find((item) => item._id === _id);
+  const selectedProduct = products?.docs?.find((item) => item._id === _id);
   const { form, handleOnChange, setForm } = useForm(selectedProduct || {});
 
   const [images, setImages] = useState([]); // new files only
