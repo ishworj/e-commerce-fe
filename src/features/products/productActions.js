@@ -67,6 +67,7 @@ export const deleteProductAction = (_id) => async (dispatch) => {
 };
 
 export const updateProductAction = (id, updateObj) => async (dispatch) => {
+  console.log(id)
   const pending = updateProductApi(id, updateObj);
   const { status, message } = await pending;
   if (status === "success") {
