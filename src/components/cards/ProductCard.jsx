@@ -68,8 +68,8 @@ const ProductCard = ({ item }) => {
   return (
     <Card
       // width: "18em",
-      style={{ height: "28em" }}
-      className="mb-2 mb-md-0 shadow-lg border-0"
+      style={{ height: "25em" }}
+      className="mb-2 mb-md-2 shadow-lg border-0"
       onClick={() => handleOnProductClick(_id)}
     >
       <Card.Img
@@ -82,26 +82,28 @@ const ProductCard = ({ item }) => {
         className="d-flex flex-column justify-content-between"
         style={{ height: "25%" }}
       >
-        <b style={{ height: "20px" }} className="fs-5">
+        <b style={{ height: "20px" }}>
           {name.slice(0, 45)}
           {name.length > 45 ? "..." : ""}
         </b>
-        <div className="text-end my-1">
-          <button
-            className="fs-3 btn"
-            title="Add to Cart"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              handleAddToCart(_id);
-            }}
-          >
-            <BiSolidCartAdd />
-          </button>
-        </div>
-        <div className="d-flex justify-content-between align-items-center py-2 fs-4">
-          $ {price}
-          <Stars avgRating={avgRating} />
+        <div className="d-flex justify-content-between align-items-center py-2 fs-5">
+          <div className="d-flex flex-column">
+            $ {price}
+            <Stars avgRating={avgRating} />
+          </div>
+          <div>
+            <button
+              className="fs-3 btn"
+              title="Add to Cart"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleAddToCart(_id);
+              }}
+            >
+              <BiSolidCartAdd />
+            </button>
+          </div>
         </div>
       </Card.Body>
     </Card>

@@ -58,7 +58,7 @@ const Header = ({ handleCart, setNavHeight }) => {
           className=" fs-1 fw-bold order-0"
           style={{ cursor: "pointer" }}
         >
-          BRAND
+          DEV STYLE
         </Navbar.Brand>
 
         {/* Toggle button (for mobile) */}

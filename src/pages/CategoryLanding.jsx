@@ -124,24 +124,26 @@ const CategoryLanding = () => {
       </Row>
 
       {/* Product Cards Section */}
-      <Row className="py-5 g-3">
-        {productsByCategory.length > 0 ? (
-          productsByCategory.map((item, index) => (
-            <Col xs={6} md={4} lg={3} key={index}>
-              <Link
-                className="text-decoration-none text-dark"
-                to={`/${item._id}`}
+      <div className="py-5 w-100 d-flex justify-content-center">
+        <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 row-cols-lg-6 w-100 my-2">
+          {productsByCategory.length > 0 ? (
+            productsByCategory.map((item, index) => (
+              <div
+                className="col"
+                key={index}
+                style={{ cursor: "pointer" }}
+                onClick={() => handleOnClickProduct(item)}
               >
                 <ProductCard item={item} />
-              </Link>
-            </Col>
-          ))
-        ) : (
-          <Col>
-            <p>No products available in this category.</p>
-          </Col>
-        )}
-      </Row>
+              </div>
+            ))
+          ) : (
+            <div className="col">
+              <p>No products available in this category.</p>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Footer */}
       <div className="bg-light text-center p-2">

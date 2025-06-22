@@ -43,10 +43,9 @@ const HomePage = () => {
       <div style={{ height: "40vh", background: "white" }}>
         <CarouselHomePage />
       </div>
-      <h3>Categories</h3>
       <CategoryList />
       <div className="py-5 w-100 d-flex justify-content-center">
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-5 w-100">
+        <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 row-cols-lg-6  w-100 my-2">
           {publicProducts?.docs?.map((item, index) => {
             return (
               <div
