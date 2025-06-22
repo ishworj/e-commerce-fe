@@ -10,6 +10,7 @@ import {
   getSingleProductAction,
 } from "../../features/products/productActions";
 import { getPubReviewAction } from "../../features/reviews/reviewAction";
+import { handleOnClickProduct } from "../../utils/productFunctions";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -24,19 +25,6 @@ const HomePage = () => {
     };
     fetchPubProducts();
   }, [dispatch, productCustomerPage]);
-
-  const handleOnClickProduct = async (item) => {
-    console.log("on the way");
-    await createUserHistoryAction({
-      userId: user._id || null,
-      productId: item._id,
-      categoryId: item.category,
-      action: "click",
-    });
-    await dispatch(getSingleProductAction(item._id));
-    await dispatch(getPubReviewAction());
-    window.location.href = `/${item._id}`;
-  };
 
   return (
     <div className="mx-2">
@@ -53,7 +41,7 @@ const HomePage = () => {
                 className="col"
                 style={{ cursor: "pointer" }}
                 key={index}
-                onClick={() => handleOnClickProduct(item)}
+                onClick={() => handleOnClickProduct(item, user, dispatch)}
               >
                 <ProductCard item={item} />
               </div>
