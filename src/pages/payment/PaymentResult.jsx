@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { verifyPaymentSession } from "../../features/payment/PaymentAxios";
-import { makePaymentAction } from "../../features/payment/PaymentActions";
+import {
+  makePaymentAction,
+  verifyPaymentAction,
+} from "../../features/payment/PaymentActions";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCartAction } from "../../features/cart/cartAction";
@@ -41,14 +44,14 @@ const PaymentResult = () => {
         return <p className="text-center mt-20">Loading user info...</p>;
       }
 
-      const data = await verifyPaymentSession(sessionId, {
+      const data = await verifyPaymentAction(sessionId, {
         shippingAddress: user.address,
         userId: user._id,
       });
 
-      setPlacedOrder(data.order);
-      setIsVerified(data.verified);
-      setStatus(data.status);
+      setPlacedOrder(data?.order || {});
+      setIsVerified(data?.verified || false);
+      setStatus(data?.status || "error");
 
       if (data.verified) {
         dispatch(deleteCartAction(cart._id));

@@ -17,10 +17,18 @@ export const getAdminProductApi = (page) => {
     isPrivate: true,
   });
 };
+// acc to the pagination
 export const getPublicProductApi = (page) => {
   return apiProcessor({
     method: "get",
     url: `${productEp}/active?page=${page}`,
+  });
+};
+// all the active products
+export const getActiveProductApi = () => {
+  return apiProcessor({
+    method: "get",
+    url: `${productEp}/active-products`,
   });
 };
 export const getSingleProductApi = (id) => {

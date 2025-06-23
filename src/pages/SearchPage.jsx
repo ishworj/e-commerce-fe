@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { AiOutlineClose } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { getPublicProductAction } from "../features/products/productActions";
+import {
+  getActiveProductAction,
+  getPublicProductAction,
+} from "../features/products/productActions";
 import ProductCard from "../components/cards/ProductCard";
 import { handleOnClickProduct } from "../utils/productFunctions";
 
@@ -14,7 +17,7 @@ const SearchPage = () => {
 
   const dispatch = useDispatch();
 
-  const { publicProducts } = useSelector((state) => state.productInfo);
+  const { allActiveProducts } = useSelector((state) => state.productInfo);
   const { user } = useSelector((state) => state.userInfo);
 
   const handleOnSearch = (e) => {
@@ -27,15 +30,16 @@ const SearchPage = () => {
   };
 
   const fetchProducts = async () => {
-    await dispatch(getPublicProductAction());
+    await dispatch(getActiveProductAction());
   };
 
   const searchFunction = async (keyWords) => {
-    const data = await publicProducts?.docs?.filter((item) =>
+    const data = await allActiveProducts.filter((item) =>
       item.name.toLowerCase().includes(keyWords.toLowerCase())
     );
     setDisplayProducts(data);
   };
+  console.log(allActiveProducts, 87);
 
   const handleClearSearch = () => {
     setIsSearching(false);
@@ -45,7 +49,7 @@ const SearchPage = () => {
   };
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div

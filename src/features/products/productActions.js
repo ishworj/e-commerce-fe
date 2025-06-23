@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import {
   createProductApi,
   deleteProductApi,
+  getActiveProductApi,
   getAdminProductApi,
   getPublicProductApi,
   getSingleProductApi,
@@ -9,6 +10,7 @@ import {
   updateProductApiIndividually,
 } from "./productAxios";
 import {
+  setAllActiveProducts,
   setProducts,
   setPublicProducts,
   setSelectedProduct,
@@ -41,6 +43,18 @@ export const getPublicProductAction = () => async (dispatch, getState) => {
     dispatch(setPublicProducts(products));
   }
 };
+
+export const getActiveProductAction = () => async (dispatch) => {
+  const pending = getActiveProductApi()
+  toast.promise(pending, {
+    pending: "Loading..."
+  })
+  const { status, message, products } = await pending;
+  console.log(products)
+  if (status === "success") {
+    dispatch(setAllActiveProducts(products))
+  }
+}
 
 export const getSingleProductAction = (id) => async (dispatch) => {
   try {

@@ -4,7 +4,6 @@ import Review from "../review/Review";
 
 const PlaceOrder = ({ item }) => {
   const { products } = item;
-  console.log(products);
   const [isReviewing, setIsReviewing] = useState(null);
 
   const handleToggleReview = (id) => {
@@ -23,6 +22,7 @@ const PlaceOrder = ({ item }) => {
           <th>Image</th>
           <th>Product</th>
           <th>Price</th>
+          <th>Quantity</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -41,7 +41,10 @@ const PlaceOrder = ({ item }) => {
             <td style={{ width: "600px" }}>
               <b>{product.name}</b>
             </td>
-            <td style={{ width: "100px" }}>$ {product.price}</td>
+            <td style={{ width: "100px" }}>
+              $ {(product.price / 100) * product.quantity}
+            </td>
+            <td style={{ width: "100px" }}>{product.quantity}</td>
 
             <td className="">
               <Review
