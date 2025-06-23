@@ -3,15 +3,17 @@ import { useLocation } from "react-router-dom";
 
 const BreadCrumbsAdmin = () => {
   const breadcrumbMap = {
+    "/admin": "Admin",
     "/admin/adminDashboard": "Dashboard",
     "/admin/products": "Products",
     "/admin/products/new": "Add New Product",
     "/admin/products/edit/:_id": "Edit Product",
     "/admin/categories": "Categories",
-    "/admin/edit-category/:_id": "Edit Category",
-    "/admin/add-category": "Add Category",
+    "/admin/categories/new": "Add Category",
     "/admin/orders": "Orders",
     "/admin/reviews": "Reviews",
+    "/user": "User",
+    "/user/account": "Account",
   };
 
   const location = useLocation();
@@ -22,28 +24,16 @@ const BreadCrumbsAdmin = () => {
 
   pathNames.map((value, index) => {
     const link = `/${pathNames.slice(0, index + 1).join("/")}`;
+    console.log(link);
+    if (link === "/admin") return;
+    if (link === "/user") return;
     const name = breadcrumbMap[link] || value;
+    console.log(name);
     itemForBreadCrumbs.push({ title: <a href={link}>{name}</a> });
   });
 
   console.log(itemForBreadCrumbs, "Items");
-  return (
-    <Breadcrumb
-      //   items={[
-      //     {
-      //       title: <a href="">Home</a>,
-      //     },
-      //     {
-      //       title: <a href="">Dashboard</a>,
-      //     },
-      //     {
-      //       title: "An Application",
-      //     },
-      //   ]}
-      items={itemForBreadCrumbs}
-      className="pb-3"
-    />
-  );
+  return <Breadcrumb items={itemForBreadCrumbs} className="pb-3" />;
 };
 
 export default BreadCrumbsAdmin;

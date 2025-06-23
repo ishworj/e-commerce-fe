@@ -2,12 +2,11 @@ import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserLayout } from "../../components/layouts/UserLayout";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { setMenu } from "../../features/user/userSlice";
 import LoginSecurityCard from "./LoginSecurityCard";
-import { Link } from "react-router-dom";
 import { resendVerificationLinkApi } from "../../features/user/userApi";
-import { MdOutlineCancel } from "react-icons/md";
+import BreadCrumbsAdmin from "../../components/breadCrumbs/BreadCrumbsAdmin";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -139,6 +138,7 @@ const Profile = () => {
   return (
     user._id && (
       <UserLayout pageTitle="Login & Security">
+        <BreadCrumbsAdmin />
         <div className="w-100 d-flex justify-content-center align-items-center">
           <div className="border col-12 col-md-10 col-lg-6 rounded pt-3 d-flex flex-column align-items-center">
             {profileInputs.map((item, index) => (

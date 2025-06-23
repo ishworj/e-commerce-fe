@@ -54,14 +54,18 @@ const SearchPage = () => {
   return (
     <div
       className="d-flex flex-column align-items-center"
-      style={{ minHeight: "70dvh" }}
+      style={{ minHeight: "85vh" }}
     >
-      <div className={isSearching ? "liveSearch" : "searchContainer"}>
+      <div
+        className={`col-8 col-sm-12 ${
+          isSearching ? "liveSearch" : "searchContainer"
+        }`}
+      >
         <input
           type="text"
           value={searchedWord}
           placeholder="Search Products..."
-          className="form-control border shadow"
+          className="form-control border shadow-lg"
           onChange={handleOnSearch}
           onClick={() => {
             setIsSearching(true);
@@ -80,7 +84,7 @@ const SearchPage = () => {
       {/* searched Products */}
       {isSearching && (
         <div className="py-5 w-100 d-flex justify-content-center">
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-5 w-100">
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3 w-100">
             {displayProducts.length > 0 ? (
               displayProducts.map((item, index) => (
                 <div
@@ -97,9 +101,11 @@ const SearchPage = () => {
                 className="d-flex justify-content-center align-items-center fs-4 w-100 text-secondary"
                 style={{ minHeight: "40vh" }}
               >
-                No products found{" "}
+                No products found
                 {searchedWord.length > 0 ? (
-                  <strong>&nbsp;for "{searchedWord}"</strong>
+                  <p className="m-0">
+                    &nbsp;for <strong>"{searchedWord}"</strong>
+                  </p>
                 ) : (
                   ""
                 )}

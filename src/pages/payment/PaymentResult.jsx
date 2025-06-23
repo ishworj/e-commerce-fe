@@ -83,7 +83,7 @@ const PaymentResult = () => {
         <PlaceOrder item={placedOrder} />
 
         <button
-          className="mt-6 px-4 py-2 bg-black text-white rounded col-2"
+          className="mt-6 px-4 py-2 bg-black text-white rounded col-5 col-sm-2"
           onClick={() => navigate("/")}
         >
           Back to Home

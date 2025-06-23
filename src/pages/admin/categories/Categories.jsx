@@ -40,7 +40,7 @@ const Categories = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
 
-        <Link to="/admin/add-category" className="btn btn-primary">
+        <Link to="/admin/categories/new" className="btn btn-primary">
           + Add Category
         </Link>
       </div>
