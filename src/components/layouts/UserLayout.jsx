@@ -6,6 +6,7 @@ import { AuthRoute } from "../../routes/AuthRoutes.jsx";
 
 export const UserLayout = ({ pageTitle = "default", children }) => {
   const { user } = useSelector((state) => state.userInfo);
+
   return (
     <AuthRoute>
       <div>

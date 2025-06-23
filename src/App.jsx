@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AppRoutes from "./routes/AppRoutes";
 import { getAllCategoriesAction } from "./features/category/CategoryActions.js";
 import { Bounce, ToastContainer } from "react-toastify";
@@ -12,16 +12,30 @@ import { getPublicProductAction } from "./features/products/productActions.js";
 
 const App = () => {
   const dispatch = useDispatch();
+
+  const fetchData = async () => {
+    await dispatch(getAllCategoriesAction());
+    await dispatch(fetchCartAction());
+    await dispatch(autoLogin());
+    await dispatch(getOrderAction());
+    await dispatch(getWishlistAction());
+    await dispatch(getPubReviewAction());
+    await dispatch(getPublicProductAction());
+  };
   useEffect(() => {
-    dispatch(getAllCategoriesAction());
-    dispatch(fetchCartAction());
-    dispatch(autoLogin());
-    dispatch(getOrderAction());
-    dispatch(getWishlistAction());
-    dispatch(getPubReviewAction());
-    dispatch(getPublicProductAction(1));
+    fetchData();
+    setLoading(false);
   }, []);
 
+  const [loading, setLoading] = useState(true);
+
+  if (loading) {
+    return (
+      <div className="text-center" style={{ minHeight: "100vh" }}>
+        Loading...
+      </div>
+    );
+  }
   return (
     <div>
       <AppRoutes />

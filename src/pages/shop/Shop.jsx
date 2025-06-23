@@ -24,7 +24,7 @@ const Shop = () => {
       {/* controls and actions like searching, sorting and filtering */}
       <div></div>
       <div className="py-5 w-100 d-flex justify-content-center">
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-5 w-100">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3 w-100">
           {publicProducts?.docs?.map((item, index) => {
             return (
               <div

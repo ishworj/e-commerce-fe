@@ -12,8 +12,8 @@ input::-webkit-inner-spin-button {
 .login-page {
   min-height: 100vh;
 }
-
-/* categor landing page  */
+/* ==================================================================== */
+/* category landing page  */
 .description {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -26,7 +26,7 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
 }
 /* carousel home page */
-
+/* ==================================================================== */
 #app {
   height: 100%;
 }
@@ -69,7 +69,7 @@ body,#root {
   margin-left: auto;
   margin-right: auto;
 }
-
+/* ==================================================================== */
 /* carousel home page end  */
 
 /* cart */
@@ -80,7 +80,7 @@ body,#root {
 .cart-animation-close {
   animation: slideOut 0.5s ease forwards;
 }
-
+/* ==================================================================== */
 /* update box glassmophormism */
 .updateBox {
   margin: 0 auto;
@@ -112,7 +112,7 @@ body,#root {
     opacity: 0;
   }
 }
-
+/* ==================================================================== */
 /* sticky class for the product landing page */
 
 @media (min-width : 768px){
@@ -132,14 +132,14 @@ body,#root {
     top: 0% !important;
     } 
 }
-
+/* ==================================================================== */
 
 /* sharing social links */
 .social-icon{
   background: transparent !important;
   margin: 2px 5px;
 }
-
+/* ==================================================================== */
 /* about page */
 
 
@@ -211,7 +211,7 @@ section.about-section {
     margin-bottom: 1.5rem;
   }
 }
-
+/* ==================================================================== */
 /* search page */
 .searchContainer {
   display: flex;
@@ -293,3 +293,13 @@ width: 50px;
         transform: translateY(0%);
     }
   }
+  /* ==================================================================== */
+  /* product Card */
+.hoverCart:hover{
+color: black !important;
+background: white !important;
+}
+
+
+
+  /* ==================================================================== */
