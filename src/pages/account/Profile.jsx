@@ -7,14 +7,27 @@ import { setMenu } from "../../features/user/userSlice";
 import LoginSecurityCard from "./LoginSecurityCard";
 import { resendVerificationLinkApi } from "../../features/user/userApi";
 import BreadCrumbsAdmin from "../../components/breadCrumbs/BreadCrumbsAdmin";
+import { fetchUserAction } from "../../features/user/userAction";
+import { RotatingLines } from "react-loader-spinner";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.userInfo);
+  console.log(user);
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
 
   const [isResending, setIsResending] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    await dispatch(fetchUserAction());
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const profileInputs = [
     {
@@ -51,8 +64,29 @@ const Profile = () => {
     }
   };
   useEffect(() => {
-    dispatch(setMenu("Login & Security"), []);
-  });
+    dispatch(setMenu("Login & Security"));
+  }, []);
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "55vh" }}
+      >
+        <RotatingLines
+          visible={true}
+          height="96"
+          width="96"
+          color="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          ariaLabel="rotating-lines-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
+  }
 
   if (!user._id) {
     return (
@@ -83,6 +117,7 @@ const Profile = () => {
             </Button>
           </div>
           <p className="py-2 m-0">Or</p>
+
           {isResending ? (
             <div className="">
               <Form
@@ -135,6 +170,7 @@ const Profile = () => {
       </div>
     );
   }
+
   return (
     user._id && (
       <UserLayout pageTitle="Login & Security">

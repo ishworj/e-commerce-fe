@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import HomePage from "../pages/home/HomePage";
 import Register from "../pages/auth/Register";
@@ -31,12 +31,22 @@ import Logout from "../pages/auth/Logout.jsx";
 import Shop from "../pages/shop/Shop.jsx";
 import WishList from "../pages/wishList/WishList.jsx";
 import AdminReview from "../pages/review/AdminReview.jsx";
+import { fetchUserAction } from "../features/user/userAction.js";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    await dispatch(getPublicProductAction());
+    await dispatch(fetchUserAction());
+    setLoading(false);
+  };
+
   useEffect(() => {
-    dispatch(getPublicProductAction());
+    fetchData();
   }, []);
+
   return (
     <Routes>
       {/* public routes */}
