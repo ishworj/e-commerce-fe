@@ -7,7 +7,7 @@ import PaginationRounded from "../pagination/PaginationRounded";
 
 const ProductReviews = ({ selectedProduct }) => {
   const dispatch = useDispatch();
-  const { pubReviews, reviewCustomerPage } = useSelector(
+  const { pubReviews, reviewCustomerPage, allPubReviews } = useSelector(
     (state) => state.reviewInfo
   );
   const selectedReview = pubReviews?.docs?.filter(
@@ -15,7 +15,7 @@ const ProductReviews = ({ selectedProduct }) => {
   );
   useEffect(() => {
     const fetchReviews = async () => {
-      await dispatch(getPubReviewAction());
+      await dispatch(getPubReviewAction(selectedProduct._id));
     };
     fetchReviews();
   }, [reviewCustomerPage, selectedProduct]);
@@ -35,12 +35,14 @@ const ProductReviews = ({ selectedProduct }) => {
             ))}
           </Row>
           <div className="mt-2 d-flex justify-content-center w-100">
-            <PaginationRounded
-              totalPages={pubReviews.totalPages}
-              page={reviewCustomerPage}
-              mode="review"
-              client="customer"
-            />
+            {selectedReview?.length > 10 && (
+              <PaginationRounded
+                totalPages={pubReviews.totalPages}
+                page={reviewCustomerPage}
+                mode="review"
+                client="customer"
+              />
+            )}
           </div>
         </>
       )}

@@ -54,7 +54,7 @@ const ProductCard = ({ item }) => {
     const selectedReviews = await pubReviews?.docs.filter(
       (item) => item?.productId === _id
     );
-    setItemReviews(selectedReviews);
+    await setItemReviews(selectedReviews);
   };
 
   useEffect(() => {

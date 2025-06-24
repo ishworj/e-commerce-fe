@@ -9,6 +9,7 @@ export const createReviewApi = (obj) => {
         data: obj
     })
 }
+// acc to the pagination
 export const getAllReviewApi = (page) => {
     return apiProcessor({
         method: "get",
@@ -16,10 +17,24 @@ export const getAllReviewApi = (page) => {
         isPrivate: true
     })
 }
-export const getPubReviewApi = (page) => {
+// acc to the pagination 
+export const getPubReviewApi = ({ page, productId }) => {
+    const query = new URLSearchParams({ page })
+
+    if (productId) {
+        query.append("productId", productId)
+    }
+
     return apiProcessor({
         method: "get",
-        url: `${URL}?page=${page}`
+        url: `${URL}?${query.toString()}`
+    })
+}
+
+export const getAllPubReviewApi = () => {
+    return apiProcessor({
+        method: "get",
+        url: `${URL}/public`
     })
 }
 export const updateStatusOfReviewApi = (obj) => {

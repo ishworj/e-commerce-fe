@@ -4,7 +4,7 @@ import { getAllCategoriesAction } from "./features/category/CategoryActions.js";
 import { Bounce, ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { fetchCartAction } from "./features/cart/cartAction.js";
-import { autoLogin } from "./features/user/userAction.js";
+import { autoLogin, fetchUserAction } from "./features/user/userAction.js";
 import { getOrderAction } from "./features/orders/orderActions.js";
 import { getWishlistAction } from "./features/wishlist/wishlistAction.js";
 import { getPubReviewAction } from "./features/reviews/reviewAction.js";
@@ -21,6 +21,7 @@ const App = () => {
     await dispatch(getWishlistAction());
     await dispatch(getPubReviewAction());
     await dispatch(getPublicProductAction());
+    await dispatch(fetchUserAction());
   };
   useEffect(() => {
     fetchData();
