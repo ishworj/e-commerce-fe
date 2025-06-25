@@ -1,18 +1,16 @@
 import { getOrCreateSession } from "../../utils/sessionHistory"
-import { createUserHistory, getUserHistory } from "./userHistoryAPI";
+import { createUserHistory, getRecommendationsApi } from "./userHistoryAPI";
+import { setHotPicks } from "./userHistorySlice";
 
 
-export const createUserHistoryAction = async (data) => {
-    console.log("creating")
+export const createUserHistoryAction = (data) => async (dispatch) => {
     const { userId } = data;
     const sessionId = !userId ? getOrCreateSession() : null;
-    console.log(userId, sessionId)
     try {
         const payload = {
             ...(userId ? { userId } : { guestSessionId: sessionId }),
             ...data
         };
-        console.log(payload, 999)
 
         return await createUserHistory(payload);
     } catch (error) {
@@ -21,10 +19,17 @@ export const createUserHistoryAction = async (data) => {
 
 }
 
-export const getUserHistoryAction = async (data) => {
+export const getRecommendationsAction = (data) => async (dispatch) => {
+    const userId = data
+    const sessionId = !userId ? getOrCreateSession() : null;
     try {
-        const response = await getUserHistory(data)
-        return response
+        const payload = {
+            ...(userId ? { userId } : { guestSessionId: sessionId }),
+            ...data
+        };
+        const { top10Products } = await getRecommendationsApi(payload)
+        dispatch(setHotPicks(top10Products))
+
     } catch (error) {
         console.log(error?.message)
     }

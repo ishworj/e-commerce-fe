@@ -96,7 +96,7 @@ const EditCategory = () => {
   return (
     <UserLayout pageTitle={`Edit ${selectedCategory?.categoryName} Category`}>
       <BreadCrumbsAdmin />
-      <div className="mt-5">
+      <div className="">
         <h4 className="py-4">Edit Category</h4>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">

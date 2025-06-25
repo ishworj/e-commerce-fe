@@ -12,8 +12,8 @@ input::-webkit-inner-spin-button {
 .login-page {
   min-height: 100vh;
 }
-
-/* categor landing page  */
+/* ==================================================================== */
+/* category landing page  */
 .description {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -26,7 +26,7 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
 }
 /* carousel home page */
-
+/* ==================================================================== */
 #app {
   height: 100%;
 }
@@ -69,7 +69,7 @@ body,#root {
   margin-left: auto;
   margin-right: auto;
 }
-
+/* ==================================================================== */
 /* carousel home page end  */
 
 /* cart */
@@ -80,7 +80,7 @@ body,#root {
 .cart-animation-close {
   animation: slideOut 0.5s ease forwards;
 }
-
+/* ==================================================================== */
 /* update box glassmophormism */
 .updateBox {
   margin: 0 auto;
@@ -112,7 +112,7 @@ body,#root {
     opacity: 0;
   }
 }
-
+/* ==================================================================== */
 /* sticky class for the product landing page */
 
 @media (min-width : 768px){
@@ -132,14 +132,14 @@ body,#root {
     top: 0% !important;
     } 
 }
-
+/* ==================================================================== */
 
 /* sharing social links */
 .social-icon{
   background: transparent !important;
   margin: 2px 5px;
 }
-
+/* ==================================================================== */
 /* about page */
 
 
@@ -211,4 +211,95 @@ section.about-section {
     margin-bottom: 1.5rem;
   }
 }
+/* ==================================================================== */
+/* search page */
+.searchContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  min-height: 80dvh;
 
+  animation: slideDown 0.3s ease-out forwards;
+
+  input {
+    height: 60px;
+    width: 500px;
+    padding: 0 10px;
+    border: 2px solid #6c757d;
+    border-radius: 10px;
+    font-size: 25px;
+    transition: height 0.3s ease;
+  }
+
+  .icon {
+    font-size: 60px;
+    color: #6c757d;
+    transition: all 0.3s ease;
+  }
+}
+  .liveSearch{
+    margin-top: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    animation: slideUp 0.3s ease-out forwards;
+    
+    input {
+      height: 50px;
+      width: 400px;
+      border-radius: 5px;
+      padding: 0 10px;
+      font-size: 20px;
+      transition: height 0.3s ease;
+      
+    }
+
+    .icon {
+      font-size: 50px;
+      animation: slideSearchIcon 0.3s ease-out forwards;
+    }
+  }
+@keyframes slideSearchIcon {
+  0%{
+opacity: 0;
+width: 0;
+  }
+  100%{
+opacity: 1;
+width: 50px;
+  }
+}
+
+@keyframes slideDown {
+    0%{
+      opacity: 0;
+        transform: translateY(0%);
+    }
+    100%{
+      opacity: 1;
+        transform: translateY(50%);
+    }
+  }
+  @keyframes slideUp {
+    0%{
+      opacity: 0;
+        transform: translateY(500%);
+    }
+    100%{
+      opacity: 1;
+        transform: translateY(0%);
+    }
+  }
+  /* ==================================================================== */
+  /* product Card */
+.hoverCart:hover{
+color: white !important;
+background: black !important;
+}
+
+
+
+  /* ==================================================================== */

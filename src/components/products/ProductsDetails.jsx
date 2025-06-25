@@ -12,14 +12,16 @@ const ProductsDetails = ({
   handleDeleteWishlist,
   selectedProduct,
   avgRating,
+  wishlist,
 }) => {
   const dispatch = useDispatch();
 
   const [quantity, setQuantity] = useState(1);
+
   const handleOnAdd = () => {
     setQuantity((prev) => (prev += 1));
   };
-  console.log(selectedProduct, "sdfg");
+
   const handleOnSubtract = () => {
     if (quantity <= 1) {
       setQuantity(1);
@@ -27,15 +29,16 @@ const ProductsDetails = ({
       setQuantity((prev) => (prev -= 1));
     }
   };
+
   const handleOnAddCart = (_id, quantity) => {
     dispatch(createCartAction(_id, quantity));
   };
 
-  const { wishlist } = useSelector((state) => state.wishlistSliceInfo);
-
-  const isInWishList = wishlist.some(
+  const wishListItem = wishlist.find(
     (item) => selectedProduct._id === item.productId
   );
+  const isInWishList = Boolean(wishListItem);
+
   return (
     // selectedProduct detail
     <div className="col-sm-12 col-md-8 rounded p-3" style={{ height: "auto" }}>
@@ -51,7 +54,10 @@ const ProductsDetails = ({
           </span>
 
           {isInWishList ? (
-            <button className="border-0 pe-4" onClick={handleDeleteWishlist}>
+            <button
+              className="border-0 pe-4"
+              onClick={() => handleDeleteWishlist(wishListItem._id)}
+            >
               <GoHeartFill className="fs-4" />
             </button>
           ) : (

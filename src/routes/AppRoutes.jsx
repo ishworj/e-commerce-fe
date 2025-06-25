@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import HomePage from "../pages/home/HomePage";
 import Register from "../pages/auth/Register";
@@ -31,12 +31,22 @@ import Logout from "../pages/auth/Logout.jsx";
 import Shop from "../pages/shop/Shop.jsx";
 import WishList from "../pages/wishList/WishList.jsx";
 import AdminReview from "../pages/review/AdminReview.jsx";
+import { fetchUserAction } from "../features/user/userAction.js";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    await dispatch(getPublicProductAction());
+    await dispatch(fetchUserAction());
+    setLoading(false);
+  };
+
   useEffect(() => {
-    dispatch(getPublicProductAction());
+    fetchData();
   }, []);
+
   return (
     <Routes>
       {/* public routes */}
@@ -72,8 +82,8 @@ const AppRoutes = () => {
         <Route path="products/new" element={<AddNewProduct />} />
         <Route path="products/edit/:_id" element={<EditProduct />} />
         <Route path="categories" element={<Categories />} />
-        <Route path="edit-category/:_id" element={<EditCategory />} />
-        <Route path="/admin/add-category" element={<AddCategory />} />
+        <Route path="categories/:_id" element={<EditCategory />} />
+        <Route path="categories/new" element={<AddCategory />} />
         <Route path="orders" element={<AdminOrders />} />
         <Route path="reviews" element={<AdminReview />} />
       </Route>

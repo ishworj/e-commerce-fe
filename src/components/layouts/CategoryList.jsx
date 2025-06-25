@@ -17,6 +17,7 @@ const CategoryList = ({ isModalView = false }) => {
     <div
       className={`justify-content-center bg-light ${isModalView ? "p-3" : ""}`}
     >
+      <h1 className="mt-2">Categories</h1>
       <Col
         className={`fw-bold ${
           isModalView

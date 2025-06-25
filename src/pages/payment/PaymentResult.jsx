@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { verifyPaymentSession } from "../../features/payment/PaymentAxios";
-import { makePaymentAction } from "../../features/payment/PaymentActions";
+import {
+  makePaymentAction,
+  verifyPaymentAction,
+} from "../../features/payment/PaymentActions";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCartAction } from "../../features/cart/cartAction";
@@ -41,14 +44,14 @@ const PaymentResult = () => {
         return <p className="text-center mt-20">Loading user info...</p>;
       }
 
-      const data = await verifyPaymentSession(sessionId, {
+      const data = await verifyPaymentAction(sessionId, {
         shippingAddress: user.address,
         userId: user._id,
       });
 
-      setPlacedOrder(data.order);
-      setIsVerified(data.verified);
-      setStatus(data.status);
+      setPlacedOrder(data?.order || {});
+      setIsVerified(data?.verified || false);
+      setStatus(data?.status || "error");
 
       if (data.verified) {
         dispatch(deleteCartAction(cart._id));
@@ -80,7 +83,7 @@ const PaymentResult = () => {
         <PlaceOrder item={placedOrder} />
 
         <button
-          className="mt-6 px-4 py-2 bg-black text-white rounded col-2"
+          className="mt-6 px-4 py-2 bg-black text-white rounded col-5 col-sm-2"
           onClick={() => navigate("/")}
         >
           Back to Home

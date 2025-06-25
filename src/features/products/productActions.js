@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import {
   createProductApi,
   deleteProductApi,
+  getActiveProductApi,
   getAdminProductApi,
   getPublicProductApi,
   getSingleProductApi,
@@ -9,6 +10,7 @@ import {
   updateProductApiIndividually,
 } from "./productAxios";
 import {
+  setAllActiveProducts,
   setProducts,
   setPublicProducts,
   setSelectedProduct,
@@ -42,18 +44,27 @@ export const getPublicProductAction = () => async (dispatch, getState) => {
   }
 };
 
+export const getActiveProductAction = () => async (dispatch) => {
+  const pending = getActiveProductApi()
+  toast.promise(pending, {
+    pending: "Loading..."
+  })
+  const { status, message, products } = await pending;
+  console.log(products)
+  if (status === "success") {
+    dispatch(setAllActiveProducts(products))
+  }
+}
+
 export const getSingleProductAction = (id) => async (dispatch) => {
   try {
-    console.log("I am here")
     const { status, product } = await getSingleProductApi(id);
-    console.log(product, "actions")
     if (status === "success") {
       dispatch(setSelectedProduct(product));
     }
 
   } catch (error) {
     console.log(error?.message)
-
   };
 }
 
@@ -81,7 +92,7 @@ export const updateProductAction = (id, updateObj) => async (dispatch) => {
 // individual update apart images
 export const updateProductActionIndividually = (id, updateObj) => async (dispatch) => {
   const pending = updateProductApiIndividually(id, updateObj);
-  console.log("I am here")
+
   const { status, message } = await pending;
   if (status === "success") {
     dispatch(getAdminProductAction());

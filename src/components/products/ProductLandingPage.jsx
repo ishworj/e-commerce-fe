@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getSingleProductAction } from "../../features/products/productActions";
+import {
+  getSingleProductAction,
+  updateProductActionIndividually,
+} from "../../features/products/productActions";
 import ProductsImages from "./ProductsImages";
 import ProductsDetails from "./ProductsDetails";
 import ProductReviews from "./ProductReviews";
@@ -9,80 +12,96 @@ import ShareProduct from "./ShareProduct";
 import {
   createWishlistAction,
   deleteWishlistItemAction,
+  getWishlistAction,
 } from "../../features/wishlist/wishlistAction";
+import { getPubReviewAction } from "../../features/reviews/reviewAction";
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from "@mui/material/Backdrop";
+
+const calculateAvgRating = (reviews) => {
+  if (!reviews.length) return 1;
+  const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+  return sum / reviews.length;
+};
+
 const ProductLandingPage = () => {
-  const [favourite, setFavourite] = useState(false);
-  const [avgRating, setAvgRating] = useState(1);
-  const [itemReviews, setItemReviews] = useState([]);
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
   const { selectedProduct } = useSelector((state) => state.productInfo);
   const { pubReviews } = useSelector((state) => state.reviewInfo);
+  const { wishlist } = useSelector((state) => state.wishlistSliceInfo);
 
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
-  const { id } = useParams();
+  const favourite = wishlist.some((item) => item.productId === id);
 
-  console.log(selectedProduct, "selectedProduct");
-
-  const handleFavourite = () => {
-    const obj = {
-      productId: selectedProduct?._id,
-      name: selectedProduct?.name,
-      unitPrice: selectedProduct?.price,
-      stockStatus: selectedProduct?.stock,
-      image: selectedProduct?.images[0],
-    };
-    setFavourite(!favourite);
-    dispatch(createWishlistAction(obj));
-  };
-
-  const handleDeleteWishlist = () => {
-    setFavourite(!favourite);
-    dispatch(deleteWishlistItemAction(selectedProduct._id));
+  const handleDeleteWishlist = (id) => {
+    dispatch(deleteWishlistItemAction(id));
   };
 
   useEffect(() => {
-    const fetchSingleProduct = async () => {
-      await dispatch(getSingleProductAction(id));
+    const fetchAllData = async () => {
+      setLoading(true);
+
+      await Promise.all([
+        dispatch(getSingleProductAction(id)),
+        dispatch(getPubReviewAction()),
+        dispatch(getWishlistAction()),
+      ]);
+
+      setLoading(false);
     };
-    fetchSingleProduct();
+
+    fetchAllData();
   }, [dispatch, id]);
 
+  const itemReviews = React.useMemo(
+    () => pubReviews?.docs?.filter((r) => r.productId === id) || [],
+    [pubReviews, id]
+  );
+  const avgRating = React.useMemo(
+    () => calculateAvgRating(itemReviews),
+    [itemReviews]
+  );
+
   useEffect(() => {
-    const avgRatings = async () => {
-      const ratings = await itemReviews.map((item) => item.rating);
-      const sum = await ratings.reduce((acc, curr) => acc + curr, 0);
-      // setTtlRatings(ratings.length);
-      setAvgRating(sum / ratings.length);
-      if (ratings.length === 0) {
-        setAvgRating(1);
+    const timer = setTimeout(() => {
+      if (selectedProduct && avgRating !== selectedProduct.ratings) {
+        dispatch(updateProductActionIndividually(id, { ratings: avgRating }));
       }
+    }, 500);
 
-      await updateProductActionIndividually(id, { ratings: avgRating });
-    };
-    avgRatings();
-  }, [itemReviews]);
+    return () => clearTimeout(timer);
+  }, [avgRating, dispatch, id, selectedProduct]);
 
-  const fetchSelectedReview = async () => {
-    await dispatch(getPubReviewAction());
+  const toggleWishlist = () => {
+    if (!selectedProduct) return;
+
+    if (favourite) {
+      const item = wishlist.find((i) => i.productId === id);
+      if (item) dispatch(deleteWishlistItemAction(item._id));
+    } else {
+      const obj = {
+        productId: selectedProduct._id,
+        name: selectedProduct.name,
+        unitPrice: selectedProduct.price,
+        stockStatus: selectedProduct.stock,
+        image: selectedProduct.images[0],
+      };
+      dispatch(createWishlistAction(obj));
+    }
   };
-  const setReview = async () => {
-    const selectedReviews = await pubReviews?.docs.filter(
-      (item) => item?.productId === id
+
+  if (loading) {
+    return (
+      <Backdrop
+        sx={(theme) => ({ color: "white", zIndex: theme.zIndex.drawer + 1 })}
+        open={true}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     );
-    setItemReviews(selectedReviews);
-  };
-
-  useEffect(() => {
-    fetchSelectedReview();
-  }, [dispatch]);
-
-  useEffect(() => {
-    setReview();
-  }, [id, pubReviews]);
-
-  if (selectedProduct == null) {
-    return <div>Loading.....</div>;
   }
 
   return (
@@ -101,11 +120,12 @@ const ProductLandingPage = () => {
           <ProductsImages selectedProduct={selectedProduct} />
           {/* selectedProduct detail */}
           <ProductsDetails
-            handleFavourite={handleFavourite}
+            handleFavourite={toggleWishlist}
             handleDeleteWishlist={handleDeleteWishlist}
             favourite={favourite}
             avgRating={avgRating}
             selectedProduct={selectedProduct}
+            wishlist={wishlist}
           />
         </div>
         {/* latest reviews  */}

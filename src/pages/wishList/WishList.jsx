@@ -7,10 +7,12 @@ import { createCartAction } from "../../features/cart/cartAction";
 import {
   deleteWishlistAction,
   deleteWishlistItemAction,
+  getWishlistAction,
 } from "../../features/wishlist/wishlistAction";
 
 const WishList = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://cdn.lordicon.com/lordicon.js";
@@ -31,7 +33,15 @@ const WishList = () => {
   const handleOnDeleteWhole = () => {
     dispatch(deleteWishlistAction());
   };
+
   const { wishlist } = useSelector((state) => state.wishlistSliceInfo);
+
+  useEffect(() => {
+    const fetchWishList = async () => {
+      await dispatch(getWishlistAction());
+    };
+    fetchWishList();
+  }, []);
   return (
     <div
       className="d-flex flex-column align-items-center w-100"
@@ -45,7 +55,7 @@ const WishList = () => {
       <h3>
         <strong>My WishList</strong>
       </h3>
-      {wishlist.length <= 0 ? (
+      {wishlist?.length <= 0 ? (
         <div className="d-flex align-items-center" style={{ height: "50vh" }}>
           No items Added yet
         </div>

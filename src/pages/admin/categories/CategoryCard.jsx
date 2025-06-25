@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { setSelectedCategory } from "../../../features/category/categorySlice";
 import { useDispatch } from "react-redux";
 
-const CategoryCard = ({ name, productCount, id, image,category }) => {
+const CategoryCard = ({ name, productCount, id, image, category }) => {
   const dispatch = useDispatch();
   const handleCategoryClick = (category) => {
     dispatch(setSelectedCategory(category));
@@ -30,7 +30,7 @@ const CategoryCard = ({ name, productCount, id, image,category }) => {
         <div className="d-flex justify-content-between align-items-start mb-2">
           <Card.Title className="mb-0 fs-5">{name}</Card.Title>
           <Link
-            to={`/admin/edit-category/${id}`}
+            to={`/admin/categories/${id}`}
             onClick={() => handleCategoryClick(category)}
           >
             <FaEdit className="text-secondary cursor-pointer" />

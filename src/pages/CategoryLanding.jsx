@@ -24,14 +24,18 @@ const CategoryLanding = () => {
   const [sortOrder, setSortOrder] = useState(""); // "" | "asc" | "desc"
   const page = 1;
   dispatch(setProductCustomerPage(page));
+
+  const fetchPublicProducts = async () => {
+    if (publicProducts?.docs?.length === 0) {
+      await dispatch(getPublicProductAction());
+    }
+  };
+
   useEffect(() => {
     if (Categories.length === 0) {
       dispatch(getAllCategoriesAction());
     }
-
-    if (publicProducts?.docs?.length === 0) {
-      dispatch(getPublicProductAction());
-    }
+    fetchPublicProducts();
 
     if (!selectedCategory.categoryName && Categories.length > 0) {
       const category = Categories.find(
@@ -46,15 +50,13 @@ const CategoryLanding = () => {
     Categories,
     categoryName,
     selectedCategory.categoryName,
-    publicProducts?.docs?.length,
+    publicProducts?.docs,
   ]);
-  console.log(publicProducts, "products");
   let productsByCategory = publicProducts?.docs?.filter((product) => {
     // Filtered and Sorted Products
     return product.category === selectedCategory._id;
   });
 
-  console.log(productsByCategory);
   if (sortOrder === "asc") {
     productsByCategory = [...productsByCategory].sort(
       (a, b) => a.price - b.price
@@ -124,26 +126,24 @@ const CategoryLanding = () => {
       </Row>
 
       {/* Product Cards Section */}
-      <div className="py-5 w-100 d-flex justify-content-center">
-        <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 row-cols-lg-6 w-100 my-2">
-          {productsByCategory.length > 0 ? (
-            productsByCategory.map((item, index) => (
-              <div
-                className="col"
-                key={index}
-                style={{ cursor: "pointer" }}
-                onClick={() => handleOnClickProduct(item)}
+      <Row className="py-5 g-3">
+        {productsByCategory?.length > 0 ? (
+          productsByCategory.map((item, index) => (
+            <Col xs={6} md={4} lg={3} key={index}>
+              <Link
+                className="text-decoration-none text-dark"
+                to={`/${item._id}`}
               >
                 <ProductCard item={item} />
-              </div>
-            ))
-          ) : (
-            <div className="col">
-              <p>No products available in this category.</p>
-            </div>
-          )}
-        </div>
-      </div>
+              </Link>
+            </Col>
+          ))
+        ) : (
+          <Col>
+            <p>No products available in this category.</p>
+          </Col>
+        )}
+      </Row>
 
       {/* Footer */}
       <div className="bg-light text-center p-2">

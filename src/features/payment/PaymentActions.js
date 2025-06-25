@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { makePaymentAxios } from "./PaymentAxios.js";
+import { makePaymentAxios, verifyPaymentSession } from "./PaymentAxios.js";
 
 export const makePaymentAction = async () => {
   const pending = makePaymentAxios();
@@ -15,9 +15,23 @@ export const makePaymentAction = async () => {
   toast[data.status](data.message);
 };
 
+export const verifyPaymentAction = async (sessionId, obj) => {
+  const pending = verifyPaymentSession(sessionId, obj);
+  toast.promise(pending, {
+    pending: "Verifying the payment ...",
+  });
+  const data = await pending;
+  console.log(data, "cation ")
+  let status;
+  let message;
+  if (data.verified === true) {
+    status = "success",
+      message = "Successfully placed the order!"
+  }
+  if (data.verified === true) {
+    toast[status](message);
+    return data;
+  }
+  toast[status](message);
+};
 
-
-//  these are in the BE
-// 1. I need to add the email servers in each of these actions.
-//  - after payment successful
-//  - in verification of the order after verifying while creating the order 
