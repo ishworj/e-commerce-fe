@@ -4,6 +4,7 @@ const initialState = {
   pubReviews: [],
   allPubReviews: [],
   allReviews: [],
+  selectedReview: [],
   reviewCustomerPage: 1,
   reviewAdminPage: 1
 };
@@ -20,6 +21,9 @@ const reviewslice = createSlice({
     },
     setAllReview: (state, { payload }) => {
       state.allReviews = payload || [];
+    },
+    setSelectedReview: (state, { payload }) => {
+      state.selectedReview = payload || [];
     },
     updateReviewStatus: (state, { payload }) => {
       const { _id, status } = payload;
@@ -41,5 +45,5 @@ const reviewslice = createSlice({
 
 const { reducer, actions } = reviewslice;
 
-export const { setPubReviews, setAllPubReviews, setAllReview, updateReviewStatus, setReviewCustomerPage, setReviewAdminPage } = actions;
+export const { setPubReviews, setAllPubReviews, setAllReview, setSelectedReview, updateReviewStatus, setReviewCustomerPage, setReviewAdminPage } = actions;
 export default reducer;

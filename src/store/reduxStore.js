@@ -6,6 +6,8 @@ import orderReducer from "../features/orders/orderSlice.js";
 import categoryReducer from "../features/category/categorySlice.js"
 import cartReducer from "../features/cart/cartSlice.js"
 import wishlistSliceReducer from "../features/wishlist/wishlistSlice.js"
+import userHistoryReducer from "../features/userHistory/userHistorySlice.js"
+
 
 export default configureStore({
   reducer: {
@@ -15,6 +17,7 @@ export default configureStore({
     reviewInfo: reviewReducer,
     categoryInfo: categoryReducer,
     cartInfo: cartReducer,
-    wishlistSliceInfo: wishlistSliceReducer
+    wishlistSliceInfo: wishlistSliceReducer,
+    userHistoryInfo: userHistoryReducer
   },
 });

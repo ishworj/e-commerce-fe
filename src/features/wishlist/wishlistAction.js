@@ -25,6 +25,7 @@ export const getWishlistAction = () => async (dispatch) => {
     }
 }
 
+//  this one is to delete all 
 export const deleteWishlistAction = () => async (dispatch) => {
     const pending = deleteWishlistApi();
     toast.promise(pending, {

@@ -9,33 +9,25 @@ import { fetchCartAction } from "../../features/cart/cartAction";
 const DefaultLayout = () => {
   const dispatch = useDispatch();
   const cartRef = useRef();
-  const [isCart, setIsCart] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
-  const [showCart, setShowCart] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
   const handleCart = () => {
-    if (isCart) {
+    if (isCartOpen) {
       setIsClosing(true);
       setTimeout(() => {
-        setShowCart(false);
+        setIsCartOpen(false);
         setIsClosing(false);
       }, 200);
     } else {
-      setShowCart(true);
       dispatch(fetchCartAction());
+      setIsCartOpen(true);
     }
-    setIsCart(!isCart);
   };
 
   useEffect(() => {
-    if (isCart && !showCart) {
-      setShowCart(true);
-    }
-  }, [isCart]);
-
-  useEffect(() => {
-    if (!showCart) return;
+    if (!isCartOpen) return;
     const handleClickOutsideCart = (event) => {
       if (cartRef && !cartRef.current.contains(event.target)) {
         handleCart();
@@ -45,7 +37,7 @@ const DefaultLayout = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideCart);
     };
-  }, [showCart, handleCart]);
+  }, [isCartOpen]);
 
   return (
     <div className="position-relative">
@@ -54,7 +46,7 @@ const DefaultLayout = () => {
       <main className="position-relative">
         <Outlet />
 
-        {showCart && (
+        {isCartOpen && (
           <div ref={cartRef}>
             <div
               className={`col-12 col-lg-6 col-md-8 bg-white overflow-y-scroll ${

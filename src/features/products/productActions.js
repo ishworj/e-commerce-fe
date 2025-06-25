@@ -58,16 +58,13 @@ export const getActiveProductAction = () => async (dispatch) => {
 
 export const getSingleProductAction = (id) => async (dispatch) => {
   try {
-    console.log("I am here")
     const { status, product } = await getSingleProductApi(id);
-    console.log(product, "actions")
     if (status === "success") {
       dispatch(setSelectedProduct(product));
     }
 
   } catch (error) {
     console.log(error?.message)
-
   };
 }
 
@@ -95,7 +92,7 @@ export const updateProductAction = (id, updateObj) => async (dispatch) => {
 // individual update apart images
 export const updateProductActionIndividually = (id, updateObj) => async (dispatch) => {
   const pending = updateProductApiIndividually(id, updateObj);
-  console.log("I am here")
+
   const { status, message } = await pending;
   if (status === "success") {
     dispatch(getAdminProductAction());
