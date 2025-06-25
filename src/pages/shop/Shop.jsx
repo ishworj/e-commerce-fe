@@ -4,6 +4,7 @@ import { createUserHistoryAction } from "../../features/userHistory/userHistoryA
 import ProductCard from "../../components/cards/ProductCard";
 import PaginationRounded from "../../components/pagination/PaginationRounded";
 import { getPublicProductAction } from "../../features/products/productActions";
+import HotPicks from "../../components/hotpicks/HotPicks";
 
 const Shop = () => {
   const { publicProducts, productCustomerPage } = useSelector(
@@ -22,8 +23,9 @@ const Shop = () => {
   return (
     <div>
       {/* controls and actions like searching, sorting and filtering */}
-      <div></div>
-      <div className="py-5 w-100 d-flex justify-content-center">
+      <HotPicks />
+      <div className="py-5 w-100 d-flex flex-column justify-content-center">
+        <h1>Explore More</h1>
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3 w-100">
           {publicProducts?.docs?.map((item, index) => {
             return (

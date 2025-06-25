@@ -2,7 +2,6 @@ import React from "react";
 import Stars from "../rating/Stars";
 
 const ProductReviewCard = ({ item }) => {
-  console.log(item, " i am here in the reviwew card");
   const {
     comment,
     createdAt,

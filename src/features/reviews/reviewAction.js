@@ -1,6 +1,6 @@
 import { toast } from "react-toastify"
 import { createReviewApi, deleteReviewApi, getAllPubReviewApi, getAllReviewApi, getPubReviewApi, updateStatusOfReviewApi } from "./reviewAxios"
-import { setAllPubReviews, setAllReview, setPubReviews } from "./reviewSlice"
+import { setAllPubReviews, setAllReview, setPubReviews, setSelectedReview } from "./reviewSlice"
 
 export const createReviewAction = (obj) => async (dispatch) => {
     const pending = createReviewApi(obj)
@@ -28,7 +28,11 @@ export const getPubReviewAction = (productId) => async (dispatch, getState) => {
     const page = getState().reviewInfo.reviewCustomerPage
     const { status, reviews } = await getPubReviewApi({ page, productId })
     if (status === "success") {
-        dispatch(setPubReviews(reviews))
+        if (!productId) {
+            dispatch(setPubReviews(reviews));
+        } else {
+            dispatch(setSelectedReview(reviews));
+        }
     }
 }
 // all the public reviews
@@ -40,7 +44,7 @@ export const getAllPubReviewAction = () => async (dispatch) => {
 }
 
 export const updateStatusOfReviewAction = (obj) => async (dispatch) => {
-    console.log(obj)
+
     const { status, message } = await updateStatusOfReviewApi(obj)
     if (status === "success") {
         dispatch(getAllReviewAction())
