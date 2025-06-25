@@ -36,12 +36,14 @@ const Shop = () => {
                 onClick={async () => {
                   // e.preventDefault();
                   console.log("on the way");
-                  await createUserHistoryAction({
-                    userId: user._id || null,
-                    productId: item._id,
-                    categoryId: item.category,
-                    action: "click",
-                  });
+                  await dispatch(
+                    createUserHistoryAction({
+                      userId: user._id || null,
+                      productId: item._id,
+                      categoryId: item.category,
+                      action: "click",
+                    })
+                  );
                   window.location.href = `/${item._id}`;
                 }}
               >
