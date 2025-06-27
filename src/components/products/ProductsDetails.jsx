@@ -16,6 +16,11 @@ const ProductsDetails = ({
 }) => {
   const dispatch = useDispatch();
 
+  const { Categories } = useSelector((state) => state.categoryInfo);
+  const selectedCategory = Categories.find(
+    (cat) => cat._id === selectedProduct.category
+  );
+
   const [quantity, setQuantity] = useState(1);
 
   const handleOnAdd = () => {
@@ -46,7 +51,9 @@ const ProductsDetails = ({
         {selectedProduct.name}
       </h2>
       <div className="fs-3 w-100 d-flex flex-column align-items-start w-100 justify-content-center py-3">
-        <div className="fs-5 border text-primary">tag</div>
+        <div className="text-primary" style={{ fontSize: "15px" }}>
+          {selectedCategory.categoryName}
+        </div>
         <div className="d-flex justify-content-between w-100">
           <span className="d-flex align-items-start">
             <span className="fs-5">$</span>
@@ -55,13 +62,16 @@ const ProductsDetails = ({
 
           {isInWishList ? (
             <button
-              className="border-0 pe-4"
+              className="border-1 px-3 py-1 rounded bg-transparent"
               onClick={() => handleDeleteWishlist(wishListItem._id)}
             >
               <GoHeartFill className="fs-4" />
             </button>
           ) : (
-            <button className="border-0 pe-4" onClick={handleFavourite}>
+            <button
+              className="border-1 px-3 py-1 rounded bg-transparent"
+              onClick={handleFavourite}
+            >
               <FaRegHeart className="fs-4" />
             </button>
           )}

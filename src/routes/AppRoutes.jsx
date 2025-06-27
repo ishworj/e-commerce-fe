@@ -35,18 +35,15 @@ import { fetchUserAction } from "../features/user/userAction.js";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     await dispatch(getPublicProductAction());
     await dispatch(fetchUserAction());
-    setLoading(false);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
-
   return (
     <Routes>
       {/* public routes */}

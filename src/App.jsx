@@ -7,34 +7,48 @@ import { fetchCartAction } from "./features/cart/cartAction.js";
 import { autoLogin, fetchUserAction } from "./features/user/userAction.js";
 import { getOrderAction } from "./features/orders/orderActions.js";
 import { getWishlistAction } from "./features/wishlist/wishlistAction.js";
-import { getPubReviewAction } from "./features/reviews/reviewAction.js";
+import {
+  getAllPubReviewAction,
+  getPubReviewAction,
+} from "./features/reviews/reviewAction.js";
 import { getPublicProductAction } from "./features/products/productActions.js";
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from "@mui/material/Backdrop";
 
 const App = () => {
   const dispatch = useDispatch();
 
-  const fetchData = async () => {
-    await dispatch(getAllCategoriesAction());
-    await dispatch(fetchCartAction());
-    await dispatch(autoLogin());
-    await dispatch(getOrderAction());
-    await dispatch(getWishlistAction());
-    await dispatch(getPubReviewAction());
-    await dispatch(getPublicProductAction());
-    await dispatch(fetchUserAction());
-  };
   useEffect(() => {
-    fetchData();
-    setLoading(false);
+    const fetchCritical = async () => {
+      await Promise.all([
+        dispatch(getAllCategoriesAction()),
+        dispatch(getPublicProductAction()),
+        dispatch(getAllPubReviewAction()),
+        dispatch(autoLogin()),
+      ]);
+      setLoading(false);
+
+      // Lazy load the rest
+      dispatch(fetchCartAction());
+      dispatch(getOrderAction());
+      dispatch(getWishlistAction());
+      dispatch(getPubReviewAction());
+      dispatch(fetchUserAction());
+    };
+
+    fetchCritical();
   }, []);
 
   const [loading, setLoading] = useState(true);
 
   if (loading) {
     return (
-      <div className="text-center" style={{ minHeight: "100vh" }}>
-        Loading...
-      </div>
+      <Backdrop
+        sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     );
   }
   return (

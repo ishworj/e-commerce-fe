@@ -16,7 +16,9 @@ const HotPicks = ({ handleOnClickProduct }) => {
     const fetchHotPicks = async () => {
       await dispatch(getRecommendationsAction(user._id));
     };
-    fetchHotPicks();
+    if (!hotPicks.length) {
+      fetchHotPicks();
+    }
     setLoading(false);
   }, []);
 
