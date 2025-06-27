@@ -98,6 +98,5 @@ export const updateProductActionIndividually = (id, updateObj) => async (dispatc
     dispatch(getAdminProductAction());
     dispatch(getPublicProductAction());
   }
-  toast[status](message);
   return "success";
 };
