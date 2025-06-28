@@ -11,12 +11,14 @@ export const createProductApi = (productObj) => {
   });
 };
 export const getAdminProductApi = (page) => {
+  const query = page ? `?page=${page}` : `/admin`
   return apiProcessor({
     method: "get",
-    url: `${productEp}?page=${page}`,
+    url: `${productEp}${query}`,
     isPrivate: true,
   });
 };
+
 // acc to the pagination
 export const getPublicProductApi = (page) => {
   return apiProcessor({
