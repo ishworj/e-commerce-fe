@@ -5,27 +5,28 @@ import { setHotPicks } from "./userHistorySlice";
 
 export const createUserHistoryAction = (data) => async (dispatch) => {
     const { userId } = data;
+    console.log(data)
     const sessionId = !userId ? getOrCreateSession() : null;
     try {
         const payload = {
-            ...(userId ? { userId } : { guestSessionId: sessionId }),
+            ...(userId ? {} : { guestSessionId: sessionId }),
             ...data
         };
 
-        return await createUserHistory(payload);
+        await createUserHistory(payload);
+        dispatch(getRecommendationsAction(userId))
     } catch (error) {
         console.log(error?.message)
     }
 
 }
 
-export const getRecommendationsAction = (data) => async (dispatch) => {
-    const userId = data
+export const getRecommendationsAction = (userId) => async (dispatch) => {
+
     const sessionId = !userId ? getOrCreateSession() : null;
     try {
         const payload = {
-            ...(userId ? { userId } : { guestSessionId: sessionId }),
-            ...data
+            ...(userId ? { userId } : { guestSessionId: sessionId })
         };
         const { top10Products } = await getRecommendationsApi(payload)
         dispatch(setHotPicks(top10Products))

@@ -1,52 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import HomePage from "../pages/home/HomePage";
-import Register from "../pages/auth/Register";
-import ForgetPassword from "../pages/auth/ForgetPassword";
-import Login from "../pages/auth/Login";
-import Dashboard from "../pages/dashboard/Dashboard.jsx";
-import { Route, Routes } from "react-router-dom";
-import CategoryLanding from "../pages/CategoryLanding";
-import Profile from "../pages/account/Profile";
-import VerifyUser from "../pages/auth/VerifyUser";
-import { getPublicProductAction } from "../features/products/productActions";
 import { useDispatch } from "react-redux";
-import ProductLandingPage from "../components/products/ProductLandingPage";
-import Cart from "../pages/Cart";
-import ProductList from "../pages/product/ProductList.jsx";
-import AddNewProduct from "../pages/product/AddNewProduct.jsx";
-import EditProduct from "../pages/product/EditProduct.jsx";
-import Categories from "../pages/admin/categories/Categories.jsx";
-import EditCategory from "../pages/admin/categories/EditCategory.jsx";
-import AddCategory from "../pages/admin/categories/AddCategory";
-import PaymentResult from "../pages/payment/PaymentResult.jsx";
-import Order from "../pages/order/Order.jsx";
-import PaymentMethod from "../pages/order/PaymentMethod.jsx";
-import AdminOrders from "../pages/order/AdminOrders.jsx";
-import ShippingAddress from "../components/ShippingAddress.jsx";
-import AboutPage from "../pages/AboutPage.jsx";
-import SearchPage from "../pages/SearchPage.jsx";
-import AddressUpdate from "../components/shippingAddress/AddressUpdate.jsx";
-import Logout from "../pages/auth/Logout.jsx";
-import Shop from "../pages/shop/Shop.jsx";
-import WishList from "../pages/wishList/WishList.jsx";
-import AdminReview from "../pages/review/AdminReview.jsx";
+import { getPublicProductAction } from "../features/products/productActions.js";
 import { fetchUserAction } from "../features/user/userAction.js";
+
+const Register = lazy(() => import("../pages/auth/Register"));
+const ForgetPassword = lazy(() => import("../pages/auth/ForgetPassword"));
+const Login = lazy(() => import("../pages/auth/Login"));
+const Dashboard = lazy(() => import("../pages/dashboard/Dashboard.jsx"));
+const CategoryLanding = lazy(() => import("../pages/CategoryLanding"));
+const Profile = lazy(() => import("../pages/account/Profile"));
+const VerifyUser = lazy(() => import("../pages/auth/VerifyUser"));
+const ProductLandingPage = lazy(() =>
+  import("../components/products/ProductLandingPage")
+);
+const Cart = lazy(() => import("../pages/Cart"));
+const ProductList = lazy(() => import("../pages/product/ProductList.jsx"));
+const AddNewProduct = lazy(() => import("../pages/product/AddNewProduct.jsx"));
+const EditProduct = lazy(() => import("../pages/product/EditProduct.jsx"));
+const Categories = lazy(() =>
+  import("../pages/admin/categories/Categories.jsx")
+);
+const EditCategory = lazy(() =>
+  import("../pages/admin/categories/EditCategory.jsx")
+);
+const AddCategory = lazy(() => import("../pages/admin/categories/AddCategory"));
+const PaymentResult = lazy(() => import("../pages/payment/PaymentResult.jsx"));
+const Order = lazy(() => import("../pages/order/Order.jsx"));
+const PaymentMethod = lazy(() => import("../pages/order/PaymentMethod.jsx"));
+const AdminOrders = lazy(() => import("../pages/order/AdminOrders.jsx"));
+const ShippingAddress = lazy(() => import("../components/ShippingAddress.jsx"));
+const AboutPage = lazy(() => import("../pages/AboutPage.jsx"));
+const SearchPage = lazy(() => import("../pages/SearchPage.jsx"));
+const AddressUpdate = lazy(() =>
+  import("../components/shippingAddress/AddressUpdate.jsx")
+);
+const Logout = lazy(() => import("../pages/auth/Logout.jsx"));
+const Shop = lazy(() => import("../pages/shop/Shop.jsx"));
+const WishList = lazy(() => import("../pages/wishList/WishList.jsx"));
+const AdminReview = lazy(() => import("../pages/review/AdminReview.jsx"));
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     await dispatch(getPublicProductAction());
     await dispatch(fetchUserAction());
-    setLoading(false);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
-
   return (
     <Routes>
       {/* public routes */}

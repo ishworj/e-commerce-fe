@@ -9,6 +9,10 @@ import { handleOnClickProduct } from "../../utils/productFunctions";
 import HotPicks from "../../components/hotpicks/HotPicks";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
+import {
+  createUserHistoryAction,
+  getRecommendationsAction,
+} from "../../features/userHistory/userHistoryAction";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -16,6 +20,7 @@ const HomePage = () => {
     (state) => state.productInfo
   );
   const { user } = useSelector((state) => state.userInfo);
+  const { hotPicks } = useSelector((state) => state.userHistoryInfo);
 
   const [loading, setLoading] = useState(true);
 
@@ -33,13 +38,27 @@ const HomePage = () => {
     }
   }, [publicProducts]);
 
+  useEffect(() => {
+    const fetchHotPicks = async () => {
+      await dispatch(getRecommendationsAction(user._id));
+    };
+    if (!hotPicks.length) {
+      fetchHotPicks();
+    }
+    setLoading(false);
+  }, []);
+
   return (
     <div className="mx-2">
       <div style={{ height: "40vh", background: "white" }}>
         <CarouselHomePage />
       </div>
       <CategoryList />
-      <HotPicks handleOnClickProduct={handleOnClickProduct} />
+      {hotPicks.length ? (
+        <HotPicks handleOnClickProduct={handleOnClickProduct} />
+      ) : (
+        ""
+      )}
       <div className="py-5 w-100">
         {loading ? (
           <Backdrop
@@ -58,7 +77,20 @@ const HomePage = () => {
                     className="col"
                     style={{ cursor: "pointer" }}
                     key={index}
-                    onClick={() => handleOnClickProduct(item, user, dispatch)}
+                    onClick={async () => {
+                      // e.preventDefault();
+                      console.log("on the way");
+                      await dispatch(
+                        createUserHistoryAction({
+                          userId: user._id || null,
+                          productId: item._id,
+                          categoryId: item.category,
+                          action: "click",
+                        })
+                      );
+                      handleOnClickProduct(item, user, dispatch);
+                      window.location.href = `/${item._id}`;
+                    }}
                   >
                     <ProductCard item={item} />
                   </div>

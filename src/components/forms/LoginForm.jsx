@@ -8,16 +8,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { loginAction } from "../../features/user/userAction";
 
 const LoginForm = () => {
-  const { form, handleOnChange } = useForm({ email: "", password: "" });
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { form, handleOnChange } = useForm({ email: "", password: "" });
   const { user } = useSelector((state) => state.userInfo);
 
   // set sendTo location depending upon user url.
   const sendTo = location?.state?.from?.location?.pathname || "/login";
+
   useEffect(() => {
     //navigate to location when the user travelled from
     user?._id && navigate(sendTo);

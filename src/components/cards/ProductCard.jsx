@@ -1,10 +1,7 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getSingleProductAction,
-  updateProductActionIndividually,
-} from "../../features/products/productActions";
+import { updateProductActionIndividually } from "../../features/products/productActions";
 import Stars from "../rating/Stars";
 import { createCartAction } from "../../features/cart/cartAction";
 import { useNavigate } from "react-router-dom";
@@ -12,37 +9,45 @@ import { useNavigate } from "react-router-dom";
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { _id, name, price, images, reviews } = item;
+
+  const { _id, name, price, images, reviews, category } = item;
+
   const { user } = useSelector((state) => state.userInfo);
+  const { allPubReviews } = useSelector((state) => state.reviewInfo);
+  const { Categories } = useSelector((state) => state.categoryInfo);
 
   const [itemReviews, setItemReviews] = useState([]);
+  const [ttlRatings, setTtlRatings] = useState(0);
+  const [avgRating, setAvgRating] = useState(1);
+
+  const selectedCategory = Categories.find((cat) => cat._id === category);
 
   useEffect(() => {
-    const selectedReviews = reviews?.docs?.filter(
-      (review) => review?.productId === _id
+    const selectedReviews = allPubReviews?.filter((rev) =>
+      reviews.includes(rev._id)
     );
     setItemReviews(selectedReviews || []);
-  }, [_id, reviews]);
-
-  const avgRating = useMemo(() => {
-    const ratings = itemReviews.map((r) => r.rating);
-    if (ratings.length === 0) return 1;
-    const total = ratings.reduce((sum, val) => sum + val, 0);
-    return total / ratings.length;
-  }, [itemReviews]);
-
-  const ttlRatings = itemReviews.length;
+  }, [_id, reviews, allPubReviews]);
 
   useEffect(() => {
-    if (ttlRatings > 0) {
+    const ratings = itemReviews.map((r) => r.rating);
+    if (ratings.length === 0) {
+      setAvgRating(1);
+      setTtlRatings(0);
+      return;
+    }
+    const total = ratings.reduce((sum, val) => sum + val, 0);
+    setAvgRating(total / ratings.length);
+    setTtlRatings(ratings.length);
+  }, [itemReviews]);
+
+  useEffect(() => {
+    if (ttlRatings > 0 && user?._id) {
       dispatch(updateProductActionIndividually(_id, { ratings: avgRating }));
     }
-  }, [avgRating, ttlRatings, _id, dispatch]);
+  }, [avgRating, ttlRatings, _id, dispatch, user]);
 
-  const handleProductClick = () => {
-    // dispatch(getSingleProductAction(_id));
-    navigate(`/${_id}`);
-  };
+  const handleProductClick = () => navigate(`/${_id}`);
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -52,20 +57,26 @@ const ProductCard = ({ item }) => {
 
   return (
     <Card
-      className="border-0 shadow-sm rounded-4 overflow-hidden"
+      className="border-0 shadow-sm rounded-4 overflow-hidden h-100 position-relative"
       style={{
-        height: "34rem",
-        transition: "transform 0.3s ease",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
         cursor: "pointer",
       }}
       onClick={handleProductClick}
-      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
-      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "scale(1.02)";
+        e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.15)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "scale(1)";
+        e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+      }}
     >
       <div
         style={{
           height: "60%",
-          backgroundColor: "#f9f9f9",
+          minHeight: "14rem",
+          backgroundColor: "#fdfdfd",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -78,19 +89,28 @@ const ProductCard = ({ item }) => {
             maxHeight: "100%",
             maxWidth: "100%",
             objectFit: "contain",
-            padding: "1rem",
+            padding: "1.5rem",
+            transition: "opacity 0.3s ease-in-out",
           }}
           loading="lazy"
+          onLoad={(e) => {
+            e.target.style.opacity = 1;
+          }}
+          onError={(e) => {
+            e.target.src = "/placeholder-image.png";
+          }}
         />
       </div>
 
-      <Card.Body className="d-flex flex-column justify-content-between p-3">
+      <Card.Body className="d-flex flex-column justify-content-between p-4">
         <div>
-          <h5 className="fw-semibold mb-1">
+          <h5 className="fw-semibold mb-2 text-dark">
             {name.length > 50 ? name.slice(0, 47) + "..." : name}
           </h5>
-          <div className="d-flex justify-content-between align-items-center mt-1">
-            <span className="fw-bold fs-5 text-success">${price}</span>
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <span className="fw-bold fs-5 text-success">
+              ${price.toFixed(2)}
+            </span>
             {ttlRatings > 0 ? (
               <Stars avgRating={avgRating} />
             ) : (
@@ -100,8 +120,14 @@ const ProductCard = ({ item }) => {
           </div>
         </div>
 
+        {selectedCategory && (
+          <span className="badge bg-light text-dark rounded-pill px-3 py-2 mb-3 text-uppercase fw-medium">
+            {selectedCategory.categoryName}
+          </span>
+        )}
+
         <button
-          className="btn btn-outline-dark w-100 mt-3 rounded-pill fw-semibold"
+          className="btn btn-dark w-100 rounded-pill fw-semibold py-2"
           onClick={handleAddToCart}
         >
           Add to Cart

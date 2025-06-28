@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserHistoryAction } from "../../features/userHistory/userHistoryAction";
-import ProductCard from "../../components/cards/ProductCard";
-import PaginationRounded from "../../components/pagination/PaginationRounded";
 import { getPublicProductAction } from "../../features/products/productActions";
-import HotPicks from "../../components/hotpicks/HotPicks";
+
+const HotPicks = lazy(() => import("../../components/hotpicks/HotPicks"));
+const ProductCard = lazy(() => import("../../components/cards/ProductCard"));
+const PaginationRounded = lazy(() =>
+  import("../../components/pagination/PaginationRounded")
+);
 
 const Shop = () => {
   const { publicProducts, productCustomerPage } = useSelector(
@@ -36,12 +39,14 @@ const Shop = () => {
                 onClick={async () => {
                   // e.preventDefault();
                   console.log("on the way");
-                  await createUserHistoryAction({
-                    userId: user._id || null,
-                    productId: item._id,
-                    categoryId: item.category,
-                    action: "click",
-                  });
+                  await dispatch(
+                    createUserHistoryAction({
+                      userId: user._id || null,
+                      productId: item._id,
+                      categoryId: item.category,
+                      action: "click",
+                    })
+                  );
                   window.location.href = `/${item._id}`;
                 }}
               >

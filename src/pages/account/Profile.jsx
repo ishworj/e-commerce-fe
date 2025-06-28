@@ -1,31 +1,33 @@
+import { lazy, useEffect, useState } from "react";
+
 import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserLayout } from "../../components/layouts/UserLayout";
-import { useEffect, useState } from "react";
 import { setMenu } from "../../features/user/userSlice";
-import LoginSecurityCard from "./LoginSecurityCard";
-import { resendVerificationLinkApi } from "../../features/user/userApi";
-import BreadCrumbsAdmin from "../../components/breadCrumbs/BreadCrumbsAdmin";
-import { fetchUserAction } from "../../features/user/userAction";
-import { RotatingLines } from "react-loader-spinner";
+import {
+  fetchUserAction,
+  resendVerificationLinkAction,
+} from "../../features/user/userAction";
+
+const LoginSecurityCard = lazy(() => import("./LoginSecurityCard"));
+const BreadCrumbsAdmin = lazy(() =>
+  import("../../components/breadCrumbs/BreadCrumbsAdmin")
+);
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.userInfo);
-  console.log(user);
   const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.userInfo);
+
   const [email, setEmail] = useState("");
-
   const [isResending, setIsResending] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  const fetchData = async () => {
-    await dispatch(fetchUserAction());
-    setLoading(false);
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      await dispatch(fetchUserAction());
+    };
     fetchData();
   }, []);
 
@@ -57,36 +59,16 @@ const Profile = () => {
   ];
 
   const handleResendVerificationLink = (email) => {
-    const isEmailSent = dispatch(resendVerificationLinkApi(email));
+    const isEmailSent = dispatch(resendVerificationLinkAction(email));
     if (isEmailSent) {
       setEmail("");
       setIsResending(false);
     }
   };
+
   useEffect(() => {
     dispatch(setMenu("Login & Security"));
   }, []);
-
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "55vh" }}
-      >
-        <RotatingLines
-          visible={true}
-          height="96"
-          width="96"
-          color="grey"
-          strokeWidth="5"
-          animationDuration="0.75"
-          ariaLabel="rotating-lines-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-        />
-      </div>
-    );
-  }
 
   if (!user._id) {
     return (

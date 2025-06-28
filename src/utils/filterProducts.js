@@ -1,5 +1,5 @@
-export const filterFunction = ({ category, searchQuery, others }, product) => {
-  let filtered = [...product];
+export const filterFunction = ({ category, searchQuery, others }, data) => {
+  let filtered = [...data];
 
   // Filter by category
   if (category !== "all") {
