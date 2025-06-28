@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FaHome,
   FaStore,
@@ -7,8 +7,16 @@ import {
   FaSignInAlt,
 } from "react-icons/fa";
 import { RiAccountCircleFill } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserAction } from "../../features/user/userAction";
 
 const BottomNavBar = ({ handleCart, user }) => {
+  // const dispatch = useDispatch();
+  // const { user } = useSelector((state) => state.userInfo);
+  // console.log(user);
+  // useEffect(() => {
+  //   dispatch(fetchUserAction());
+  // }, []);
   return (
     <nav
       className="fixed-bottom d-flex justify-content-between bg-light d-md-none"

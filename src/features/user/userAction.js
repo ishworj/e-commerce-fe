@@ -30,9 +30,8 @@ export const loginAction = (form, navigate) => async (dispatch) => {
     //update the store
     dispatch(setUser(user));
     dispatch(fetchUserAction())
-    setTimeout(() => {
-      navigate("/");
-    }, 0);
+    console.log("navigation triggered")
+    navigate("/");
   }
 };
 
