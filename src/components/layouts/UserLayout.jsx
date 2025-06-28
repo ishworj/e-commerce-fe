@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { UserSidebar } from "./UserSidebar.jsx";
 import { AuthRoute } from "../../routes/AuthRoutes.jsx";
-import BottomNavBar from "./BottomNavBar.jsx";
 
 export const UserLayout = ({ pageTitle = "default", children }) => {
   const { user } = useSelector((state) => state.userInfo);
@@ -43,7 +42,6 @@ export const UserLayout = ({ pageTitle = "default", children }) => {
           </Row>
         </Container>
       </div>
-      <BottomNavBar />
     </AuthRoute>
   );
 };

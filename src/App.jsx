@@ -4,42 +4,32 @@ import { getAllCategoriesAction } from "./features/category/CategoryActions.js";
 import { Bounce, ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { fetchCartAction } from "./features/cart/cartAction.js";
-import { autoLogin, fetchUserAction } from "./features/user/userAction.js";
-import { getOrderAction } from "./features/orders/orderActions.js";
+import { autoLogin } from "./features/user/userAction.js";
 import { getWishlistAction } from "./features/wishlist/wishlistAction.js";
-import {
-  getAllPubReviewAction,
-  getPubReviewAction,
-} from "./features/reviews/reviewAction.js";
-import { getPublicProductAction } from "./features/products/productActions.js";
+import { getAllPubReviewAction } from "./features/reviews/reviewAction.js";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
 
 const App = () => {
   const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchCritical = async () => {
       await Promise.all([
         dispatch(getAllCategoriesAction()),
-        dispatch(getPublicProductAction()),
-        dispatch(getAllPubReviewAction()),
         dispatch(autoLogin()),
       ]);
       setLoading(false);
 
       // Lazy load the rest
-      dispatch(fetchCartAction());
-      dispatch(getOrderAction());
+      dispatch(getAllPubReviewAction()), dispatch(fetchCartAction());
       dispatch(getWishlistAction());
-      dispatch(getPubReviewAction());
-      dispatch(fetchUserAction());
     };
 
     fetchCritical();
   }, []);
-
-  const [loading, setLoading] = useState(true);
 
   if (loading) {
     return (
@@ -54,11 +44,13 @@ const App = () => {
   return (
     <div>
       <AppRoutes />
+
       <ToastContainer
-        position="top-center"
-        autoClose={2000}
+        position="bottom-right"
+        autoClose={3000}
+        limit={3}
         hideProgressBar={false}
-        newestOnTop={true}
+        newestOnTop
         closeOnClick={false}
         rtl={false}
         pauseOnFocusLoss

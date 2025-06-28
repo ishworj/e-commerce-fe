@@ -6,7 +6,6 @@ import CategoryList from "../components/layouts/CategoryList";
 import { useParams, Link } from "react-router-dom";
 import { CiFilter } from "react-icons/ci";
 import { RxReset } from "react-icons/rx";
-import BottomNavBar from "../components/layouts/BottomNavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../features/category/categorySlice";
 import { getAllCategoriesAction } from "../features/category/CategoryActions";
@@ -149,9 +148,6 @@ const CategoryLanding = () => {
       <div className="bg-light text-center p-2">
         <p>See all results</p>
       </div>
-
-      {/* Optional Bottom Navigation */}
-      <BottomNavBar />
     </Container>
   );
 };

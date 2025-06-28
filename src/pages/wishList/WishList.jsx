@@ -13,13 +13,6 @@ import {
 const WishList = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://cdn.lordicon.com/lordicon.js";
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
-
   const handleAddToCart = (_id, id) => {
     const quantity = 1;
     dispatch(createCartAction(_id, quantity));
@@ -47,14 +40,7 @@ const WishList = () => {
       className="d-flex flex-column align-items-center w-100"
       style={{ minHeight: "55vh" }}
     >
-      <lord-icon
-        src="https://cdn.lordicon.com/qlrjanhh.json"
-        trigger="hover"
-        style={{ width: "50px", height: "50px" }}
-      ></lord-icon>
-      <h3>
-        <strong>My WishList</strong>
-      </h3>
+      <h3 className="mt-5">My WishList</h3>
       {wishlist?.length <= 0 ? (
         <div className="d-flex align-items-center" style={{ height: "50vh" }}>
           No items Added yet
