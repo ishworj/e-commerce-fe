@@ -11,17 +11,25 @@ import {
 } from "./productAxios";
 import {
   setAllActiveProducts,
+  setAllAdminProducts,
   setProducts,
   setPublicProducts,
   setSelectedProduct,
 } from "./productSlice";
-
+// with pagination
 export const getAdminProductAction = () => async (dispatch, getState) => {
   const page = getState().productInfo.productAdminPage
   const pending = getAdminProductApi(page);
 
   const { status, message, products } = await pending;
   dispatch(setProducts(products));
+};
+// with no pagination
+export const getAdminProductNoPaginationAction = () => async (dispatch, getState) => {
+  const pending = getAdminProductApi();
+
+  const { status, message, products } = await pending;
+  dispatch(setAllAdminProducts(products));
 };
 
 export const createProductAction = (productObj) => async (dispatch) => {
@@ -33,7 +41,7 @@ export const createProductAction = (productObj) => async (dispatch) => {
   toast[status](message);
   return true;
 };
-
+// with pagination
 export const getPublicProductAction = () => async (dispatch, getState) => {
   const page = getState().productInfo.productCustomerPage
 
@@ -43,7 +51,7 @@ export const getPublicProductAction = () => async (dispatch, getState) => {
     dispatch(setPublicProducts(products));
   }
 };
-
+// without pagination
 export const getActiveProductAction = () => async (dispatch) => {
   const pending = getActiveProductApi()
   toast.promise(pending, {

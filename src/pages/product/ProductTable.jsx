@@ -18,6 +18,7 @@ import { MdDelete } from "react-icons/md";
 import {
   deleteProductAction,
   getAdminProductAction,
+  getAdminProductNoPaginationAction,
 } from "../../features/products/productActions.js";
 import { setSelectedCategory } from "../../features/category/categorySlice.js";
 import PaginationRounded from "../../components/pagination/PaginationRounded.jsx";
@@ -25,7 +26,7 @@ import PaginationRounded from "../../components/pagination/PaginationRounded.jsx
 export const ProductTable = () => {
   const { selectedCategory } = useSelector((state) => state.categoryInfo);
 
-  const { products, productAdminPage } = useSelector(
+  const { products, allAdminProducts, productAdminPage } = useSelector(
     (state) => state.productInfo
   );
   const { Categories } = useSelector((state) => state.categoryInfo);
@@ -40,13 +41,27 @@ export const ProductTable = () => {
   });
 
   const [displayProducts, setDisplayProducts] = useState([]);
+  const [isFiltering, setIsFiltering] = useState(false);
+
+  useEffect(() => {
+    const isActive =
+      form.searchQuery.trim() !== "" ||
+      form.category !== "all" ||
+      form.others !== "newest";
+
+    setIsFiltering(isActive);
+  }, [form]);
 
   useEffect(() => {
     const fetchAdminProducts = async () => {
-      await dispatch(getAdminProductAction());
+      if (isFiltering) {
+        await dispatch(getAdminProductNoPaginationAction());
+      } else {
+        await dispatch(getAdminProductAction());
+      }
     };
     fetchAdminProducts();
-  }, [productAdminPage]);
+  }, [isFiltering, productAdminPage]);
 
   useEffect(() => {
     if (selectedCategory?._id) {
@@ -55,9 +70,9 @@ export const ProductTable = () => {
   }, [selectedCategory]);
 
   useEffect(() => {
-    const data = products?.docs || [];
-    setDisplayProducts(filterFunction(form, data));
-  }, [form, products, productAdminPage]);
+    const data = isFiltering ? allAdminProducts : products?.docs;
+    setDisplayProducts(filterFunction(form, data || []));
+  }, [form, products, allAdminProducts, isFiltering, productAdminPage]);
 
   const getCategoryNameById = (categoryId) => {
     const category = Categories.find((item) => item._id === categoryId);
@@ -77,6 +92,9 @@ export const ProductTable = () => {
 
   return (
     <>
+      {isFiltering && (
+        <p className="text-muted small">Showing filtered results</p>
+      )}
       {selectedCategory?._id && (
         <div className="mb-3 p-2 ">
           <Button variant="dark" onClick={handleGoBack}>
@@ -140,6 +158,7 @@ export const ProductTable = () => {
 
       <hr />
       {/* Table */}
+
       <Table hover responsive>
         <thead>
           <tr>
@@ -153,56 +172,74 @@ export const ProductTable = () => {
           </tr>
         </thead>
         <tbody>
-          {displayProducts?.map((product, i) => (
-            <tr key={product._id}>
-              <td style={{ maxWidth: "50px" }} className="py-3">
-                <img
-                  src={product.images[0]}
-                  alt={product.name}
-                  height={50}
-                  width={50}
-                  className="rounded d-block mx-auto"
-                />
-              </td>
-              <td>
-                <b>{product.name}</b> <br /> {product.status}
-              </td>
-              <td>
-                {getCategoryNameById(product.category) || "Uncategorized"}
-              </td>
-              <td>$ {product.price}</td>
-              <td>{product.stock}</td>
-              <td className="text-white text-center ">
-                {product?.stock === 0 ? (
-                  <div className="rounded bg-danger">Out of Stock</div>
-                ) : product.stock < 30 ? (
-                  <div className="rounded bg-warning">Low in Stock</div>
-                ) : (
-                  <div className="rounded bg-dark ">In Stock</div>
-                )}
-              </td>
-              <td>
-                <DropdownButton variant="light" title="">
-                  <Dropdown.Item as={Link} to={`edit/${product._id}`}>
-                    <FaEdit /> Edit
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleOnDelete(product._id)}>
-                    <MdDelete /> Delete
-                  </Dropdown.Item>
-                </DropdownButton>
+          {displayProducts?.length > 0 ? (
+            displayProducts?.map((product, i) => (
+              <tr key={product._id}>
+                <td style={{ maxWidth: "50px" }} className="py-3">
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    height={50}
+                    width={50}
+                    className="rounded d-block mx-auto"
+                  />
+                </td>
+                <td>
+                  <b>{product.name}</b> <br /> {product.status}
+                </td>
+                <td>
+                  {getCategoryNameById(product.category) || "Uncategorized"}
+                </td>
+                <td>$ {product.price}</td>
+                <td>{product.stock}</td>
+                <td className="text-white text-center ">
+                  {product?.stock === 0 ? (
+                    <div className="rounded bg-danger">Out of Stock</div>
+                  ) : product.stock < 30 ? (
+                    <div className="rounded bg-warning">Low in Stock</div>
+                  ) : (
+                    <div className="rounded bg-dark ">In Stock</div>
+                  )}
+                </td>
+                <td>
+                  <DropdownButton variant="light" title="">
+                    <Dropdown.Item as={Link} to={`edit/${product._id}`}>
+                      <FaEdit /> Edit
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleOnDelete(product._id)}>
+                      <MdDelete /> Delete
+                    </Dropdown.Item>
+                  </DropdownButton>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="7" className="text-center py-4">
+                <div>
+                  <strong>No products found</strong>
+                  <div className="text-muted small">
+                    Try adjusting your filters or search keywords.
+                  </div>
+                </div>
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </Table>
-      <div className="mt-2 d-flex justify-content-center w-100">
-        <PaginationRounded
-          totalPages={products.totalPages}
-          page={productAdminPage}
-          mode="product"
-          client="admin"
-        />
-      </div>
+
+      {isFiltering ? (
+        ""
+      ) : (
+        <div className="mt-2 d-flex justify-content-center w-100">
+          <PaginationRounded
+            totalPages={products.totalPages}
+            page={productAdminPage}
+            mode="product"
+            client="admin"
+          />
+        </div>
+      )}
     </>
   );
 };
