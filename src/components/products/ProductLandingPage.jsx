@@ -45,6 +45,7 @@ const ProductLandingPage = () => {
     dispatch(deleteWishlistItemAction(id));
   };
   useEffect(() => {
+
     const fetchAllData = async () => {
       setLoading(true);
       await Promise.all([

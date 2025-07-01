@@ -1,3 +1,4 @@
+
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
@@ -18,3 +19,4 @@ const wishlistSlice = new createSlice({
 
 export const { setWishlist, resetWishlist } = wishlistSlice.actions;
 export default wishlistSlice.reducer;
+

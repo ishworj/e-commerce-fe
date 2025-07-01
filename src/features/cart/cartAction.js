@@ -22,7 +22,6 @@ export const fetchCartAction = () => async (dispatch) => {
   const { cart } = await fetchCartApi();
   dispatch(setCart(cart.cartItems));
 };
-
 export const deleteCartItemAction = (_id) => async (dispatch) => {
   const pending = deleteCartItemAxios(_id);
   toast.promise(pending, {
@@ -51,3 +50,4 @@ export const deleteCartAction = () => async (dispatch) => {
   const { status, message } = await pending;
   if (status === "success") { dispatch(resetCart()) }
 }
+

@@ -74,12 +74,14 @@ const AppRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="account" element={<Profile />} />
         <Route path="cart" element={<Cart />} />
+
         <Route path="orders" element={<Order />} />
         <Route path="payment-method" element={<PaymentMethod />} />
         <Route path="logout" element={<Logout />} />
         <Route path="shippingAddress" element={<ShippingAddress />} />
         <Route path="address/:id" element={<AddressUpdate />} />
         <Route path="wishlist" element={<WishList />} />
+
       </Route>
 
       <Route path="/admin" element={<DefaultLayout />}>
