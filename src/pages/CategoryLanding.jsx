@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import ProductCard from "../components/cards/ProductCard";
 import CategoryBar from "../components/layouts/CategoryBar";
 import CategoryList from "../components/layouts/CategoryList";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { CiFilter } from "react-icons/ci";
 import { RxReset } from "react-icons/rx";
-import BottomNavBar from "../components/layouts/BottomNavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCategory } from "../features/category/categorySlice";
 import { getAllCategoriesAction } from "../features/category/CategoryActions";
 import { getPublicProductAction } from "../features/products/productActions";
-import { Link } from "react-router-dom";
+import { setProductCustomerPage } from "../features/products/productSlice";
 
 const CategoryLanding = () => {
   const dispatch = useDispatch();
@@ -20,23 +19,26 @@ const CategoryLanding = () => {
   const { selectedCategory, Categories } = useSelector(
     (state) => state.categoryInfo
   );
+
+  const [sortOrder, setSortOrder] = useState(""); // "" | "asc" | "desc"
+  const page = 1;
+  dispatch(setProductCustomerPage(page));
+
+  const fetchPublicProducts = async () => {
+    if (publicProducts?.docs?.length === 0) {
+      await dispatch(getPublicProductAction());
+    }
+  };
+
   useEffect(() => {
-    // Load categories if empty
     if (Categories.length === 0) {
       dispatch(getAllCategoriesAction());
     }
+    fetchPublicProducts();
 
-    // Load public products if empty
-    if (publicProducts.length === 0) {
-      dispatch(getPublicProductAction());
-    }
-    console.log("publicProducts", publicProducts);
-    console.log("SelectedCategory before setting:", selectedCategory);
-
-    // Set selected category when categories are available
     if (!selectedCategory.categoryName && Categories.length > 0) {
       const category = Categories.find(
-        (cat) => cat.categoryName.toLowercase === categoryName.toLowerCase()
+        (cat) => cat.categoryName.toLowerCase() === categoryName.toLowerCase()
       );
       if (category) {
         dispatch(setSelectedCategory(category));
@@ -47,87 +49,105 @@ const CategoryLanding = () => {
     Categories,
     categoryName,
     selectedCategory.categoryName,
-    publicProducts.length,
+    publicProducts?.docs,
   ]);
-
-
-  const productsByCategory = publicProducts.filter((product) => {
-    console.log(
-      "product.category:",
-      product.category,
-      "| selectedCategory._id:",
-      selectedCategory._id
-    );
-    return product.category == selectedCategory._id;
+  let productsByCategory = publicProducts?.docs?.filter((product) => {
+    // Filtered and Sorted Products
+    return product.category === selectedCategory._id;
   });
 
+  if (sortOrder === "asc") {
+    productsByCategory = [...productsByCategory].sort(
+      (a, b) => a.price - b.price
+    );
+  } else if (sortOrder === "desc") {
+    productsByCategory = [...productsByCategory].sort(
+      (a, b) => b.price - a.price
+    );
+  }
+
+  const handleFilter = () => {
+    setSortOrder("asc");
+  };
+
+  const handleReset = () => {
+    setSortOrder("");
+  };
+
   return (
-    <Container>
+    <Container fluid className="px-3 px-sm-4">
       <CategoryBar />
       <CategoryList />
+
+      {/* Header Section */}
       <Row className="pt-3 bg-light">
         <Col md={4}>
-          <div className=" p-2 p-sm-4 d-flex flex-column flex-md-row justify-content-around">
-            <div className="pb-1">
-              <h1 className="fw-sm-bold">Check this out</h1>
-              <h3>Explore our new {selectedCategory.categoryName} arrivals</h3>
-              <Button variant="dark">Buy now</Button>
-            </div>
+          <div className="p-2 p-sm-4 d-flex flex-column justify-content-center h-100">
+            <h1 className="fw-bold">Check this out</h1>
+            <h3>Display title: {selectedCategory?.displaytitle}</h3>
+            <Button variant="dark" className="mt-2">
+              Buy now
+            </Button>
           </div>
         </Col>
-        <Col md={8} className="d-flex justify-content-md-center">
-          <div>
-            <img
-              className="img-fluid"
-              src="https://media.istockphoto.com/id/483147081/photo/futuristic-circuit-board-blue-with-electrons.jpg?s=612x612&w=0&k=20&c=cOlFe3m-qcm4zTmCKxVmX4huAlW9mpwaR2oPZhZjqK0="
-              alt=""
-              style={{ maxHeight: "200px" }}
-            />
-          </div>
+        <Col
+          md={8}
+          className="text-center d-flex align-items-center justify-content-center"
+        >
+          <img
+            className="img-fluid"
+            src={selectedCategory?.featureImageUrl}
+            alt="category"
+            style={{ maxHeight: "200px", objectFit: "cover" }}
+          />
         </Col>
       </Row>
 
-      <Row className="mt-4 mt-sm-5">
-        <Col>
-          <h5>{productsByCategory.length} results found</h5>
+      {/* Filter Section */}
+      <Row className="mt-4">
+        <Col xs={6}>
+          <h5>{productsByCategory?.length} results found</h5>
         </Col>
-        <Col className="d-flex justify-content-end">
-          <div className="d-flex flex-column ">
-            <Button variant="none">
-              <CiFilter /> Filter
-            </Button>
+        <Col xs={6} className="d-flex justify-content-end align-items-start">
+          <div className="d-flex flex-column flex-sm-row gap-2">
             <Button
-              variant="none"
-              className="border border-danger p-1"
-              style={{ fontSize: "10px" }}
+              variant="outline-secondary"
+              size="sm"
+              onClick={handleFilter}
             >
+              <CiFilter /> Sort by Price ↑
+            </Button>
+            <Button variant="outline-danger" size="sm" onClick={handleReset}>
               <RxReset /> Reset Filter
             </Button>
           </div>
         </Col>
       </Row>
 
-      <Row className="py-5">
-        <Col className="d-flex flex-wrap flex-row justify-content-start gap-md-4">
-          {productsByCategory.length > 0 ? (
-            productsByCategory.map((item, index) => (
+      {/* Product Cards Section */}
+      <Row className="py-5 g-3">
+        {productsByCategory?.length > 0 ? (
+          productsByCategory.map((item, index) => (
+            <Col xs={6} md={4} lg={3} key={index}>
               <Link
-                className="text-decoration-none"
+                className="text-decoration-none text-dark"
                 to={`/${item._id}`}
-                key={index}
               >
                 <ProductCard item={item} />
               </Link>
-            ))
-          ) : (
+            </Col>
+          ))
+        ) : (
+          <Col>
             <p>No products available in this category.</p>
-          )}
-        </Col>
+          </Col>
+        )}
       </Row>
-      <div className="bg-light text-center p-1">
-        <p>See all results </p>
+
+      {/* Footer */}
+      <div className="bg-light text-center p-2">
+        <p>See all results</p>
       </div>
-      <BottomNavBar />
     </Container>
   );
 };

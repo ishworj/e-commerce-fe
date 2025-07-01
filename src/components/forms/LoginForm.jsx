@@ -8,36 +8,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { loginAction } from "../../features/user/userAction";
 
 const LoginForm = () => {
-  const { form, handleOnChange } = useForm({ email: "", password: "" });
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const location = useLocation();
 
-  //to handle return location
-
+  const { form, handleOnChange } = useForm({ email: "", password: "" });
   const { user } = useSelector((state) => state.userInfo);
 
   // set sendTo location depending upon user url.
-  const sendTo = location?.state?.from?.location?.pathname || "/";
+  const sendTo = location?.state?.from?.location?.pathname || "/login";
 
   useEffect(() => {
-    //check if user is already logged in
-    const tryAutoLogin = async () => {
-      try {
-        await dispatch(autoLogin());
-      } catch (error) {
-        console.log("Error in auto login", error);
-      }
-    };
-
     //navigate to location when the user travelled from
-    if (user?.id) {
-      navigate(sendTo);
-    } else {
-      tryAutoLogin();
-    }
-  }, [user?.id, navigate, sendTo]);
+    user?._id && navigate(sendTo);
+  }, [user?._id, navigate, sendTo]);
 
   const handleOnSubmit = async (e) => {
     //prevent default
@@ -53,7 +37,9 @@ const LoginForm = () => {
             <CustomInput key={item.name} {...item} onChange={handleOnChange} />
           );
         })}
-        <Button type="submit">Login</Button>
+        <Button type="submit" className="d-grid w-100">
+          Login
+        </Button>
       </Form>
     </div>
   );

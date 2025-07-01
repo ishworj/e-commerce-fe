@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { registerUserAction } from "../../features/user/userAction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const initialState = {};
 const RegisterForm = () => {
@@ -14,30 +15,19 @@ const RegisterForm = () => {
     useForm(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  console.log(form.confirmPassword);
   const handleOnSubmit = (e) => {
     e.preventDefault();
     const { confirmPassword, password } = form;
-
-    console.log(confirmPassword);
 
     if (confirmPassword !== password) return alert("Password do not match");
     try {
       //SignUp api call
       dispatch(registerUserAction(form));
 
-      //show aucess toast once signUp is complete
-      toast.success("Sign Up successful");
-
       // redirect to loginpage with 2s delay so that user can see the toast
       setTimeout(() => navigate("/login"));
       return { status: "success", message: "Sign Up sucessful" };
     } catch (error) {
-      console.log(error);
-
-      //show error toast if somethins goes wrong
-      toast.error(error.messgae || "SignUp failed. Please try again!");
       return { status: "error", message: "signUp failed" };
     }
   };
@@ -48,13 +38,13 @@ const RegisterForm = () => {
         <CustomInput key={input.name} {...input} onChange={handleOnChange} />
       ))}
 
-      <div className="py-3">
+      <div className="">
         <ul className="text-danger ">
           {passwordErrors.length > 0 &&
             passwordErrors.map((msg) => <li key={msg}>{msg} </li>)}
         </ul>
       </div>
-      <div className="d-grid mt-4">
+      <div className="d-grid">
         <Button
           variant="primary"
           type="submit"
@@ -62,6 +52,9 @@ const RegisterForm = () => {
         >
           Register
         </Button>
+        <p className="m-0 pt-2 text-center">
+          Already Registered? <Link to="/login">Log in</Link>
+        </p>
       </div>
     </Form>
   );

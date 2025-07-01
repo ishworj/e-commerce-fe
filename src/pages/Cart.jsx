@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CartCard from "../components/cards/CartCard";
 import { RxCross1 } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
 
 const Cart = ({ handleCart }) => {
   const { cart } = useSelector((state) => state.cartInfo);
-
+  const navigate = useNavigate();
+  const finaliseOrder = () => {
+    handleCart();
+    navigate("/user/shippingAddress");
+  };
   return (
     <div className="d-flex flex-column align-items-center bg-white py-3 position-relative vh-100">
       <div
@@ -20,9 +24,21 @@ const Cart = ({ handleCart }) => {
           <RxCross1 onClick={handleCart} />
         </button>
       </div>
-      <div className="mt-4">
+      <div
+        className="mt-4 w-100"
+        style={{ height: "auto", paddingBottom: "200px" }}
+      >
         {cart.length != 0 ? (
-          cart.map((item, index) => <CartCard item={item} key={index} />)
+          <div>
+            {cart.map((item, index) => (
+              <CartCard item={item} key={index} />
+            ))}
+            <div className="d-flex justify-content-center">
+              <button className="btn btn-primary mt-3" onClick={finaliseOrder}>
+                Checkout
+              </button>
+            </div>
+          </div>
         ) : (
           <div className="d-flex justify-content-center">
             No Items added yet

@@ -1,17 +1,20 @@
 import React from "react";
 import { Stack } from "react-bootstrap";
-import {
-  FaBoxOpen,
-  FaTags,
-  FaClipboardList,
-  FaCheck,
-  FaUser,
-} from "react-icons/fa";
+import { FaBoxOpen, FaTags, FaCheck } from "react-icons/fa";
 import { MdRateReview } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { setSelectedCategory } from "../../features/category/categorySlice";
+import { CgProfile } from "react-icons/cg";
+import { PiSignOutFill } from "react-icons/pi";
 
 const sidebarLinks = [
+  {
+    icon: <FaBoxOpen />,
+    title: "Dashboard",
+    to: "/admin/adminDashboard",
+    isAdminOnly: true,
+  },
   {
     icon: <FaBoxOpen />,
     title: "Products",
@@ -25,15 +28,9 @@ const sidebarLinks = [
     isAdminOnly: true,
   },
   {
-    icon: <FaClipboardList />,
-    title: "My Orders",
-    to: "/orders",
-    isAdminOnly: false,
-  },
-  {
     icon: <FaCheck />,
-    title: "Admin Orders",
-    to: "/admin/orders",
+    title: "Orders List",
+    to: "/admin/orders?page=1",
     isAdminOnly: true,
   },
   {
@@ -43,20 +40,40 @@ const sidebarLinks = [
     isAdminOnly: true,
   },
   {
-    icon: <FaUser />,
-    title: "Profile",
-    to: "/profile",
+    icon: <CgProfile />,
+    title: "Login & Security",
+    to: "/user/account",
+    isUser: true,
+  },
+  {
+    icon: <FaCheck />,
+    title: "My Orders",
+    to: "/user/orders?page=1",
     isAdminOnly: false,
+  },
+
+  {
+    icon: <FaCheck />,
+    title: "Payment Method",
+    to: "/user/payment-method",
+    isUser: true,
+  },
+  {
+    icon: <PiSignOutFill />,
+    title: "Logout",
+    to: "/user/logout",
+    isUser: true,
   },
 ];
 
 export const UserSidebar = () => {
   const { user, menu } = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
 
   const visibleLinks =
     user?.role === "admin"
-      ? sidebarLinks
-      : sidebarLinks.filter((link) => !link.isAdminOnly);
+      ? sidebarLinks.filter((link) => link.isAdminOnly || link.isUser)
+      : sidebarLinks.filter((link) => !link.isAdminOnly || link.isUser);
 
   return (
     <Stack gap={1}>
@@ -67,6 +84,9 @@ export const UserSidebar = () => {
           className={`p-2 nav-link ${
             title === menu ? "bg-white text-dark rounded" : ""
           }`}
+          onClick={() => {
+            dispatch(setSelectedCategory(null));
+          }}
         >
           {icon} {title}
         </Link>

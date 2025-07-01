@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
@@ -8,30 +8,36 @@ import { fetchCartAction } from "../../features/cart/cartAction";
 
 const DefaultLayout = () => {
   const dispatch = useDispatch();
-  const [isCart, setIsCart] = useState(false);
+  const cartRef = useRef();
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
-  const [showCart, setShowCart] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
   const handleCart = () => {
-    if (isCart) {
+    if (isCartOpen) {
       setIsClosing(true);
       setTimeout(() => {
-        setShowCart(false);
+        setIsCartOpen(false);
         setIsClosing(false);
       }, 200);
     } else {
-      setShowCart(true);
       dispatch(fetchCartAction());
+      setIsCartOpen(true);
     }
-    setIsCart(!isCart);
   };
 
   useEffect(() => {
-    if (isCart && !showCart) {
-      setShowCart(true);
-    }
-  }, [isCart]);
+    if (!isCartOpen) return;
+    const handleClickOutsideCart = (event) => {
+      if (cartRef && !cartRef.current.contains(event.target)) {
+        handleCart();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutsideCart);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideCart);
+    };
+  }, [isCartOpen]);
 
   return (
     <div className="position-relative">
@@ -40,12 +46,8 @@ const DefaultLayout = () => {
       <main className="position-relative">
         <Outlet />
 
-        {showCart && (
-          <div>
-            <div
-              className="bg-black position-absolute w-100 h-100 opacity-50"
-              style={{ top: 0, right: 0, zIndex: 99 }}
-            ></div>
+        {isCartOpen && (
+          <div ref={cartRef}>
             <div
               className={`col-12 col-lg-6 col-md-8 bg-white overflow-y-scroll ${
                 isClosing ? "cart-animation-close" : "cart-animation-open"

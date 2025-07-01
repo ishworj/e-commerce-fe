@@ -7,10 +7,12 @@ import { setMenu } from "../../features/user/userSlice";
 import { UserLayout } from "../../components/layouts/UserLayout";
 import { ProductTable } from "./ProductTable"; // You need to create this component
 import { getAdminProductAction } from "../../features/products/productActions";
+import BreadCrumbsAdmin from "../../components/breadCrumbs/BreadCrumbsAdmin";
 
 const ProductList = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userInfo);
+  const { selectedCategory } = useSelector((state) => state.categoryInfo);
   useEffect(() => {
     dispatch(setMenu("Products"));
   }, [dispatch]);
@@ -19,10 +21,10 @@ const ProductList = () => {
     dispatch(getAdminProductAction());
   }, [user._id]);
 
-
   return (
-    <UserLayout pageTitle={"Products"}>
-      <ProductTable  />
+    <UserLayout pageTitle={selectedCategory?.categoryName || "Products"}>
+      <BreadCrumbsAdmin />
+      <ProductTable />
     </UserLayout>
   );
 };

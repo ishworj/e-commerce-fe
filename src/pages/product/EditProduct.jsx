@@ -8,6 +8,7 @@ import useForm from "../../hooks/useForm";
 import { productInputs } from "../../assets/form-data/ProductInput";
 import { MdDelete } from "react-icons/md";
 import { updateProductAction } from "../../features/products/productActions";
+import BreadCrumbsAdmin from "../../components/breadCrumbs/BreadCrumbsAdmin";
 
 const EditProduct = () => {
   const { _id } = useParams();
@@ -18,7 +19,7 @@ const EditProduct = () => {
   const { products } = useSelector((state) => state.productInfo);
   const { Categories } = useSelector((state) => state.categoryInfo);
 
-  const selectedProduct = products.find((item) => item._id === _id);
+  const selectedProduct = products?.docs?.find((item) => item._id === _id);
   const { form, handleOnChange, setForm } = useForm(selectedProduct || {});
 
   const [images, setImages] = useState([]); // new files only
@@ -92,6 +93,7 @@ const EditProduct = () => {
 
   return (
     <UserLayout pageTitle="Edit Product">
+      <BreadCrumbsAdmin />
       <div className="mt-5">
         <h4 className="py-4">Edit Product</h4>
         <Form onSubmit={handleOnSubmit}>
