@@ -40,6 +40,8 @@ const AppRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="account" element={<Profile />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="wishlist" element={<Wishlist />} />
+
         <Route path="adminDashboard" element={<Dashboard />} />
       </Route>
 

@@ -17,12 +17,11 @@ const ProductLandingPage = () => {
     setFavourite(!favourite);
   };
   useEffect(() => {
-    if (!selectedProduct._id) {
+    if (!selectedProduct || !selectedProduct._id) {
       dispatch(getSingleProductAction(id));
     }
-  }, []);
+  }, [dispatch, id, selectedProduct]);
 
-  console.log(selectedProduct, 2222);
   return (
     <div className="w-100 d-flex justify-content-center py-5 position-relative">
       {/* mainpage */}
