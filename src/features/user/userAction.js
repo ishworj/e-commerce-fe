@@ -1,5 +1,6 @@
 import {
   fetchUserApi,
+  getAllUsersTimeFrame,
   loginApi,
   logoutApi,
   refreshTokenApi,
@@ -12,7 +13,8 @@ import {
   verifyUserApi,
 } from "./userApi";
 import { toast } from "react-toastify";
-import { resetUser, setUser } from "./userSlice.js";
+import { resetUser, setTimeFramePastWeekUsers, setTimeFramePresentWeekUsers, setUser } from "./userSlice.js";
+import { createRecentActivity } from "../recentActivity/recentActivityAPI.js";
 
 // login action
 export const loginAction = (form, navigate) => async (dispatch) => {
@@ -20,7 +22,7 @@ export const loginAction = (form, navigate) => async (dispatch) => {
   toast.promise(pending, {
     pending: "Logging..."
   })
-  const { status, message, user, accessToken, refreshToken } = await pending;
+  const { status, message, userInfo, accessToken, refreshToken } = await pending;
   toast[status](message);
   if (status == "success") {
     //upddate storage session for access token
@@ -28,10 +30,9 @@ export const loginAction = (form, navigate) => async (dispatch) => {
     // update local storage for refresh token
     localStorage.setItem("refreshJWT", refreshToken);
     //update the store
-    dispatch(setUser(user));
-    dispatch(fetchUserAction())
-    console.log("navigation triggered")
-    navigate("/");
+    await dispatch(setUser(userInfo));
+    await dispatch(fetchUserAction())
+    navigate("/")
   }
 };
 
@@ -42,7 +43,20 @@ export const registerUserAction = (registerObj) => async (dispatch) => {
     pending: "Registering ... "
   });
   const { status, message, user } = await pending;
-  toast[status](message);
+  if (status === "success") {
+    const obj = {
+      userDetail: {
+        userId: user._id,
+        userName: user.fName + user.lName
+      },
+      action: "userRegistration",
+      entityId: user._id,
+      entityType: "user"
+    }
+    dispatch(createRecentActivity(obj))
+  } else {
+    toast.error(message)
+  }
 };
 
 //verify user Action
@@ -91,10 +105,20 @@ export const updatePwAction = ({ email, Otp, password, confirmPassword }) =>
       pending: "Updating Password!",
     });
 
-    const { status, message } = await pending;
+    const { status, message, updatedUser } = await pending;
     toast[status](message);
     console.log(status, "status");
     if (status === "success") {
+      const obj = {
+        userDetail: {
+          userId: updatedUser._id,
+          userName: updatedUser.fName + updatedUser.lName
+        },
+        action: "userUpdated",
+        entityId: updatedUser._id,
+        entityType: "user"
+      }
+      dispatch(createRecentActivity(obj))
       return true;
     }
   };
@@ -115,6 +139,27 @@ export const fetchUserAction = () => async (dispatch) => {
     toast.error("Session expired, please login again");
   }
 };
+
+export const getAdminUsersPresentWeekTimeFrameAction = (startTime, endTime) => async (dispatch) => {
+
+  const { status, message, users } = await getAllUsersTimeFrame(startTime, endTime);
+
+  await dispatch(setTimeFramePresentWeekUsers(users))
+  if (status === "success") {
+    return true
+  }
+}
+
+export const getAdminUsersPastWeekTimeFrameAction = (startTime, endTime) => async (dispatch) => {
+
+  const { status, message, users } = await getAllUsersTimeFrame(startTime, endTime);
+
+  await dispatch(setTimeFramePastWeekUsers(users))
+  if (status === "success") {
+    return true
+  }
+}
+
 
 // auto login action
 export const autoLogin = () => async (dispatch) => {
@@ -166,9 +211,20 @@ export const logoutAction = () => async (dispatch) => {
 }
 
 export const updateUserAction = (obj) => async (dispatch) => {
-  const { status, message } = await updateUserApi(obj);
+  const { status, message, updatedUser } = await updateUserApi(obj);
   if (status === "success") {
     dispatch(fetchUserAction())
+
+    const obj = {
+      userDetail: {
+        userId: updatedUser._id,
+        userName: updatedUser.fName + updatedUser.lName
+      },
+      action: "userUpdated",
+      entityId: updatedUser._id,
+      entityType: "user"
+    }
+    dispatch(createRecentActivity(obj))
   }
   toast[status](message)
 }

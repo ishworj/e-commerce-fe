@@ -27,6 +27,22 @@ export const getAllOrders = (page) => {
     })
 }
 
+export const getAllOrdersTimeFrame = (startTime, endTime) => {
+    return apiProcessor({
+        method: "get",
+        url: `${orderUrl}/timeFrame?startTime=${startTime}&endTime=${endTime}`,
+        isPrivate: true,
+    })
+}
+
+export const getAdminSalesTimeFrameApi = (startTime, endTime, granularity) => {
+    return apiProcessor({
+        method: "get",
+        url: `${orderUrl}/report?startTime=${startTime}&endTime=${endTime}&granularity=${granularity}`,
+        isPrivate: true,
+    })
+}
+
 export const deleteOrderApi = (_id) => {
     return apiProcessor({
         method: "delete",
